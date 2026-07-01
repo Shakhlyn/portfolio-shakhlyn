@@ -161,6 +161,11 @@ preferences, but things that cause bugs, re-renders, or maintenance debt.
   for hooks/utils (`useScrollDirection.ts`, `formatDate.ts`).
 - Absolute imports via a `@/` path alias (configured in `tsconfig.json` +
   `vite.config.ts`) instead of long relative `../../../` chains.
+- Routes: src/app/api/[epic-name]/
+- Components: src/components/[epic-name]/
+- Hooks: src/hooks/use-[feature].ts
+- Services: src/services/[epic-name].service.ts
+- Types: src/types/[epic-name].types.ts
 - Import order enforced by ESLint (`eslint-plugin-import` or `simple-import-sort`):
   external packages → internal aliases → relative imports → styles.
 ---
