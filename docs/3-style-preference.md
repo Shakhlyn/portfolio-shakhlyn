@@ -219,14 +219,20 @@ Values outside this subset require a reason.
 
 | Token | Value | Use |
 |---|---|---|
-| `container` max width | 1120px | Page shell |
+| `container` max width | 1120px | Page shell up to `2xl` |
+| `container-wide` max width | 1280px | Page shell from `2xl` (1536px) up — final |
 | `content` max width | 768px | Prose, about copy, writing posts |
 | Gutter (mobile) | 20px | `px-5` |
 | Gutter (`sm:`) | 24px | `sm:px-6` |
 | Gutter (`lg:`) | 32px | `lg:px-8` |
 
 `Container` is a UI component (`components/ui/Container.tsx`) that owns
-`mx-auto w-full max-w-container px-5 sm:px-6 lg:px-8`. No section reimplements this.
+`mx-auto w-full max-w-container 2xl:max-w-container-wide px-5 sm:px-6 lg:px-8`. No
+section reimplements this.
+
+The shell stops growing at 1280px. Above that the page centres in more whitespace
+rather than stretching — prose stays at its ~68-character measure regardless of
+viewport (§3.3).
 
 Section vertical rhythm, owned by `components/ui/Section.tsx`:
 
@@ -386,30 +392,52 @@ Sections appear in the order fixed by `docs/2-architecture.md` §8.
 
 ### 6.1 Header
 
-Sticky, `h-16`, `bg-bg/80 backdrop-blur-sm`, bottom `border-border`. Contents:
-wordmark/name at left (`h3` scale, 600, `fg`); desktop nav at right (`body-sm`,
-`fg-muted`, active route in `fg` with a 2px `accent` underline); theme toggle last.
+Fixed, `h-16`, `bg-bg/80 backdrop-blur-sm`, bottom `border-border` (which fades in
+once scrolled). Contents: wordmark/name at left (`h3` scale, 600, `fg`); nav at right
+(`body-sm`, `fg-muted`, active item in `fg` with a 2px `accent` underline); Resume as
+a `secondary` Button; theme toggle last.
 
-Mobile (`< md`): nav collapses to a hamburger. The panel is a full-width sheet
-beneath the header — `bg-surface`, `border-b`, `shadow-lg` — with 48px-tall rows. It
-traps focus while open, closes on `Escape` and on route change, and returns focus to
-the trigger (architecture §8 Focus Management).
+Six nav items — Home, Projects, About, Blog, Contact, Resume — which fit at every
+width without truncation.
+
+Mobile (`< lg`): nav collapses to a hamburger. The panel is a full-width sheet
+beneath the header — `bg-surface`, `border-b`, `shadow-lg` — with 48px-tall rows,
+Resume last behind a divider, and a `SocialLinks` row at the bottom. It traps focus
+while open, closes on `Escape` and on route change, and returns focus to the trigger
+(architecture §8 Focus Management).
 
 A skip link (`Skip to content`) is the first focusable element: visually hidden until
 focused, then pinned top-left as an accent-bordered pill.
 
 ### 6.2 Hero
 
-Left-aligned, single column, `max-w-content`. Stack:
+Left-aligned, `max-w-content`. Stack:
 
 1. Mono eyebrow — availability/location line.
 2. `h1` at `display` scale: name + full-stack / AI engineering positioning.
 3. `body-lg` in `fg-muted`, two lines maximum — the value proposition.
-4. Button row: `primary` "View work" (anchors to Projects) + `secondary` "Resume".
-5. `SocialLinks` row.
+4. Current position line — role + company, `fg`, company emphasised.
+5. Button row: `primary` "View Resume" (→ `/resume`) + `secondary` "Contact"
+   (→ `#contact`).
+6. `SocialLinks` row — below `lg` only, where the floating rail is hidden.
 
-No portrait photograph, no illustration, no background media. The hero's job is to
-make the positioning legible in under three seconds, and text does that fastest.
+**Two layouts, one component.** Which renders is decided by the presence of a
+`portrait` field in `src/data/profile.ts` — see `docs/4-interaction-design.md` §5.1
+for the switching behaviour.
+
+- **Text only** (ships now): single column at every width.
+- **With portrait**: two-column at `lg`+ (text left, photo right); single column below
+  with photo first. Photo is 280px at `lg`, 320px at `xl`, `rounded-lg`, capped at
+  200px on mobile.
+
+The portrait is above the fold, so it is never `loading="lazy"` — it carries
+`fetchpriority="high"`, explicit `width`/`height`, and real `alt` text (the person's
+name). No illustration, no background media, no text over the photo. The hero's job is
+to make the positioning legible in under three seconds.
+
+Social links and the floating rail (§6.11) are mutually exclusive by breakpoint: the
+rail covers `lg` and up, the hero's `SocialLinks` row covers everything below. They are
+never both visible, which would duplicate the same four links on one screen.
 
 ### 6.3 Current Role
 
@@ -417,17 +445,28 @@ Immediately after the hero, per architecture §8. A single level-1 card: role ti
 and company as `h3`, date range in `fg-subtle` mono, two-to-four bullet lines of
 scope in `fg-muted`, and a `Badge` row of the stack in active use.
 
-### 6.4 Featured Projects
+### 6.4 Projects
 
-Grid: 1 column mobile → `md:grid-cols-2`, `gap-6`. Cards are equal height via grid
-stretch.
+One `h2` ("Projects"), two `h3` subsections — Professional, then Personal — each with
+its own horizontally scrolling carousel. Full scroll, arrow, and keyboard behaviour is
+in `docs/4-interaction-design.md` §6; this section covers appearance only.
+
+Subsection header: `h3` at left, arrow buttons at right on the same baseline. Arrows
+are 36px `rounded-full` `ghost` buttons with a 16px chevron, `border border-border`,
+`opacity-50` when disabled. Subsections are separated by `mt-12`.
+
+Cards sit in a `gap-6` horizontal track. Card width is set so **1.15 / 2.15 / 3** cards
+are visible at base / `md` / `xl`. All cards in a track are equal height.
 
 Card anatomy, top to bottom: 16:9 image frame (`rounded-lg overflow-hidden`,
 `bg-surface-hover` placeholder, explicit `width`/`height` to prevent CLS,
-`loading="lazy"` below the fold) → `h3` title → two-line clamped `body-sm` summary in
-`fg-muted` → `Badge` row (max 5, remainder as `+N`) → footer link row ("Case study →",
-"GitHub", "Live demo") rendering **only** links that exist in the data
-(architecture §11 broken-link prevention).
+`loading="lazy"`) → `h4` title, which is the card's only link → two-line clamped
+`body-sm` summary in `fg-muted` → `Badge` row (max 5, remainder as `+N`) → button row
+with `secondary` `sm` "GitHub" and "Live" buttons, rendering **only** links that exist
+in the data (architecture §11 broken-link prevention).
+
+Headings inside a card are `h4`, since the subsection heading is `h3`. Level order is
+never skipped for visual reasons (§3.3).
 
 If a project has no image, the frame is omitted entirely — no grey placeholder box
 ships to production.
@@ -476,18 +515,35 @@ Post page: `max-w-content` prose, `h1`, date line, then article body.
 `h2` sections in the fixed order Problem → Approach → Stack → Outcome → Links, each
 `max-w-content`.
 
-### 6.11 Footer
+### 6.11 Social Rail
+
+Fixed to the left viewport edge, vertically centred, `lg` and up only. A vertical
+stack of 48px-tall tiles — GitHub, LinkedIn, Email, X — each a flex row of
+`[label][icon]`, rounded on the **right edge only** (`rounded-r-md`) so it reads as
+attached to the screen edge.
+
+- Collapsed: 48px wide, 20px icon centred, `bg-surface`, `border border-border`
+  (no left border), `text-fg-muted`.
+- Expanded on hover **or focus**: grows rightward to fit its `body-sm` label,
+  `bg-accent`, `text-on-accent`. One tile at a time; the stack never shifts vertically.
+- `shadow-sm` at rest, `shadow-lg` when expanded.
+- Standard focus ring (§4.5), offset so it is not clipped by the viewport edge.
+
+Behaviour, timing, and the documented `width`-animation exception are in
+`docs/4-interaction-design.md` §7.
+
+### 6.12 Footer
 
 `border-t border-border`, `py-12`. Name + current year at left in `fg-subtle`, social
 icons at right. No sitemap sprawl, no newsletter, no "built with ❤️".
 
-### 6.12 404
+### 6.13 404
 
 Centred, `py-32`. Large `fg-subtle` "404", `h1` "Page Not Found", one `fg-muted`
 sentence, then a row of links to Home, Projects, Resume, Contact. Header, footer, and
 theme are preserved.
 
-### 6.13 Error Boundary Fallback
+### 6.14 Error Boundary Fallback
 
 Same shape as the 404, with a "Reload page" `primary` button. Never a blank screen
 and never a raw stack trace in production.
@@ -599,7 +655,11 @@ theme: {
       // … one entry per token in §2.2 / §2.3
     },
     fontFamily: { sans: [...], mono: [...] },
-    maxWidth: { container: '1120px', content: '768px' },
+    maxWidth: {
+      container: '1120px',
+      'container-wide': '1280px',
+      content: '768px',
+    },
     fontSize: { /* the scale in §3.2 */ },
   },
 }

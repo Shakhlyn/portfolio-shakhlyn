@@ -61,6 +61,10 @@ The architecture will keep the current Vite SPA model with `react-router-dom` da
 - Primary conversion page.
 - Contains the full scan path for recruiters and sourcers.
 - Contains above-the-fold role positioning and CTAs.
+- Navigation is hybrid: Home, Projects, About, and Contact are in-page anchors on this
+  route; Blog and Resume are real routes. Anchor targets must resolve both from within
+  `/` and from `/writing` or `/resume` via `/#section`. See
+  `docs/4-interaction-design.md` §1 and §3.
 - Includes a Current Role section immediately after the hero to describe the candidate's active software engineering work.
 - Keeps key content crawlable in the initial HTML shell and hydrated app.
 
@@ -172,8 +176,10 @@ Portfolio content will live in typed local data files under `src/data/`. Compone
 ### Data Files
 
 ```text
-src/data/profile.ts       Candidate identity, role, value proposition, social links
-src/data/projects.ts      Project summaries and case study data
+src/data/profile.ts       Candidate identity, role, value proposition, social links,
+                          optional portrait (its presence selects the hero layout)
+src/data/projects.ts      Project summaries and case study data, each carrying a
+                          `category: 'professional' | 'personal'` discriminator
 src/data/skills.ts        Skill groups by capability
 src/data/resume.ts        Resume file metadata and labels
 src/data/navigation.ts    Nav labels and route targets
@@ -182,6 +188,15 @@ src/data/writing.ts       V1 writing metadata and manually maintained post conte
 ```
 
 ### Types
+
+Project grouping is by the `category` discriminator on a single project type in a
+single data file. Professional and personal projects are rendered as two subsections
+of one Projects section — this is **grouping, not filtering**, and adds no filter
+controls (see §12). The home page never needs a second projects data file.
+
+The `portrait` field on `profile.ts` is optional. Its presence selects between the two
+hero layouts specified in `docs/4-interaction-design.md` §5.1 — one component, no
+duplicated hero.
 
 Shared types will live in `src/types/`:
 
@@ -279,12 +294,17 @@ App
         Navigation
         ThemeToggle
         MobileNavigation
+          SocialLinks
+      SocialRail                      # fixed left rail, lg+ only
       PageTransition
         HomePage
-          HeroSection
+          HeroSection                 # two layouts, selected by profile.portrait
           CurrentRoleSection
-          ProjectsSection
-            ProjectCard
+          ProjectsSection             # one h2
+            ProjectCarousel           # h3 "Professional" + track
+              ProjectCard
+            ProjectCarousel           # h3 "Personal" + track
+              ProjectCard
           AboutSection
           SkillsSection
             SkillGroup
@@ -349,10 +369,22 @@ Current Role:
 
 Projects Showcase:
 
-- `ProjectsSection`
+- `ProjectsSection` — one section, one `h2`, containing two `ProjectCarousel`
+  instances (Professional, Personal) filtered from `projects.ts` by `category`.
+- `ProjectCarousel` — labelled `h3` subsection with a horizontally scrolling,
+  scroll-snapped track and its own arrow controls. One component, two instances; the
+  two carousels scroll independently.
 - `ProjectCard`
 - `ProjectPage`
 - `ProjectCaseStudy`
+
+Social:
+
+- `SocialRail` — fixed left-edge rail of expand-on-hover/focus tiles, `lg` and up.
+- `SocialLinks` — the inline list form, reused in the mobile nav sheet, the contact
+  section, and the footer. The rail does not replace it.
+
+Both are driven by the same link data in `profile.ts`.
 
 About / Bio:
 
@@ -382,6 +414,18 @@ Theme Support:
 
 - `ThemeToggle`
 - `useTheme`
+
+Navigation and scroll behaviour (see `docs/4-interaction-design.md` §3–§4):
+
+- `useActiveSection` — `IntersectionObserver` scroll spy driving the active nav item.
+  Home route only.
+- `useHashScroll` — resolves `/#section` after paint, including arrival from
+  `/writing` and `/resume`.
+- `useCarousel` — scroll position, arrow enabled/disabled state, and resize
+  re-evaluation for one carousel track.
+
+Each of these subscribes to something outside React, so each must return a cleanup
+function (`AGENTS.md` §5).
 
 Writing:
 
@@ -502,13 +546,23 @@ Home page:
 ```text
 h1: Candidate name + full-stack / AI engineering positioning
 h2: Current Role
-h2: Featured Projects
+h2: Projects
+  h3: Professional
+    h4: Project titles
+  h3: Personal
+    h4: Project titles
 h2: About
 h2: Skills
 h2: Resume
 h2: Contact
-h2: Writing
 ```
+
+Projects is a single `h2` with two `h3` subsections. Professional and personal work
+are one topic viewed two ways, not two separate topics, and one `h2` keeps the
+document outline honest while still labelling each group for screen reader users.
+
+There is no `Writing` heading on the home page. Blog is a route (`/writing`), not a
+home section, so its heading lives on that page.
 
 The Current Role section appears immediately after the hero because the candidate is currently working as a software engineer. This gives recruiters and hiring managers a fast, credible signal of active professional engineering experience before they inspect projects.
 

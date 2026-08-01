@@ -76,11 +76,23 @@ Requirements:
 - Candidate name.
 - Clear role framing for full-stack / AI engineering.
 - Concise value proposition.
-- Primary CTA to view projects.
-- Secondary CTA to download resume.
+- Current position — role and company.
+- Optional portrait photograph.
+- Primary CTA to view the resume.
+- Secondary CTA to reach contact.
 - Direct links to GitHub, LinkedIn, and email.
 - Dark/light theme support.
 - Responsive layout across mobile, tablet, and desktop.
+
+The hero CTAs point to resume and contact rather than to projects. Projects are the
+next thing on the page and are reached by scrolling or by the nav, so spending the
+hero's two CTAs on them would duplicate a path the visitor already has. Resume and
+contact are the two actions that are otherwise several scrolls away, and they are the
+two that convert.
+
+Direct social links appear in the hero below the `lg` breakpoint. At `lg` and above the
+floating social rail covers them, and the two are mutually exclusive so the same links
+never render twice on one screen.
 
 ### Projects Showcase
 
@@ -352,8 +364,11 @@ Requirements:
 - Candidate name.
 - Target role or role family.
 - One concise value proposition.
-- Primary and secondary CTA labels.
+- Current position — role and company.
+- Primary and secondary CTA labels (resume, contact).
 - GitHub, LinkedIn, and email links.
+- Portrait photograph, if the portrait hero layout is used. The text-only layout
+  requires no image and is the launch default.
 
 #### Projects
 
