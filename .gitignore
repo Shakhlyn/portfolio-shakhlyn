@@ -12,6 +12,17 @@ dist
 dist-ssr
 *.local
 
+# This project is Yarn-only. yarn.lock is the single source of truth —
+# never commit a competing lockfile.
+package-lock.json
+npm-shrinkwrap.json
+pnpm-lock.yaml
+
+# Yarn (node-modules linker): keep .yarnrc.yml and yarn.lock, ignore the rest
+.yarn/*
+!.yarn/patches
+.pnp.*
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
