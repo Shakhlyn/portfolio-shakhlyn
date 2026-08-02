@@ -41,12 +41,13 @@ epic. Point me at those files to pick the work back up.
 
 ### Phase 3 — Home Page Sections
 
-| Epic                    | Tickets                          | Status      | #             | Depends on |
-| ----------------------- | -------------------------------- | ----------- | ------------- | ---------- |
-| E09 Hero & Current Role | [E09-tickets.md](E09-tickets.md) | not started | 8 (1 blocked) | E07, E08   |
+| Epic                    | Tickets                          | Status                         | #   | Depends on |
+| ----------------------- | -------------------------------- | ------------------------------ | --- | ---------- |
+| E09 Hero & Current Role | [E09-tickets.md](E09-tickets.md) | [E09-status.md](E09-status.md) | 8   | E07, E08   |
 
-E09-T08 (portrait treatment) is **blocked on the photograph** and is listed rather than
-omitted, so the gap is visible. The other seven are startable.
+**8 of 8 done.** E09-T08 (portrait treatment) was unblocked by the supplied photograph
+and shipped the same day — the seam built ahead of it took the image with no layout
+change and zero CLS, which is what building the seam separately was for.
 
 **36 Phase 1 tickets, 14 in E07, 8 in E08.** E01 → E02 is a hard sequence. E03, E04, E05, and E06 are independent of
 each other once E02 lands and can be built in any order.

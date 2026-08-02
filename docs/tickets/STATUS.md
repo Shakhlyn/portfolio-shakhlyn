@@ -40,14 +40,25 @@ reduced motion — not unwritten code.
 
 ## Phase 3
 
-| Epic                                      | Done | Needs manual check | Blocked | Not started | Total |
-| ----------------------------------------- | ---- | ------------------ | ------- | ----------- | ----- |
-| [E09 Hero & Current Role](E09-tickets.md) | 0    | 0                  | 1       | 7           | 8     |
+| Epic                                     | Done | Needs manual check | Blocked | Not started | Total |
+| ---------------------------------------- | ---- | ------------------ | ------- | ----------- | ----- |
+| [E09 Hero & Current Role](E09-status.md) | 8    | 0                  | 0       | 0           | 8     |
 
-E09 is decomposed but not started. The one blocked ticket is **E09-T08, portrait
-treatment**, waiting on a real photograph — the layout seam it fills ships without it
-(T05), so nothing else in the epic is held up. E09 also closes E08's deferred criterion
-and re-tests two checks that were vacuous while the home sections held nothing focusable.
+E09 was verified with 33 automated browser checks the same way as E07 and E08. It found
+one real defect of its own — the portrait slot shrank to 233px against a specified 280px
+as a flex child, which is exactly the CLS the aspect-ratio lock exists to prevent — and
+one gate that was not gating: bare `tsc --noEmit` typechecks **nothing** here, because
+the root `tsconfig.json` is a solution file with `"files": []`. Use `yarn typecheck`.
+
+**E09-T08 was unblocked the same day** by the supplied photograph and is done: cropped to
+the slot's 3:4 and converted to WebP (36 KB from 102 KB) using the verification browser,
+since no image tooling is installed and no dependency was worth adding for one file.
+`PROFILE.layout` is now `'split'` and the portrait is the LCP element at 616ms, CLS 0.
+
+E09 closed E08's deferred criterion (rail and hero social links never both visible) and
+retired E07's weakly-verified one (the next Tab after a nav anchor now lands on the
+hero's "View Resume" CTA). LCP on a throttled mobile profile is **496ms** against the
+2.5s budget.
 
 E07 was verified with 27 automated checks in a real browser (headless Chrome over
 CDP against a production build), so none of its criteria are left pending a manual
@@ -78,7 +89,7 @@ yarn format:check ✅ clean
 yarn build        ✅ succeeds, lazy routes split into separate chunks
 ```
 
-Build output: entry `443 kB / 142 kB gzip`, four lazy chunks at ~0.25 kB each.
+Build output: entry `459 kB / 147 kB gzip`, four lazy chunks at ~0.25 kB each.
 Within the ~200KB gzipped budget, but Motion is most of it — worth a look in E17.
 
 ## Content status
@@ -123,7 +134,7 @@ honest; a bullet with an invented one fails in the interview it was meant to win
 | OG image              | 1200×630, generated from the design tokens         | E15       | **Yes**         |
 | `SITE_URL`            | `https://shakhlyn.dev` — a guess, not registered   | E15, E18  | **Yes**         |
 | About copy            | 3 draft paragraphs, CV facts, my wording           | E11       | **Yes — voice** |
-| Portrait photograph   | Absent; `layout: 'stacked'` ships without it       | E09-T08   | No              |
+| Portrait photograph   | **Done** — 720×960 WebP, cropped 3:4, `split` live | —         | No              |
 | Project screenshots   | Absent; cards omit the frame cleanly               | E10       | No              |
 | Meal Mgmt `githubUrl` | Absent; button does not render                     | E10       | No              |
 
@@ -137,16 +148,13 @@ add real AI/LLM work before launch — detail and options in
 
 ## Next up
 
-E07 and E08 are done. Phase 2's remaining work is the page sections:
+E07, E08, and E09 are done. The remaining work is the rest of the page sections:
 
-- **E09 — Hero & Current Role.** Decomposed in [E09-tickets.md](E09-tickets.md), 8
-  tickets. Owns the two checks E08 could not close: the hero's own social row must be
-  below `sm` only (T04), and the pairing check "rail and hero social links are never both
-  visible" is listed in [E08-status.md](E08-status.md) as deferred here (T07).
-- **E10–E13 — Projects, About, Skills, Resume, Contact.** These replace the E07-T03
-  anchor scaffold. Two criteria are waiting on them: E07's "the next Tab lands inside
-  that section" and E08's tab-order check, both currently vacuous because the scaffold
-  sections hold nothing focusable.
+- **E09 — Hero & Current Role.** Done except the blocked portrait ticket — see
+  [E09-status.md](E09-status.md). Both checks E08 could not close are now closed.
+- **E10–E13 — Projects, About, Skills, Resume, Contact.** These replace what is left of
+  the E07-T03 anchor scaffold: `#projects`, `#about`, `#skills`, `#resume`, `#contact`.
+  E09 already retired the two criteria that were waiting on real content in `#home`.
 - **Re-run E07's `Card` hover check.** It was never actually exercised — headless
   Chrome reports `(hover: none)`, so Tailwind's `hover:` rules never matched. The
   harness now emulates a fine pointer, so it is testable.
