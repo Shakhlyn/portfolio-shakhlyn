@@ -4,7 +4,7 @@ Roll-up across all epics. Per-epic detail lives in `E0X-status.md` next to each
 ticket file. **Update the per-epic file when you finish a ticket; update this table
 when an epic's counts change.**
 
-Last updated: **2026-08-02**
+Last updated: **2026-08-03**
 
 ## Legend
 
@@ -36,12 +36,20 @@ reduced motion — not unwritten code.
 | Epic                                     | Done | Needs manual check | Blocked | Not started | Total |
 | ---------------------------------------- | ---- | ------------------ | ------- | ----------- | ----- |
 | [E07 Header & Navigation](E07-status.md) | 14   | 0                  | 0       | 0           | 14    |
-| E08 Social Rail                          | 0    | 0                  | 0       | 6           | ~6    |
+| [E08 Social Rail](E08-status.md)         | 8    | 0                  | 0       | 0           | 8     |
 
 E07 was verified with 27 automated checks in a real browser (headless Chrome over
 CDP against a production build), so none of its criteria are left pending a manual
 pass. One is verified in a weaker form and must be re-tested once sections have real
 content — see [E07-status.md](E07-status.md).
+
+E08 was verified with 26 automated checks the same way. It found three defects of its
+own, one of which was a wrong premise in its own ticket file: the social rail sat on
+top of real page content between 640px and ~1280px, because the container's left
+gutter is narrower than the rail. Fixed by widening that gutter — detail in
+[E08-status.md](E08-status.md). One E08 criterion is **deferred to E09**, not passed:
+"rail and hero social links never both visible" cannot be closed before the hero
+exists.
 
 **E07 also fixed two pre-existing defects**: an anchor offset that stacked
 `scroll-padding-top` with `scroll-mt-20`, and route-change focus that had never
@@ -94,13 +102,15 @@ add real AI/LLM work before launch — detail and options in
 
 ## Next up
 
-Phase 1 is done, so Phase 2 is fully unblocked:
+E07 and E08 are done. Phase 2's remaining work is the page sections:
 
-- **E07 — Header & Navigation.** The highest-risk epic in the plan. `useActiveSection`,
-  `useHashScroll`, the mobile sheet's focus trap, and cross-route anchors all interact.
-  Build and verify the three behaviours separately before combining them. Also re-check
-  the `PageTransition` / `useRouteFocus` ordering flagged in
-  [E06-status.md](E06-status.md).
-- **E08 — Social Rail.** Now unblocked: GitHub, LinkedIn, and email are in
-  `profile.ts`. There is no X account, so that tile simply will not render — which is
-  the intended behaviour, not a gap.
+- **E09 — Hero.** Owns the two checks E08 could not close: the hero's own social row
+  must be `below sm` only, and the pairing check "rail and hero social links are never
+  both visible" is listed in [E08-status.md](E08-status.md) as deferred here.
+- **E10–E13 — Projects, About, Skills, Resume, Contact.** These replace the E07-T03
+  anchor scaffold. Two criteria are waiting on them: E07's "the next Tab lands inside
+  that section" and E08's tab-order check, both currently vacuous because the scaffold
+  sections hold nothing focusable.
+- **Re-run E07's `Card` hover check.** It was never actually exercised — headless
+  Chrome reports `(hover: none)`, so Tailwind's `hover:` rules never matched. The
+  harness now emulates a fine pointer, so it is testable.

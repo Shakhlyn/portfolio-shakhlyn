@@ -37,8 +37,9 @@ epic. Point me at those files to pick the work back up.
 | Epic                    | Tickets                          | Status                         | #   | Depends on |
 | ----------------------- | -------------------------------- | ------------------------------ | --- | ---------- |
 | E07 Header & Navigation | [E07-tickets.md](E07-tickets.md) | [E07-status.md](E07-status.md) | 14  | E02–E06    |
+| E08 Social Rail         | [E08-tickets.md](E08-tickets.md) | [E08-status.md](E08-status.md) | 8   | E07        |
 
-**36 Phase 1 tickets, 14 in E07.** E01 → E02 is a hard sequence. E03, E04, E05, and E06 are independent of
+**36 Phase 1 tickets, 14 in E07, 8 in E08.** E01 → E02 is a hard sequence. E03, E04, E05, and E06 are independent of
 each other once E02 lands and can be built in any order.
 
 Nothing user-visible ships in Phase 1. The point of the phase is that everything after
