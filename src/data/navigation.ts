@@ -9,13 +9,23 @@ import type { NavItemType } from '@/types/navigation.types';
  * This is the single source of truth for nav targets — no component hardcodes
  * a section id or a route path.
  */
+/**
+ * Targets shared by the nav and by CTAs elsewhere on the page — the hero's two
+ * buttons, and later the resume section. Exported so a second consumer links to
+ * the same destination rather than retyping the path
+ * (docs/2-architecture.md §11).
+ */
+export const RESUME_ROUTE = '/resume';
+export const CONTACT_SECTION_ID = 'contact';
+export const CONTACT_ANCHOR = `/#${CONTACT_SECTION_ID}`;
+
 export const NAV_ITEMS: readonly NavItemType[] = [
   { kind: 'anchor', label: 'Home', sectionId: 'home' },
   { kind: 'anchor', label: 'Projects', sectionId: 'projects' },
   { kind: 'anchor', label: 'About', sectionId: 'about' },
   { kind: 'route', label: 'Blog', path: '/writing' },
-  { kind: 'anchor', label: 'Contact', sectionId: 'contact' },
-  { kind: 'route', label: 'Resume', path: '/resume', emphasised: true },
+  { kind: 'anchor', label: 'Contact', sectionId: CONTACT_SECTION_ID },
+  { kind: 'route', label: 'Resume', path: RESUME_ROUTE, emphasised: true },
 ];
 
 /**

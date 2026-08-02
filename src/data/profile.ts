@@ -1,3 +1,4 @@
+import portraitSrc from '@/assets/portrait.webp';
 import type { ProfileType } from '@/types/profile.types';
 
 /**
@@ -11,8 +12,9 @@ import type { ProfileType } from '@/types/profile.types';
  *
  *     grep -rn "INVENTED FIGURE" src/
  *
- * `portrait` is deliberately absent — the `split` layout's slot reserves its
- * space without it (docs/4-interaction-design.md §5.1).
+ * `layout` is the hero switch (docs/4-interaction-design.md §5.1). Set to 'split'
+ * now that a portrait exists; 'stacked' drops the image and the column with it,
+ * and the slot reserves its space either way.
  */
 export const PROFILE: ProfileType = {
   name: 'Shaokh Al Mahmud Shakhlyn',
@@ -26,6 +28,26 @@ export const PROFILE: ProfileType = {
     'Software engineer with 2+ years building enterprise web applications that move 40,000+ deals a month for telecom operators, on teams spanning three continents. I own features end to end — from clarifying the requirement to shipping the release and debugging it in production.',
   currentPositionRole: 'Software Engineer',
   currentPositionCompany: 'Penta Global Limited',
+  // Label text from docs/3-style-preference.md §6.2 item 6.
+  heroCtas: {
+    resume: 'View Resume',
+    contact: 'Contact',
+  },
+  layout: 'split',
+  /**
+   * Cropped from the supplied 960×960 source to the slot's locked 3:4 and
+   * encoded as WebP (720×960, 36 KB against the original 102 KB). The intrinsic
+   * size is twice the largest rendered box (320×427 at `xl`), so it stays sharp
+   * on a 2× display without shipping more pixels than that needs.
+   *
+   * `src/assets/portfolio_img.jpg` is kept as the uncropped original.
+   */
+  portrait: {
+    src: portraitSrc,
+    width: 720,
+    height: 960,
+    alt: 'Shaokh Al Mahmud Shakhlyn',
+  },
   social: {
     email: 'mailto:shakhlyn.sh.du@gmail.com',
     linkedin: 'https://linkedin.com/in/shakhlyn',

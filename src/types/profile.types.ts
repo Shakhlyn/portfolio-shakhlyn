@@ -18,6 +18,27 @@ export interface SocialLinksType {
   email?: string;
 }
 
+/**
+ * Which hero layout renders (docs/4-interaction-design.md §5.1).
+ *
+ * An explicit discriminator, never inferred from whether `portrait` happens to
+ * be populated: layout and artwork are two independent decisions, and deriving
+ * one from the other means the `split` layout cannot be built or reviewed until
+ * a photograph exists.
+ */
+export type HeroLayout = 'stacked' | 'split';
+
+/**
+ * Hero CTA labels. `1-prd.md` §6 lists these under required Hero Content, so
+ * they live in data like every other piece of copy, not in the component.
+ */
+export interface HeroCtaLabelsType {
+  /** Primary CTA, to the /resume route. */
+  resume: string;
+  /** Secondary CTA, to the #contact anchor. */
+  contact: string;
+}
+
 export interface ProfileType {
   /** Full name. Used as the hero h1. */
   name: string;
@@ -36,10 +57,13 @@ export interface ProfileType {
   currentPositionRole: string;
   currentPositionCompany: string;
   social: SocialLinksType;
+  heroCtas: HeroCtaLabelsType;
+  /** Selects the hero layout. Required, so a profile can never omit the choice. */
+  layout: HeroLayout;
   /**
-   * Optional by design. Its presence selects the two-column hero layout;
-   * its absence selects text-only (docs/4-interaction-design.md §5.1).
-   * This one field is the entire layout switch.
+   * The portrait that fills the `split` layout's slot. Optional because the
+   * slot is aspect-ratio-locked and reserves its space without it — a missing
+   * photograph is never a broken layout (docs/4-interaction-design.md §5.1).
    */
   portrait?: PortraitType;
 }
