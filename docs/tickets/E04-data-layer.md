@@ -37,6 +37,13 @@ was typed.
   and an **optional `portrait`** (`{ src, width, height, alt }`). Its presence selects
   the hero layout (`4-interaction-design.md` §5.1) — this one field is the entire
   layout switch, so it must be genuinely optional, not `string | ''`.
+
+  > **Superseded by E09.** The layout is no longer inferred from `portrait`. `ProfileType`
+  > gains an explicit `layout: 'stacked' | 'split'` discriminator, and `portrait` becomes
+  > only the asset that fills the `split` layout's slot. Rationale in
+  > `4-interaction-design.md` §5.1 and §10 row 1; the field is added in `E09-tickets.md`.
+  > `portrait` stays genuinely optional either way.
+
 - `ProjectType` — id, slug, title, summary, `category: 'professional' | 'personal'`,
   problem, role, approach, stack, outcome, tags, and **optional** `githubUrl`,
   `liveUrl`, `caseStudySlug`, `image`.

@@ -434,26 +434,45 @@ focused, then pinned top-left as an accent-bordered pill.
 Left-aligned, `max-w-content`. Stack:
 
 1. Mono eyebrow — availability/location line.
-2. `h1` at `display` scale: name + full-stack / AI engineering positioning.
-3. `body-lg` in `fg-muted`, two lines maximum — the value proposition.
-4. Current position line — role + company, `fg`, company emphasised.
-5. Button row: `primary` "View Resume" (→ `/resume`) + `secondary` "Contact"
+2. `h1` at `display` scale: **the name, and nothing else.**
+3. Role framing — `body-lg`, `fg`, directly beneath the `h1`.
+4. `body-lg` in `fg-muted`, two lines maximum — the value proposition.
+5. Current position line — role + company, `fg`, company emphasised.
+6. Button row: `primary` "View Resume" (→ `/resume`) + `secondary` "Contact"
    (→ `#contact`).
-6. `SocialLinks` row — below `sm` only, where the floating rail is hidden.
+7. `SocialLinks` row — below `sm` only, where the floating rail is hidden.
 
-**Two layouts, one component.** Which renders is decided by the presence of a
-`portrait` field in `src/data/profile.ts` — see `docs/4-interaction-design.md` §5.1
-for the switching behaviour.
+**This section describes what the hero block communicates; it does not assign
+elements.** The block reads as "name + full-stack / AI engineering positioning" because
+items 2 and 3 sit adjacent, not because the positioning is inside the `h1`. Element
+assignment is `docs/4-interaction-design.md` §5.1's to make, and it assigns the `h1` to
+the name alone. An earlier draft of this line read "`h1`: name + positioning", which was
+a description of the block mistaken for a spec for the element; the two are not in
+conflict and only one of them is normative here.
 
-- **Text only** (ships now): single column at every width.
-- **With portrait**: two-column at `lg`+ (text left, photo right); single column below
-  with photo first. Photo is 280px at `lg`, 320px at `xl`, `rounded-lg`, capped at
-  200px on mobile.
+The positioning keywords that people try to cram into an `h1` for SEO belong in
+`<title>` and `meta[description]` (§8 of `docs/2-architecture.md`). One `h1`, one name.
+
+**Two layouts, one component.** Which renders is decided by an explicit
+`layout: 'stacked' | 'split'` field in `src/data/profile.ts` — see
+`docs/4-interaction-design.md` §5.1 for the switching behaviour.
+
+- **`stacked`** (ships now): single column at every width.
+- **`split`**: two-column at `lg`+ (text left, portrait slot right); single column below
+  with the slot first. The slot is 280px at `lg`, 320px at `xl`, `rounded-lg`, capped at
+  200px on mobile, and **aspect-ratio-locked** so it reserves its space whether or not
+  an image has landed in it yet.
 
 The portrait is above the fold, so it is never `loading="lazy"` — it carries
 `fetchpriority="high"`, explicit `width`/`height`, and real `alt` text (the person's
 name). No illustration, no background media, no text over the photo. The hero's job is
 to make the positioning legible in under three seconds.
+
+The **layout seam** (the field, the branch, the two-column grid, the locked slot) and
+the **portrait treatment** (crop, focal point, responsive sources) are separately
+shippable. The seam is verifiable against an empty slot; the treatment is not
+verifiable at all until a real photograph exists, and tuning it against a stand-in
+image encodes accidental properties of that stand-in into the CSS.
 
 Social links and the floating rail (§6.11) are mutually exclusive by breakpoint: the
 rail covers `sm` and up, the hero's `SocialLinks` row covers everything below. They are
@@ -464,6 +483,11 @@ never both visible, which would duplicate the same four links on one screen.
 Immediately after the hero, per architecture §8. A single level-1 card: role title
 and company as `h3`, date range in `fg-subtle` mono, two-to-four bullet lines of
 scope in `fg-muted`, and a `Badge` row of the stack in active use.
+
+**No eyebrow.** `Section`'s eyebrow is optional, and an optional prop is an opt-in, not
+a default. Eyebrows are wayfinding for scannable, repeated sets — Projects has one
+because it is a set you scan. Current Role is a single narrative block sitting directly
+under the hero, where an eyebrow is decoration.
 
 ### 6.4 Projects
 

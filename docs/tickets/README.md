@@ -39,6 +39,15 @@ epic. Point me at those files to pick the work back up.
 | E07 Header & Navigation | [E07-tickets.md](E07-tickets.md) | [E07-status.md](E07-status.md) | 14  | E02–E06    |
 | E08 Social Rail         | [E08-tickets.md](E08-tickets.md) | [E08-status.md](E08-status.md) | 8   | E07        |
 
+### Phase 3 — Home Page Sections
+
+| Epic                    | Tickets                          | Status      | #             | Depends on |
+| ----------------------- | -------------------------------- | ----------- | ------------- | ---------- |
+| E09 Hero & Current Role | [E09-tickets.md](E09-tickets.md) | not started | 8 (1 blocked) | E07, E08   |
+
+E09-T08 (portrait treatment) is **blocked on the photograph** and is listed rather than
+omitted, so the gap is visible. The other seven are startable.
+
 **36 Phase 1 tickets, 14 in E07, 8 in E08.** E01 → E02 is a hard sequence. E03, E04, E05, and E06 are independent of
 each other once E02 lands and can be built in any order.
 
@@ -80,13 +89,18 @@ could verify every box without asking you what you meant.
 
 ## Decisions recorded during ticket writing
 
-Two ambiguities in the source documents were resolved before these tickets were
-written. Both are now fixed in the source documents themselves.
+Ambiguities in the source documents that were resolved before tickets were written.
+Every one of them is now fixed **in the source documents themselves** — resolving a spec
+conflict only in code leaves the next person to re-litigate it.
 
-| #   | Ambiguity                                                                                                                    | Decision                                                                                                                                                                                                                                             | Documents updated                                                                                                   |
-| --- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| 1   | `3-style-preference.md` §9 specified a `tailwind.config.ts` with `theme.extend` and `darkMode: 'class'` — Tailwind v3 syntax | **Tailwind v4, CSS-first.** No `tailwind.config.ts`. Tokens and the `@theme inline` mapping live in `src/styles/index.css`; dark mode via `@custom-variant`. Every token _value_ in §2.2–2.3 and §3.2 is unchanged — only the file it lives in moved | `AGENTS.md` §2, §6, §14 · `2-architecture.md` §7 · `3-style-preference.md` §2.1, §7, §9 · `5-epic-list.md` E01, E02 |
-| 2   | `AGENTS.md` §5 contradicted itself on hook filenames — camelCase in one bullet, `use-[feature].ts` in another                | **camelCase only.** `useTheme.ts`, `useActiveSection.ts`, `useHashScroll.ts`, `useCarousel.ts`. Services and types keep kebab-case                                                                                                                   | `AGENTS.md` §5                                                                                                      |
+| #   | Ambiguity                                                                                                                    | Decision                                                                                                                                                                                                                                             | Documents updated                                                                                                                           |
+| --- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | `3-style-preference.md` §9 specified a `tailwind.config.ts` with `theme.extend` and `darkMode: 'class'` — Tailwind v3 syntax | **Tailwind v4, CSS-first.** No `tailwind.config.ts`. Tokens and the `@theme inline` mapping live in `src/styles/index.css`; dark mode via `@custom-variant`. Every token _value_ in §2.2–2.3 and §3.2 is unchanged — only the file it lives in moved | `AGENTS.md` §2, §6, §14 · `2-architecture.md` §7 · `3-style-preference.md` §2.1, §7, §9 · `5-epic-list.md` E01, E02                         |
+| 2   | `AGENTS.md` §5 contradicted itself on hook filenames — camelCase in one bullet, `use-[feature].ts` in another                | **camelCase only.** `useTheme.ts`, `useActiveSection.ts`, `useHashScroll.ts`, `useCarousel.ts`. Services and types keep kebab-case                                                                                                                   | `AGENTS.md` §5                                                                                                                              |
+| 3   | Hero `h1`: `4-interaction-design.md` §5.1 said "name", `3-style-preference.md` §6.2 said "name + positioning"                | **Name only — a category error, not a contradiction.** §5.1 assigns elements; §6.2 described what the block communicates. Stack is `h1`(name) → role framing → value proposition. Positioning keywords live in `<title>` and `meta[description]`     | `3-style-preference.md` §6.2 · `4-interaction-design.md` §5.1, §10 · `2-architecture.md` §8 · `1-prd.md` §3                                 |
+| 4   | Hero layout switch keyed off the presence of `portrait`                                                                      | **Explicit `layout: 'stacked' \| 'split'` discriminator.** The seam ships now against an aspect-ratio-locked slot; the portrait treatment is separately tracked and blocked on the asset. Layout and artwork are two decisions, not one              | `4-interaction-design.md` §5.1, §10 · `3-style-preference.md` §6.2 · `2-architecture.md` §5 · `5-epic-list.md` E04, E09 · `1-prd.md` §3, §6 |
+| 5   | Eyebrow on Current Role — unspecified                                                                                        | **Omitted.** Eyebrows are wayfinding for repeated, scannable sets; `Section`'s optional eyebrow is an opt-in, not a default                                                                                                                          | `3-style-preference.md` §6.3 · `4-interaction-design.md` §5.2, §10                                                                          |
+| 6   | Motion for elements the §8 inventory does not name (first case: Current Role stack badges)                                   | **Default is animation 2, no child orchestration.** A closed list means absent elements take the default; adding motion to one is a §8 amendment ticket, never an in-epic judgement call                                                             | `4-interaction-design.md` §8, §5.2, §10                                                                                                     |
 
 ---
 

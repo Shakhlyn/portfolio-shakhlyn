@@ -186,8 +186,9 @@ data on day one and never hardcodes copy it will have to tear out.
   `resume.types.ts`, `current-role.types.ts`, `writing.types.ts`.
 - `ProjectType` carries `category: 'professional' | 'personal'` and optional
   `githubUrl`, `liveUrl`, `caseStudySlug`, `image`.
-- `ProfileType` carries an **optional `portrait`** field — its presence selects the hero
-  layout (`4-interaction-design.md` §5.1).
+- `ProfileType` carries a **`layout: 'stacked' | 'split'`** discriminator selecting the
+  hero layout, plus a separate **optional `portrait`** asset field
+  (`4-interaction-design.md` §5.1). The layout is never inferred from the portrait.
 - Data files: `profile.ts`, `projects.ts`, `skills.ts`, `resume.ts`, `navigation.ts`,
   `currentRole.ts`, `writing.ts`.
 - `src/constants/` for shared constants in `SCREAMING_SNAKE_CASE` (`AGENTS.md` §3).
@@ -357,23 +358,37 @@ wrong.
 
 **Deliverables**
 
-- `HeroSection` — **one component, two layouts**, selected by the presence of
-  `profile.portrait`. Text-only ships now; two-column with portrait activates when the
-  image lands.
-- Content stack: eyebrow → `h1` name → intro → current position → `primary` "View
-  Resume" + `secondary` "Contact" → `SocialLinks` (below `sm` only).
+- `HeroSection` — **one component, two layouts**, selected by `profile.layout`.
+  `stacked` ships now; the `split` seam ships alongside it with an aspect-ratio-locked
+  portrait slot.
+- Content stack: eyebrow → `h1` name (**name only**) → role framing → value proposition
+  → current position → `primary` "View Resume" + `secondary` "Contact" → `SocialLinks`
+  (below `sm` only).
 - `CurrentRoleSection` — static card, role/company `h3`, date range, scope bullets,
-  stack badges.
+  stack badges. **No eyebrow**; badges do not stagger
+  (`4-interaction-design.md` §5.2, §8).
+
+**Deferred — blocked on the portrait asset, tracked here rather than silently missing**
+
+- Portrait treatment: crop, focal point, responsive sources, `fetchpriority="high"`,
+  explicit dimensions, real `alt`. Ships when a real photograph exists; tuning it against
+  a stand-in encodes that stand-in's accidental properties into the CSS.
 
 **Acceptance**
 
 - Hero text is in the DOM and readable at first paint; the mount animation never gates
   its presence on JS state.
-- Portrait (when present) uses `fetchpriority="high"`, **never** `loading="lazy"`, has
-  explicit `width`/`height`, and real `alt` text.
-- Switching layouts requires editing only `profile.ts`.
+- `h1` contains the name and nothing else; the role framing is a sibling element.
+- Switching `profile.layout` between `stacked` and `split` changes the layout with no
+  other file edited, and the `split` slot reserves its space with no image present.
 - At 320px the CTAs are not pushed below the fold.
 - LCP under 2.5s on a throttled mobile profile.
+- Closes the criterion E08 deferred here: the rail and the hero's `SocialLinks` row are
+  never both visible.
+
+_Blocked, not skipped:_ the portrait uses `fetchpriority="high"`, **never**
+`loading="lazy"`, with explicit `width`/`height` and real `alt` text — verifiable only
+once the asset lands.
 
 **Traceability:** `1-prd.md` §3 Hero, §6 Hero Content · `3-style-preference.md` §6.2–6.3 ·
 `4-interaction-design.md` §5.1–5.2
@@ -615,6 +630,10 @@ verifies the assembled whole, where most real failures live.
 - Lighthouse targets confirmed **against the deployed site**, not just locally.
 - No broken internal or external links in production.
 - Yarn is the only package manager used in the build (`packageManager` field honoured).
+- **`grep -rn "INVENTED FIGURE" src/` returns nothing.** Development placeholder
+  metrics were added to the data layer on 2026-08-03; `1-prd.md` §6 lists fabricated
+  metrics as never acceptable at launch, so this is a hard deploy gate, not a checklist
+  nicety. Each marker is replaced with a real figure or its clause is deleted.
 
 **Traceability:** `1-prd.md` §5 Reliability · `2-architecture.md` §1, §9, §10
 

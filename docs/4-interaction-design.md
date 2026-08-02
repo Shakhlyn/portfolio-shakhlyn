@@ -240,16 +240,22 @@ because that is what destroys CLS.
 ### 5.1 Hero (`#home`) — two supported layouts
 
 Both layouts ship. Which one renders is decided by **one field in
-`src/data/profile.ts`**: if `portrait` is present, the two-column portrait layout
-renders; if it is absent, the text-only layout renders.
+`src/data/profile.ts`**: `layout: 'stacked' | 'split'`.
+
+The switch is an **explicit discriminator, not an inference from `portrait`'s
+presence.** Deriving the layout from whether an image exists conflates two independent
+decisions — "which layout" and "is the artwork ready" — so the layout could not be
+built, reviewed, or reverted without an image in hand, and dropping the image to fix a
+photo problem would silently change the page structure. With an explicit field, the
+`split` layout is verifiable against an empty slot, and `portrait` becomes what it
+actually is: the content that fills a slot the layout already reserved.
 
 This is one `HeroSection` component with two documented layouts, not two components.
 Two near-identical components would drift apart the moment the intro copy changed, and
-`AGENTS.md` §13 prefers extending over adding. You get the switch you asked for — add
-the image to the data file when you have it, remove the field to go back — with nothing
-to keep in sync.
+`AGENTS.md` §13 prefers extending over adding. You get the switch you asked for — flip
+one field — with nothing to keep in sync.
 
-**Layout A — text only (ships now)**
+**Layout A — `stacked`, text only (ships now)**
 
 ```
 ┌────────────────────────────────────────┐
@@ -264,7 +270,7 @@ to keep in sync.
 
 Single left-aligned column, `max-w-content`, identical at every width.
 
-**Layout B — with portrait (ships when the image exists)**
+**Layout B — `split` (the seam ships now; the portrait fills it later)**
 
 ```
 DESKTOP (lg+)                          MOBILE
@@ -278,28 +284,46 @@ DESKTOP (lg+)                          MOBILE
 └──────────────────────────────┘       └─────────────┘
 ```
 
-Two-column at `lg`+ (text left, photo right); single column below with **photo first,
-then text**.
+Two-column at `lg`+ (text left, portrait slot right); single column below with **slot
+first, then text**.
 
 Content stack, identical in both layouts:
 
 1. Mono eyebrow — availability / location.
-2. `h1` at `display` scale — name.
-3. `body-lg` in `fg-muted` — intro, two lines max.
-4. Current position line — role + company, `fg`, company emphasised.
-5. Button row — `primary` "View Resume" → `/resume`, `secondary` "Contact" → `#contact`.
-6. `SocialLinks` row — **rendered below `sm` only.**
+2. `h1` at `display` scale — **the name only.**
+3. Role framing — one line, directly beneath the `h1`.
+4. `body-lg` in `fg-muted` — value proposition, two lines max.
+5. Current position line — role + company, `fg`, company emphasised.
+6. Button row — `primary` "View Resume" → `/resume`, `secondary` "Contact" → `#contact`.
+7. `SocialLinks` row — **rendered below `sm` only.**
 
-Item 6 exists because `1-prd.md` §3 requires direct GitHub, LinkedIn, and email links
+Items 2 and 3 are separate elements. `3-style-preference.md` §6.2 describes the block as
+communicating "name + positioning", which is what items 2–3 do jointly; it is not a
+claim that the positioning sits inside the heading. One `h1`, one name — the keyword
+work belongs in `<title>` and `meta[description]`.
+
+Item 7 exists because `1-prd.md` §3 requires direct GitHub, LinkedIn, and email links
 in the hero. The floating rail satisfies that at `sm` and up, but the rail is hidden
 below `sm`, which would otherwise leave phone visitors without them. Showing both at
 `sm`+ would duplicate the same four links a few hundred pixels apart, so they are
 mutually exclusive by breakpoint.
 
-Portrait requirements (Layout B only):
+**The `split` layout and the portrait are two deliverables, not one.**
 
-- 280px at `lg`, 320px at `xl`, `rounded-lg`, explicit `width`/`height` so it reserves
-  space and contributes zero CLS.
+_The layout seam_ — the `layout` field, the branch, the two-column grid, and the slot —
+ships as soon as the hero does. The slot is aspect-ratio-locked and reserves its exact
+final space with no image in it, so the switch is fully verifiable before any photograph
+exists.
+
+_The portrait treatment_ — crop, focal point, responsive sources — is blocked on the real
+asset and ships separately. Tuning it against a stand-in image bakes that stand-in's
+accidental properties (its crop, its subject position, its tonal range) into the CSS,
+and the mistuning only becomes visible once the real photo replaces it.
+
+Portrait requirements, when it lands:
+
+- 280px at `lg`, 320px at `xl`, `rounded-lg`, explicit `width`/`height` matching the
+  slot's locked ratio, so it contributes zero CLS.
 - **Never `loading="lazy"`** — it is above the fold. Use `fetchpriority="high"`.
 - Real `alt` text (the person's name), not `alt=""`.
 - Capped at 200px on mobile so the text is not pushed below the fold at 320px.
@@ -312,7 +336,10 @@ JavaScript state.
 ### 5.2 Current Role (`#current-role`)
 
 Static card, no interaction beyond link hovers. Appearance in
-`docs/3-style-preference.md` §6.3.
+`docs/3-style-preference.md` §6.3, which specifies **no eyebrow** on this section.
+
+It reveals as one block on scroll (animation 2). Its stack badges do **not** stagger —
+see the closed-list rule in §8.
 
 ### 5.3 Projects (`#projects`)
 
@@ -526,6 +553,17 @@ the rail; if the profiler disagrees, fall back to `scaleX`.
 Every animation on the site, with its trigger and justification. If it is not on this
 list, it does not ship (`AGENTS.md` §7).
 
+**What "closed list" means for anything absent.** An element not named in this table is
+not an invitation to invent motion for it — it animates **with its parent section
+(animation 2) and receives no child orchestration of its own.** That is the default, and
+taking it requires no decision. Row 4 covers the skill badges in E11; the Current Role
+stack badges (§5.2) are a different badge row that this table does not name, so they
+reveal with their section and do not stagger. Two badge rows animating differently for
+a reason no reader could name is exactly the drift a closed list exists to prevent.
+
+Adding motion to something absent from this table is an **amendment to this section**,
+raised as its own ticket — never a judgement call made inside a feature epic.
+
 | #   | Element               | Trigger                  | Motion                                       | Duration   | Purpose                                     |
 | --- | --------------------- | ------------------------ | -------------------------------------------- | ---------- | ------------------------------------------- |
 | 1   | Hero content          | Mount                    | opacity 0→1, y 12→0                          | 400ms      | Establishes reading order on arrival        |
@@ -594,14 +632,17 @@ decision and what still needs updating elsewhere.
 These were flagged as conflicts, decided, and **propagated to the other documents**.
 All four documents now describe the same flow.
 
-| #   | Conflict                                            | Decision                                                                                                       | Propagated to                                                                                   |
-| --- | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| 1   | Hero portrait forbidden by style doc §6.2           | Both layouts supported, switched by the optional `portrait` field in `profile.ts` (§5.1). Text-only ships now. | `3-style-preference.md` §6.2 rewritten; `2-architecture.md` §5 notes the field                  |
-| 2   | Responsive range                                    | 320–1920px. No custom breakpoint; container caps at 1280px.                                                    | This doc §2. Style doc §4.2/§12 already said 320–1920 — no change needed                        |
-| 3   | Single `projects.ts`                                | One file, one type, plus a `category` discriminator. One nav link, one section, two subsections.               | `2-architecture.md` §5 data files + grouping note                                               |
-| 4   | Social rail and carousel absent from component tree | Both confirmed.                                                                                                | `2-architecture.md` §6 tree, feature modules, and hooks; `3-style-preference.md` §6.4 and §6.11 |
-| 5   | Heading order                                       | Follow `2-architecture.md` §8. One Projects `h2`, two `h3` subsections, project titles at `h4`.                | `2-architecture.md` §8 heading plan updated                                                     |
-| 6   | Two `ProjectsSection` instances                     | One `ProjectCarousel` component, two instances with different data.                                            | `2-architecture.md` §6                                                                          |
+| #   | Conflict                                            | Decision                                                                                                                                                                                                 | Propagated to                                                                                   |
+| --- | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| 1   | Hero portrait forbidden by style doc §6.2           | Both layouts supported, switched by an explicit `layout: 'stacked' \| 'split'` field in `profile.ts` (§5.1). `stacked` ships now; the `split` seam ships with it, its portrait later.                    | `3-style-preference.md` §6.2 rewritten; `2-architecture.md` §5 notes the field                  |
+| 2   | Responsive range                                    | 320–1920px. No custom breakpoint; container caps at 1280px.                                                                                                                                              | This doc §2. Style doc §4.2/§12 already said 320–1920 — no change needed                        |
+| 3   | Single `projects.ts`                                | One file, one type, plus a `category` discriminator. One nav link, one section, two subsections.                                                                                                         | `2-architecture.md` §5 data files + grouping note                                               |
+| 4   | Social rail and carousel absent from component tree | Both confirmed.                                                                                                                                                                                          | `2-architecture.md` §6 tree, feature modules, and hooks; `3-style-preference.md` §6.4 and §6.11 |
+| 5   | Heading order                                       | Follow `2-architecture.md` §8. One Projects `h2`, two `h3` subsections, project titles at `h4`.                                                                                                          | `2-architecture.md` §8 heading plan updated                                                     |
+| 6   | Two `ProjectsSection` instances                     | One `ProjectCarousel` component, two instances with different data.                                                                                                                                      | `2-architecture.md` §6                                                                          |
+| 7   | Hero `h1`: name, or name + positioning?             | **Name only.** §5.1 assigns elements; `3-style-preference.md` §6.2 described the block, not the heading — a category error, not a contradiction. Stack is `h1`(name) → role framing → value proposition. | `3-style-preference.md` §6.2 reworded to defer element assignment here; this doc §5.1 item list |
+| 8   | Eyebrow on Current Role                             | **Omitted.** Eyebrows are wayfinding for repeated, scannable sets. `Section`'s optional eyebrow is an opt-in.                                                                                            | `3-style-preference.md` §6.3; this doc §5.2                                                     |
+| 9   | Motion for elements absent from the §8 inventory    | **Default is animation 2 with no child orchestration.** Adding motion to an unlisted element is a §8 amendment ticket, not an in-epic judgement call. Applied first to the Current Role stack badges.    | This doc §8 preamble, §5.2                                                                      |
 
 Four further inconsistencies were found and fixed while propagating:
 

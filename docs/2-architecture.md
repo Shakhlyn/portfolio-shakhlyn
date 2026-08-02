@@ -177,7 +177,7 @@ Portfolio content will live in typed local data files under `src/data/`. Compone
 
 ```text
 src/data/profile.ts       Candidate identity, role, value proposition, social links,
-                          optional portrait (its presence selects the hero layout)
+                          hero `layout` discriminator, optional portrait asset
 src/data/projects.ts      Project summaries and case study data, each carrying a
                           `category: 'professional' | 'personal'` discriminator
 src/data/skills.ts        Skill groups by capability
@@ -195,9 +195,16 @@ single data file. Professional and personal projects are rendered as two subsect
 of one Projects section — this is **grouping, not filtering**, and adds no filter
 controls (see §12). The home page never needs a second projects data file.
 
-The `portrait` field on `profile.ts` is optional. Its presence selects between the two
-hero layouts specified in `docs/4-interaction-design.md` §5.1 — one component, no
-duplicated hero.
+`profile.ts` carries an explicit `layout: 'stacked' | 'split'` discriminator that selects
+between the two hero layouts specified in `docs/4-interaction-design.md` §5.1 — one
+component, no duplicated hero. `portrait` is a separate optional field holding the image
+that fills the `split` layout's slot.
+
+The two are deliberately not collapsed into one. Inferring the layout from `portrait`'s
+presence would mean the layout could not be built or reviewed before the photograph
+existed, and that removing the photograph to fix an image problem would silently
+restructure the page. Same reasoning as the `category` discriminator on projects: an
+explicit field beats an inference from whether optional data happens to be populated.
 
 Shared types will live in `src/types/`:
 
@@ -301,7 +308,7 @@ App
       SocialRail                      # fixed left rail, lg+ only
       PageTransition
         HomePage
-          HeroSection                 # two layouts, selected by profile.portrait
+          HeroSection                 # two layouts, selected by profile.layout
           CurrentRoleSection
           ProjectsSection             # one h2
             ProjectCarousel           # h3 "Professional" + track
@@ -547,7 +554,7 @@ The implementation will target:
 Home page:
 
 ```text
-h1: Candidate name + full-stack / AI engineering positioning
+h1: Candidate name
 h2: Current Role
 h2: Projects
   h3: Professional
@@ -559,6 +566,13 @@ h2: Skills
 h2: Resume
 h2: Contact
 ```
+
+The home `h1` is the **candidate name only**. The role positioning sits immediately
+beneath it as body copy (`docs/4-interaction-design.md` §5.1 items 2–3), so the block
+still reads as "name + positioning" while the heading stays one thing. Positioning
+keywords belong in `<title>` and `meta[description]`, which is where a crawler looks for
+them anyway — an `h1` padded with role keywords buys nothing and costs the clean
+document outline this plan exists to keep.
 
 Projects is a single `h2` with two `h3` subsections. Professional and personal work
 are one topic viewed two ways, not two separate topics, and one `h2` keeps the

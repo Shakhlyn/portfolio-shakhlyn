@@ -128,9 +128,11 @@ src/constants/site.ts             SITE_*, OG_IMAGE_PATH, scroll-spy timings
 **Optional links are genuinely optional**, never `string | ''`. This is what makes the
 no-dead-links rule enforceable by the compiler rather than by discipline.
 
-**`ProfileType.portrait` is optional and currently absent.** Its presence is the entire
-hero-layout switch (`docs/4-interaction-design.md` §5.1) — add the field when the image
-exists, remove it to go back. Nothing else changes.
+**`ProfileType.portrait` is optional and currently absent.** ~~Its presence is the
+entire hero-layout switch~~ — **superseded by E09.** The switch is now an explicit
+`layout: 'stacked' | 'split'` field; `portrait` is only the asset that fills the `split`
+slot, and the slot reserves its space without it. Rationale in
+`docs/4-interaction-design.md` §5.1 and §10 row 1.
 
 **`SkillGroupType` has no proficiency, level, or rating field.** Omitting it from the
 type is what stops proficiency bars appearing later; they are unverifiable and read as

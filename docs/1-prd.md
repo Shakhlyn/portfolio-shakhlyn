@@ -73,11 +73,13 @@ Purpose:
 
 Requirements:
 
-- Candidate name.
+- Candidate name. This is the page's `h1`, on its own — the role framing below it is
+  separate body copy (`docs/4-interaction-design.md` §5.1).
 - Clear role framing for full-stack / AI engineering.
 - Concise value proposition.
 - Current position — role and company.
-- Optional portrait photograph.
+- Optional portrait photograph. The hero layout is chosen by an explicit `layout` field
+  in `profile.ts`, not by whether the photograph exists.
 - Primary CTA to view the resume.
 - Secondary CTA to reach contact.
 - Direct links to GitHub, LinkedIn, and email.
@@ -367,8 +369,9 @@ Requirements:
 - Current position — role and company.
 - Primary and secondary CTA labels (resume, contact).
 - GitHub, LinkedIn, and email links.
-- Portrait photograph, if the portrait hero layout is used. The text-only layout
-  requires no image and is the launch default.
+- Portrait photograph, if `profile.layout` is `split`. The `stacked` layout requires no
+  image and is the launch default. The `split` layout's slot ships before the photograph
+  does and reserves its space either way, so a missing portrait is never a broken layout.
 
 #### Projects
 

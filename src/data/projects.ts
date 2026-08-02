@@ -15,6 +15,14 @@ import type { ProjectCategory, ProjectType } from '@/types/project.types';
  * TODO(content): screenshots. `image` is omitted everywhere, so cards render
  * without an image frame — no grey placeholder box ships
  * (docs/3-style-preference.md §6.4).
+ *
+ * **Outcome figures marked `TODO(content): INVENTED FIGURE` are development
+ * placeholders**, added so the cards read at their intended density. They are
+ * not shippable (`1-prd.md` §6, `AGENTS.md` §13). The ~50% / ~95% figures on
+ * Deal Summary & Comparison are the exception — those are from the CV and are
+ * real, which is why they carry no marker.
+ *
+ *     grep -rn "INVENTED FIGURE" src/
  */
 export const PROJECTS: readonly ProjectType[] = [
   {
@@ -48,8 +56,10 @@ export const PROJECTS: readonly ProjectType[] = [
     approach:
       'Built a configuration-driven input-validation engine reusable across any React form by declaring per-field rules, with live and blur validation, touched-state tracking, and row-level errors in dynamic multi-row forms — no third-party dependency added. Developed the workflows on top: conditional fields, searchable and multi-select inputs, image previews, multipart uploads, and add/remove multi-row forms.',
     stack: ['TypeScript', 'React', 'SCSS', 'REST APIs', 'jQuery'],
+    // TODO(content): INVENTED FIGURE — "20+ forms", "~70% less". The engine
+    // replacing per-form logic is real; the counts are not.
     outcome:
-      'One validation engine replaced per-form logic across the feature set, so new forms declare rules instead of reimplementing them.',
+      'One validation engine replaced per-form logic across 20+ forms, so new forms declare rules instead of reimplementing them — roughly 70% less validation code per new form.',
     tags: ['TypeScript', 'React', 'REST APIs', 'SCSS'],
     caseStudySlug: 'data-slicing',
   },
@@ -66,8 +76,10 @@ export const PROJECTS: readonly ProjectType[] = [
     approach:
       'Built REST APIs with FastAPI and PostgreSQL, defining schemas and request/response models. Implemented Keycloak-based authentication and role-based authorization across backend endpoints and the React client, so permissions were enforced server-side rather than merely hidden in the UI.',
     stack: ['Python', 'FastAPI', 'PostgreSQL', 'Keycloak', 'React'],
+    // TODO(content): INVENTED FIGURE — "40+ endpoints", "p95 under 150ms",
+    // "five roles". Shipping as the API and auth layer is real.
     outcome:
-      'Shipped as the product’s API and auth layer, with role-based access enforced consistently on both sides.',
+      'Shipped as the product’s API and auth layer — 40+ endpoints serving at a p95 under 150ms, with five roles enforced consistently on both sides.',
     tags: ['Python', 'FastAPI', 'PostgreSQL', 'Keycloak'],
     caseStudySlug: 'bhoganti-web-app',
   },
@@ -94,8 +106,10 @@ export const PROJECTS: readonly ProjectType[] = [
       'Mongoose',
       'JWT',
     ],
+    // TODO(content): INVENTED FIGURE — "~250 bookings a week", "six months",
+    // "zero missed resets". The unattended cycle and server-side cutoff are real.
     outcome:
-      'The nightly cycle runs unattended, and the cutoff cannot be bypassed from the client because it is enforced on the server.',
+      'The nightly cycle has run unattended for six months across roughly 250 bookings a week with zero missed resets, and the cutoff cannot be bypassed from the client because it is enforced on the server.',
     tags: ['React', 'TypeScript', 'Express', 'MongoDB', 'JWT'],
     caseStudySlug: 'meal-management-system',
     // TODO(content): add githubUrl once the repository is public.
@@ -113,8 +127,10 @@ export const PROJECTS: readonly ProjectType[] = [
     approach:
       'Built a modular setup system of roughly 19 scripts with distro-aware installers for Debian-based distros and Fedora, using idempotent operations so a re-run is safe, and explicit failure handling so a broken step stops rather than silently continuing. Added CLI utilities for local workflows, including a PDF-to-audio conversion pipeline and media download/extraction tooling.',
     stack: ['Bash', 'Python', 'Linux'],
+    // TODO(content): INVENTED FIGURE — "~10 minutes", "a half-day". The ~19
+    // scripts, the idempotency, and the two distro families are real.
     outcome:
-      'A new machine is provisioned by running the scripts rather than by following a checklist, and a re-run is safe by design.',
+      'A new machine is provisioned in about 10 minutes by running the scripts rather than in a half-day of following a checklist, and a re-run is safe by design.',
     tags: ['Bash', 'Python', 'Linux'],
     githubUrl: 'https://github.com/Shakhlyn/linux-setup-script',
     caseStudySlug: 'linux-setup-tooling',

@@ -38,6 +38,17 @@ reduced motion — not unwritten code.
 | [E07 Header & Navigation](E07-status.md) | 14   | 0                  | 0       | 0           | 14    |
 | [E08 Social Rail](E08-status.md)         | 8    | 0                  | 0       | 0           | 8     |
 
+## Phase 3
+
+| Epic                                      | Done | Needs manual check | Blocked | Not started | Total |
+| ----------------------------------------- | ---- | ------------------ | ------- | ----------- | ----- |
+| [E09 Hero & Current Role](E09-tickets.md) | 0    | 0                  | 1       | 7           | 8     |
+
+E09 is decomposed but not started. The one blocked ticket is **E09-T08, portrait
+treatment**, waiting on a real photograph — the layout seam it fills ships without it
+(T05), so nothing else in the epic is held up. E09 also closes E08's deferred criterion
+and re-tests two checks that were vacuous while the home sections held nothing focusable.
+
 E07 was verified with 27 automated checks in a real browser (headless Chrome over
 CDP against a production build), so none of its criteria are left pending a manual
 pass. One is verified in a weaker form and must be re-tested once sections have real
@@ -83,14 +94,38 @@ Five `TODO(content)` markers track what still needs your version:
 grep -rn "TODO(content)" src/
 ```
 
-| Item                  | State today                                       | Needed by | Launch blocker? |
-| --------------------- | ------------------------------------------------- | --------- | --------------- |
-| Resume PDF            | Real 2-page PDF from your CV, stamped **"Draft"** | E12       | **Yes**         |
-| OG image              | 1200×630, generated from the design tokens        | E15       | **Yes**         |
-| `SITE_URL`            | `https://shakhlyn.dev` — a guess, not registered  | E15, E18  | **Yes**         |
-| About copy            | 3 draft paragraphs, CV facts, my wording          | E11       | **Yes — voice** |
-| Project screenshots   | Absent; cards omit the frame cleanly              | E10       | No              |
-| Meal Mgmt `githubUrl` | Absent; button does not render                    | E10       | No              |
+### ⚠️ Invented figures are in the data layer
+
+On **2026-08-03**, at your request, placeholder metrics were added to
+`profile.ts`, `currentRole.ts`, `projects.ts`, and `about.ts` so the hero, the
+Current Role card, and the project cards read at their intended density during
+development. **Eleven figures are invented.** Every one carries a marker:
+
+```
+grep -rn "INVENTED FIGURE" src/
+```
+
+Real content — name, employer, title, dates, stack, project names, the CV's own
+~50% / ~95% deal-review figures — was left untouched, and each marker names
+exactly which clause is fabricated and which part of the sentence is real.
+
+This is the one placeholder category `1-prd.md` §6 lists as **never acceptable at
+launch** ("fabricated metrics, job titles, employers, credentials, or outcomes"),
+and `AGENTS.md` §13 forbids inventing them at all. Treated here as a development
+placeholder with a hard removal gate: every marker must be replaced with a real
+figure or have its clause deleted before E18 deploys. A bullet with no number is
+honest; a bullet with an invented one fails in the interview it was meant to win.
+
+| Item                  | State today                                        | Needed by | Launch blocker? |
+| --------------------- | -------------------------------------------------- | --------- | --------------- |
+| **Invented metrics**  | 11 placeholder figures, each marked in `src/data/` | E09–E11   | **Yes — hard**  |
+| Resume PDF            | Real 2-page PDF from your CV, stamped **"Draft"**  | E12       | **Yes**         |
+| OG image              | 1200×630, generated from the design tokens         | E15       | **Yes**         |
+| `SITE_URL`            | `https://shakhlyn.dev` — a guess, not registered   | E15, E18  | **Yes**         |
+| About copy            | 3 draft paragraphs, CV facts, my wording           | E11       | **Yes — voice** |
+| Portrait photograph   | Absent; `layout: 'stacked'` ships without it       | E09-T08   | No              |
+| Project screenshots   | Absent; cards omit the frame cleanly               | E10       | No              |
+| Meal Mgmt `githubUrl` | Absent; button does not render                     | E10       | No              |
 
 ## Open decision — positioning
 
@@ -104,9 +139,10 @@ add real AI/LLM work before launch — detail and options in
 
 E07 and E08 are done. Phase 2's remaining work is the page sections:
 
-- **E09 — Hero.** Owns the two checks E08 could not close: the hero's own social row
-  must be `below sm` only, and the pairing check "rail and hero social links are never
-  both visible" is listed in [E08-status.md](E08-status.md) as deferred here.
+- **E09 — Hero & Current Role.** Decomposed in [E09-tickets.md](E09-tickets.md), 8
+  tickets. Owns the two checks E08 could not close: the hero's own social row must be
+  below `sm` only (T04), and the pairing check "rail and hero social links are never both
+  visible" is listed in [E08-status.md](E08-status.md) as deferred here (T07).
 - **E10–E13 — Projects, About, Skills, Resume, Contact.** These replace the E07-T03
   anchor scaffold. Two criteria are waiting on them: E07's "the next Tab lands inside
   that section" and E08's tab-order check, both currently vacuous because the scaffold
