@@ -297,6 +297,8 @@ wrong.
 - `useHashScroll` — resolves `/#section` after paint on mount and on hash change.
 - Anchor navigation moves focus to the target heading (`tabIndex={-1}` +
   `focus({ preventScroll: true })`).
+- `SocialLinks` — **moved here from E08.** `MobileNavigation` and `Footer` both consume
+  it, so E07 cannot be built without it. E08 retains `SocialRail` only.
 - `Footer`.
 
 **Acceptance**
@@ -326,7 +328,8 @@ wrong.
 - `SocialRail` in `components/layout/` — fixed left edge, vertically centred, `lg`+ only.
 - Tiles: GitHub, LinkedIn, Email, X. 48px collapsed, expanding rightward on hover **and
   focus**, `rounded-r-md`.
-- `SocialLinks` — the inline list form reused in the mobile sheet, the hero below `lg`,
+- ~~`SocialLinks`~~ — **built in E07**, its first consumer. Still reused by the hero
+  below `lg`,
   the contact section, and the footer.
 - Both driven by the same `profile.ts` link data; tiles render only for links that exist.
 - `<nav aria-label="Social links">`, placed after `<main>` in DOM order.

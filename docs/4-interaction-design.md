@@ -220,7 +220,11 @@ Focus moves to the new page's `h1`; scroll resets to top
 
 Only two, both cheap:
 
-1. Header gains its bottom border and blur once `scrollY > 8`.
+1. Header gains its bottom border once `scrollY > 8`. **The blur is unconditional** —
+   the header is `bg-bg/80 backdrop-blur-sm` from the first paint (§3,
+   `3-style-preference.md` §6.1), and only the border's opacity animates, which is what
+   §8 row 10 lists. An earlier draft of this line said "border and blur"; that was the
+   outlier against three other statements and is corrected here.
 2. Scroll spy (§3).
 
 No parallax, no scroll-jacking, no pinned sections, no scroll progress bar, and no
