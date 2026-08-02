@@ -55,7 +55,6 @@ Follows the heading plan in `docs/2-architecture.md` §8:
                    └─ Personal           h3
 #about           About                   h2
 #skills          Skills                  h2
-#resume          Resume CTA              h2
 #contact         Contact                 h2
 ```
 
@@ -63,9 +62,15 @@ Follows the heading plan in `docs/2-architecture.md` §8:
 it. This preserves the architecture's heading plan while giving each project group its
 own labelled, independently scrollable carousel.
 
-`#current-role`, `#skills`, and `#resume` are sections **without** nav entries — they
-are part of the scan path but the nav does not need to be eight items deep. The nav's
-Resume item goes to the `/resume` route; the `#resume` CTA section is reached by scroll.
+`#current-role` and `#skills` are sections **without** nav entries — they are part of
+the scan path but the nav does not need to be eight items deep.
+
+**There is no `#resume` section.** The resume is reached only through the `/resume`
+route, from the nav's Resume button and the hero's primary CTA. An earlier draft put a
+resume CTA section between Skills and Contact; it was a third path to a destination that
+already had two, and the one furthest down the page — a visitor who has scrolled that
+far has passed the nav button five times. `1-prd.md` §3 requires the resume CTA in the
+hero and from navigation, and both remain.
 
 ### Nav order mirrors scroll order
 
@@ -384,10 +389,12 @@ three-paragraph bio behind a click serves nobody.
 
 Static badge groups. Non-interactive.
 
-### 5.6 Resume CTA (`#resume`)
+### 5.6 Resume — route only
 
-Two actions: download the PDF, or open `/resume`. Both resolve from the single path in
-`src/data/resume.ts`.
+There is no resume section on the home page (§1). Both resume actions — view in browser
+and download the PDF — live on the `/resume` route and resolve from the single path in
+`src/data/resume.ts`. The home page's two entry points to it are the hero's `primary`
+CTA and the nav's Resume button.
 
 ### 5.7 Contact (`#contact`)
 

@@ -2,8 +2,11 @@ import type { ResumeType } from '@/types/resume.types';
 
 /**
  * The resume path is defined exactly once and consumed by the hero CTA, the nav
- * button, the #resume section, and the /resume route. Four hardcoded copies of
- * a path is four chances for one of them to rot.
+ * button, and the /resume route. Three hardcoded copies of a path is three
+ * chances for one of them to rot.
+ *
+ * There is no #resume home section — the resume is route-only
+ * (docs/4-interaction-design.md §1, §5.6).
  *
  * The committed PDF is a DRAFT, generated from the supplied CV text and stamped
  * "Draft" across the top so it cannot be mistaken for the real thing. 1-prd.md

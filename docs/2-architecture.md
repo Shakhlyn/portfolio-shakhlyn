@@ -46,7 +46,7 @@ The architecture will keep the current Vite SPA model with `react-router-dom` da
 ### Route Map
 
 ```text
-/                    Home page: Hero, Current Role, Projects, About, Skills, Resume CTA, Contact
+/                    Home page: Hero, Current Role, Projects, About, Skills, Contact
 /projects/:slug      Lazy-loaded project case study page
 /resume              Lazy-loaded resume view page
 /writing             Lazy-loaded writing index, shipped in v1 with placeholder-safe empty state
@@ -318,7 +318,6 @@ App
           AboutSection
           SkillsSection
             SkillGroup
-          ResumeSection
           ContactSection
             ContactForm
             SocialLinks
@@ -408,7 +407,10 @@ Skills / Tech Stack:
 
 Resume:
 
-- `ResumeSection`
+The resume lives on its own route only; there is no home-page resume section
+(`docs/4-interaction-design.md` §1, §5.6). The hero CTA and the nav button are its two
+entry points.
+
 - `ResumePage`
 - `ResumeViewer`
 - `ResumeDownloadLink`
@@ -563,7 +565,6 @@ h2: Projects
     h4: Project titles
 h2: About
 h2: Skills
-h2: Resume
 h2: Contact
 ```
 

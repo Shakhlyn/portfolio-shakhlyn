@@ -17,7 +17,7 @@ import { NAV_CLICK_SUPPRESS_MS, SCROLL_SPY_ROOT_MARGIN } from '@/constants/site'
  * correct and there is no catch-up frame where the wrong item is lit.
  *
  * @param sectionIds Anchor targets in DOM order. Only ids that have a nav entry
- *   belong here — #current-role, #skills, and #resume have no nav item (§1).
+ *   belong here — #current-role and #skills have no nav item (§1).
  * @param enabled False off the home route. The spy "runs only on the home
  *   route" (§3), so no observer is constructed elsewhere at all.
  */

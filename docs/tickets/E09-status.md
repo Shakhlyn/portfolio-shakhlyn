@@ -211,7 +211,7 @@ face on the optical centre. The uncropped original is kept.
 ## Still open
 
 - **E10–E13** still hold the E07-T03 scaffold for `#projects`, `#about`,
-  `#skills`, `#resume`, and `#contact`.
+  `#skills`, and `#contact`.
 - **T03's JS-disabled criterion** in `E09-tickets.md` should be reworded to the
   DOM-presence check that actually distinguishes pass from fail.
 - **The invented placeholder metrics** are visible on the page now. They are

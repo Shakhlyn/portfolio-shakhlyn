@@ -31,8 +31,8 @@ export const NAV_ITEMS: readonly NavItemType[] = [
 /**
  * Anchor targets the scroll spy observes, in DOM order.
  *
- * Only sections that have a nav entry belong here — #current-role, #skills, and
- * #resume are part of the scan path but have no nav item
+ * Only sections that have a nav entry belong here — #current-role and #skills
+ * are part of the scan path but have no nav item
  * (docs/4-interaction-design.md §1), so highlighting nothing while they are in
  * view is correct.
  *

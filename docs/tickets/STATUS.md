@@ -153,7 +153,8 @@ E07, E08, and E09 are done. The remaining work is the rest of the page sections:
 - **E09 — Hero & Current Role.** Done except the blocked portrait ticket — see
   [E09-status.md](E09-status.md). Both checks E08 could not close are now closed.
 - **E10–E13 — Projects, About, Skills, Resume, Contact.** These replace what is left of
-  the E07-T03 anchor scaffold: `#projects`, `#about`, `#skills`, `#resume`, `#contact`.
+  the E07-T03 anchor scaffold: `#projects`, `#about`, `#skills`, `#contact`. The
+  `#resume` anchor was removed — the resume is route-only.
   E09 already retired the two criteria that were waiting on real content in `#home`.
 - **Re-run E07's `Card` hover check.** It was never actually exercised — headless
   Chrome reports `(hover: none)`, so Tailwind's `hover:` rules never matched. The

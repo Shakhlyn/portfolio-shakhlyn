@@ -37,10 +37,6 @@ export const HomePage = (): ReactElement => (
       <div className={PLACEHOLDER} />
     </Section>
 
-    <Section id="resume" title="Resume">
-      <div className={PLACEHOLDER} />
-    </Section>
-
     <Section id="contact" title="Contact">
       <div className={PLACEHOLDER} />
     </Section>

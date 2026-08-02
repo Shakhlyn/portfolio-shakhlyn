@@ -460,14 +460,14 @@ unwieldy.
 
 **Deliverables**
 
-- `ResumeSection` (`#resume`) — download PDF + view in browser, both from
-  `resume.ts`.
-- `ResumePage` at `/resume` with `ResumeViewer` and `ResumeDownloadLink`.
+- `ResumePage` at `/resume` with `ResumeViewer` and `ResumeDownloadLink`. **No
+  home-page `#resume` section** — the resume is route-only, entered from the hero CTA and
+  the nav button (`4-interaction-design.md` §1, §5.6).
 - PDF committed at `public/resume/shakhlyn-resume.pdf`.
 
 **Acceptance**
 
-- One stable path, consumed by the hero CTA, the nav button, and the section.
+- One stable path, consumed by the hero CTA, the nav button, and the `/resume` page.
 - Download works on mobile browsers.
 - File type and size are visible before the user commits to the download.
 - The viewer degrades gracefully where inline PDF embedding is unsupported (notably iOS

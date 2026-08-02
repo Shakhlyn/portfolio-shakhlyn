@@ -529,10 +529,13 @@ ratings — they are unverifiable and read as filler.
 
 ### 6.7 Resume
 
-A compact level-1 card: short line of copy, `primary` "Download PDF" (with file type
-and size in the label or adjacent `fg-subtle` text), and a `secondary` "View in
-browser" linking to `/resume`. Both paths point at the single stable asset path from
-`src/data/resume.ts`.
+**No home-page resume section** (`docs/4-interaction-design.md` §1, §5.6). The resume is
+reached through the `/resume` route only, from the hero's `primary` CTA and the nav's
+Resume button.
+
+On the `/resume` page itself: a `primary` "Download PDF" carrying the file type and size
+in the label or adjacent `fg-subtle` text, and the in-browser viewer. Both paths point at
+the single stable asset path from `src/data/resume.ts`.
 
 ### 6.8 Contact
 
