@@ -5,13 +5,14 @@ import { ErrorBoundary } from '@/components/layout/ErrorBoundary';
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
 import { PageTransition } from '@/components/layout/PageTransition';
+import { SocialRail } from '@/components/layout/SocialRail';
 import { FOCUS_RING } from '@/constants/styles';
 import { useHashScroll } from '@/hooks/useHashScroll';
 import { useRouteFocus } from '@/hooks/useRouteFocus';
 import { cn } from '@/lib/cn';
 
 /**
- * The app shell. SocialRail is E08 and is not mounted yet.
+ * The app shell.
  */
 export const RootLayout = (): ReactElement => {
   useRouteFocus();
@@ -40,6 +41,15 @@ export const RootLayout = (): ReactElement => {
           </PageTransition>
         </ErrorBoundary>
       </main>
+
+      {/*
+        After <main> and before <footer>, matching the tab order in
+        docs/4-interaction-design.md §9. It renders visually left but is
+        supplementary, so it must not sit between the header and page content in
+        the tab order (§7). Outside PageTransition so it does not fade on route
+        change (2-architecture.md §6).
+      */}
+      <SocialRail />
 
       <Footer />
     </>
