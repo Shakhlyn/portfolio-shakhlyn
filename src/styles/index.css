@@ -185,9 +185,14 @@
    * Smooth anchor scrolling, with scroll-padding so a hash resolved natively by
    * the browser (before any JS runs) still clears the fixed h-16 header.
    */
+  /*
+   * No scroll-padding-top here. Every anchor target carries scroll-mt-20
+   * (docs/4-interaction-design.md §4), which the browser honours for native
+   * hash resolution and for scrollIntoView alike. Setting scroll-padding as
+   * well stacks with it and lands every anchor 160px down instead of 80px.
+   */
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 5rem;
   }
 
   /*
