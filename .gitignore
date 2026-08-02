@@ -39,3 +39,4 @@ pnpm-lock.yaml
 .env
 .env/*
 .env.*
+rule.md
