@@ -47,20 +47,39 @@ Two honest ways forward, and this is your call:
 Until one is chosen, the site is internally consistent but positions more narrowly than
 the PRD intends.
 
+## Placeholder assets generated (2026-08-02)
+
+Nothing is missing any more — the gaps are filled with working placeholders rather than
+empty strings, so every downstream epic has something real to build against.
+
+| Asset                               | What shipped                                                                                                                                                    | Replace before launch? |
+| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| `public/resume/shakhlyn-resume.pdf` | Real 2-page PDF typeset from your CV text, **stamped "Draft" in red across the top** so it cannot be mistaken for the real thing. 76 KB, wired into `resume.ts` | **Yes**                |
+| `public/og/portfolio-og.png`        | 1200×630 card built from the project's own design tokens — navy background, violet rule, name, role, stack chips                                                | **Yes**                |
+| `src/data/about.ts`                 | Three draft paragraphs, every fact from the CV, wording mine                                                                                                    | **Yes — voice**        |
+| `SITE_URL`                          | `https://shakhlyn.dev` — a **guess**, not a registered domain                                                                                                   | **Yes**                |
+
+The resume PDF is generated, not fabricated: every line came from the CV text you
+supplied. It exists so E12 (`ResumeViewer`, download link, file-size label) is testable
+today rather than blocked.
+
 ## Remaining TODO(content)
 
-Five items, none blocking Phase 2:
+Five markers, none blocking Phase 2:
 
 ```
-src/data/resume.ts        the PDF itself, plus its real fileSize
-src/constants/site.ts     SITE_URL (real deployed domain) — needed by E15
-src/constants/site.ts     the OG image at public/og/portfolio-og.png — E15
-src/data/projects.ts      project screenshots (cards omit the frame without them)
-src/data/projects.ts      githubUrl for Meal Management System, once public
+grep -rn "TODO(content)" src/
 ```
 
-`1-prd.md` §6 permits all five as development placeholders. The resume PDF and OG image
-are **not** acceptable at launch.
+| Marker                                | Effect if left                                  | Launch blocker? |
+| ------------------------------------- | ----------------------------------------------- | --------------- |
+| `resume.ts` — draft PDF               | Recruiters download a draft-stamped resume      | **Yes**         |
+| `site.ts` — `SITE_URL` guess          | Link previews fetch a domain that may not exist | **Yes**         |
+| `about.ts` — draft voice              | Bio reads as written-about-you, not by you      | **Yes**         |
+| `projects.ts` — screenshots           | Cards omit the image frame; layout is text-only | No              |
+| `projects.ts` — Meal Mgmt `githubUrl` | GitHub button does not render on that card      | No              |
+
+`1-prd.md` §6 permits all five as development placeholders.
 
 ## Link policy applied
 
@@ -74,16 +93,21 @@ renders a dead button (`docs/2-architecture.md` §11).
 config uses `shakhlyn.kst@gmail.com`. The CV address is in `profile.ts` on the
 assumption it is the professional one — say if that is backwards.
 
-## Not yet written: About copy
+## About copy — written, needs your voice
 
-`AboutSection` (E11) needs bio prose, and there is no `src/data/about.ts` — the file
-list in `docs/2-architecture.md` §5 does not include one, and E04's tickets did not
-call for it. Left for E11 rather than added as scope creep.
+`src/data/about.ts` and `src/types/about.types.ts` now exist, so E11 is unblocked.
+Neither was in E04's ticket list; `docs/2-architecture.md` §5 has been updated to
+include them rather than leaving the doc and the tree disagreeing.
 
-The CV already contains what `1-prd.md` §3 asks for: the B.Sc. in Leather Products
-Engineering at University of Dhaka, and the transition into software engineering
-through independent study and professional product development. That non-traditional
-background is exactly the differentiator the PRD wants foregrounded.
+Three paragraphs, ordered so the **career transition leads** — `1-prd.md` §3 asks for
+the non-traditional background to be framed as a differentiator rather than apologised
+for, and the B.Sc. in Leather Products Engineering → software route is the most
+distinctive thing on the CV.
+
+Every fact is from the CV. The _wording_ is mine, which is the part to replace: bio
+copy in someone else's voice is the fastest way for an About section to read as
+generic, and "bio feels generic or inflated" is listed in `1-prd.md` §4 as a hiring
+manager bounce trigger.
 
 ## Files
 

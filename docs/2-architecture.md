@@ -184,6 +184,7 @@ src/data/skills.ts        Skill groups by capability
 src/data/resume.ts        Resume file metadata and labels
 src/data/navigation.ts    Nav labels and route targets
 src/data/currentRole.ts   Current software engineering role summary
+src/data/about.ts         Bio prose paragraphs for AboutSection
 src/data/writing.ts       V1 writing metadata and manually maintained post content
 ```
 
@@ -206,7 +207,9 @@ src/types/project.types.ts
 src/types/skill.types.ts
 src/types/resume.types.ts
 src/types/current-role.types.ts
+src/types/about.types.ts
 src/types/writing.types.ts
+src/types/navigation.types.ts
 ```
 
 ### Resume Handling

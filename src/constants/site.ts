@@ -1,17 +1,21 @@
 /**
  * Site-wide constants. SCREAMING_SNAKE_CASE per AGENTS.md §3. Consumed by E15.
  *
- * TODO(content): SITE_URL needs the real deployed domain before launch — it is
- * what absolute OG image and canonical URLs are built from.
+ * TODO(content): SITE_URL is a placeholder domain. Absolute canonical and OG
+ * image URLs are built from it, so a wrong value here means link previews
+ * silently fetch nothing. Set it to the real Netlify or custom domain in E18.
  */
-export const SITE_URL = 'https://example.com';
+export const SITE_URL = 'https://shakhlyn.dev';
 
 export const SITE_TITLE = 'Shaokh Al Mahmud Shakhlyn — Software Engineer';
 
 export const SITE_DESCRIPTION =
   'Software engineer with 2+ years building enterprise web applications in TypeScript, React, Python, and FastAPI on distributed international teams.';
 
-/** TODO(content): the OG image itself is not committed yet. */
+/**
+ * Placeholder OG image, generated from the design tokens. Replace before launch
+ * (1-prd.md §6 permits a placeholder during development only).
+ */
 export const OG_IMAGE_PATH = '/og/portfolio-og.png';
 
 /**

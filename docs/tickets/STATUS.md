@@ -50,20 +50,22 @@ Within the ~200KB gzipped budget, but Motion is most of it — worth a look in E
 E04 was unblocked on **2026-08-02** by the supplied CV. Real content is now in place
 for profile, current role, five projects, six skill groups, and site metadata.
 
-Five `TODO(content)` items remain, all permitted as development placeholders by
-`1-prd.md` §6 and none blocking Phase 2:
+Placeholder assets were generated the same day, so **no epic is waiting on a missing
+asset** — the draft resume PDF, the OG image, and the About copy all exist and work.
+Five `TODO(content)` markers track what still needs your version:
 
 ```
 grep -rn "TODO(content)" src/
 ```
 
-| Item                                     | Needed by | Launch blocker?                  |
-| ---------------------------------------- | --------- | -------------------------------- |
-| Resume PDF + real file size              | E12       | **Yes**                          |
-| OG image at `public/og/portfolio-og.png` | E15       | **Yes**                          |
-| `SITE_URL` — real deployed domain        | E15, E18  | **Yes**                          |
-| Project screenshots                      | E10       | No — cards omit the frame        |
-| `githubUrl` for Meal Management System   | E10       | No — button just does not render |
+| Item                  | State today                                       | Needed by | Launch blocker? |
+| --------------------- | ------------------------------------------------- | --------- | --------------- |
+| Resume PDF            | Real 2-page PDF from your CV, stamped **"Draft"** | E12       | **Yes**         |
+| OG image              | 1200×630, generated from the design tokens        | E15       | **Yes**         |
+| `SITE_URL`            | `https://shakhlyn.dev` — a guess, not registered  | E15, E18  | **Yes**         |
+| About copy            | 3 draft paragraphs, CV facts, my wording          | E11       | **Yes — voice** |
+| Project screenshots   | Absent; cards omit the frame cleanly              | E10       | No              |
+| Meal Mgmt `githubUrl` | Absent; button does not render                    | E10       | No              |
 
 ## Open decision — positioning
 
