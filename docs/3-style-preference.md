@@ -439,7 +439,7 @@ Left-aligned, `max-w-content`. Stack:
 4. Current position line — role + company, `fg`, company emphasised.
 5. Button row: `primary` "View Resume" (→ `/resume`) + `secondary` "Contact"
    (→ `#contact`).
-6. `SocialLinks` row — below `lg` only, where the floating rail is hidden.
+6. `SocialLinks` row — below `sm` only, where the floating rail is hidden.
 
 **Two layouts, one component.** Which renders is decided by the presence of a
 `portrait` field in `src/data/profile.ts` — see `docs/4-interaction-design.md` §5.1
@@ -456,7 +456,7 @@ name). No illustration, no background media, no text over the photo. The hero's 
 to make the positioning legible in under three seconds.
 
 Social links and the floating rail (§6.11) are mutually exclusive by breakpoint: the
-rail covers `lg` and up, the hero's `SocialLinks` row covers everything below. They are
+rail covers `sm` and up, the hero's `SocialLinks` row covers everything below. They are
 never both visible, which would duplicate the same four links on one screen.
 
 ### 6.3 Current Role
@@ -537,7 +537,7 @@ Post page: `max-w-content` prose, `h1`, date line, then article body.
 
 ### 6.11 Social Rail
 
-Fixed to the left viewport edge, vertically centred, `lg` and up only. A vertical
+Fixed to the left viewport edge, vertically centred, `sm` and up only. A vertical
 stack of 48px-tall tiles — GitHub, LinkedIn, Email, X — each a flex row of
 `[label][icon]`, rounded on the **right edge only** (`rounded-r-md`) so it reads as
 attached to the screen edge.

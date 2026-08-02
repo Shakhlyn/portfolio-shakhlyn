@@ -86,14 +86,14 @@ correct and free of horizontal overflow from **320px to 1920px**.
 
 Tailwind defaults — no custom breakpoints needed.
 
-| Name     | Min width | Primary change                                                                   |
-| -------- | --------- | -------------------------------------------------------------------------------- |
-| _(base)_ | 320px     | Single column, hamburger nav, social rail hidden                                 |
-| `sm`     | 640px     | Larger type step, 2-up badge rows                                                |
-| `md`     | 768px     | 2 project cards per view, footer goes horizontal                                 |
-| `lg`     | 1024px    | **Desktop nav replaces hamburger. Social rail appears. Hero may go two-column.** |
-| `xl`     | 1280px    | 3 project cards per view                                                         |
-| `2xl`    | 1536px    | Container reaches final width; layout stops growing                              |
+| Name     | Min width | Primary change                                              |
+| -------- | --------- | ----------------------------------------------------------- |
+| _(base)_ | 320px     | Single column, hamburger nav, social rail hidden            |
+| `sm`     | 640px     | Larger type step, 2-up badge rows. **Social rail appears.** |
+| `md`     | 768px     | 2 project cards per view, footer goes horizontal            |
+| `lg`     | 1024px    | **Desktop nav replaces hamburger. Hero may go two-column.** |
+| `xl`     | 1280px    | 3 project cards per view                                    |
+| `2xl`    | 1536px    | Container reaches final width; layout stops growing         |
 
 ### Container behaviour
 
@@ -156,7 +156,9 @@ not a full-screen overlay, not a side drawer.
 - Slides down: `opacity 0→1`, `y −8→0`, 200ms `ease-out`. Height is **not** animated.
 - Items stack as 48px rows; Resume last, separated by a divider.
 - The social links from the desktop rail (§7) appear as a row at the bottom of the
-  sheet, since the rail is hidden at this width.
+  sheet. Below `sm` this is the only place they appear, since the rail is hidden. Between
+  `sm` and `lg` the rail exists but the open sheet covers it, so the row stays rather
+  than leaving a gap where the links were.
 - **Focus is trapped** while open.
 - Closes on: item click, `Escape`, outside click, route change, or viewport crossing `lg`.
 - On close, focus returns to the hamburger.
@@ -286,12 +288,12 @@ Content stack, identical in both layouts:
 3. `body-lg` in `fg-muted` — intro, two lines max.
 4. Current position line — role + company, `fg`, company emphasised.
 5. Button row — `primary` "View Resume" → `/resume`, `secondary` "Contact" → `#contact`.
-6. `SocialLinks` row — **rendered below `lg` only.**
+6. `SocialLinks` row — **rendered below `sm` only.**
 
 Item 6 exists because `1-prd.md` §3 requires direct GitHub, LinkedIn, and email links
-in the hero. The floating rail satisfies that at `lg` and up, but the rail is hidden
-below `lg`, which would otherwise leave mobile visitors without them. Showing both at
-`lg`+ would duplicate the same four links a few hundred pixels apart, so they are
+in the hero. The floating rail satisfies that at `sm` and up, but the rail is hidden
+below `sm`, which would otherwise leave phone visitors without them. Showing both at
+`sm`+ would duplicate the same four links a few hundred pixels apart, so they are
 mutually exclusive by breakpoint.
 
 Portrait requirements (Layout B only):
@@ -454,9 +456,9 @@ Matches the reference in `docs/img.png`.
 Fixed to the **left viewport edge**, vertically centred
 (`top: 50%; translateY(-50%)`), above page content but below the mobile nav sheet.
 
-Visible at `lg` and up only. Below `lg` it is hidden and its links appear in the mobile
-nav sheet and the footer — a fixed rail on a 375px screen eats content width and
-collides with thumbs.
+Visible at `sm` and up only. Below `sm` it is hidden and its links appear in the mobile
+nav sheet and the footer — a fixed rail on a 375px phone screen eats content width and
+collides with thumbs, which is why the cut-off exists at all.
 
 ### Structure
 
@@ -483,7 +485,7 @@ COLLAPSED           HOVERED / FOCUSED
 - Collapsed: 48px wide, icon only, centred.
 - On **hover or keyboard focus**, that tile alone expands rightward to fit its label.
   The label sits left of the icon and fades in as the icon settles at the trailing edge.
-- Duration 200ms `ease-out`. Only one tile expands at a time; the others never shift,
+- Duration 100ms `ease-out`. Only one tile expands at a time; the others never shift,
   because growth is horizontal.
 - **Focus expansion is required, not optional** — a keyboard user must see the same
   label a mouse user sees.
@@ -506,9 +508,12 @@ the rail; if the profiler disagrees, fall back to `scaleX`.
 
 ### Constraints
 
-- The rail must not overlap the container at any width ≥ `lg`. At 1024px, container
-  gutter plus rail width is checked explicitly; if they collide, the rail sits outside
-  the content column.
+- The rail must not overlap page **content** at any width where it is visible. It
+  deliberately _does_ overlay the container's left gutter: at 640px that gutter is 24px
+  and the collapsed rail is 48px, so avoiding all overlap would mean shifting the page
+  right and giving up a centred layout. The gutter is whitespace — prose, cards, and
+  controls all begin inside the content box, so nothing collides. Check the rail's right
+  edge against the container's **content box**, not its padding box.
 - Marked up as `<nav aria-label="Social links">` so screen readers can skip it, and it
   comes **after** `<main>` in DOM order while rendering visually left. It is
   supplementary and should not sit between the header and page content in the tab order.
@@ -528,7 +533,7 @@ list, it does not ship (`AGENTS.md` §7).
 | 4   | Skill badges          | Parent section reveal    | Staggered #2, 40ms apart                     | 300ms      | Same                                        |
 | 5   | Route change          | Navigation               | opacity + y 8, `mode="wait"`                 | 200ms      | Confirms the page changed                   |
 | 6   | Mobile nav sheet      | Toggle                   | opacity + y −8                               | 200ms      | Connects the sheet to its trigger           |
-| 7   | Social rail tile      | Hover / focus            | width + label opacity (see §7 exception)     | 200ms      | Discloses the label on demand               |
+| 7   | Social rail tile      | Hover / focus            | width + label opacity (see §7 exception)     | 100ms      | Discloses the label on demand               |
 | 8   | Buttons, links, cards | Hover / focus            | `transition-colors`, card `translateY(-2px)` | 150ms      | Confirms interactivity                      |
 | 9   | Carousel scroll       | Arrow click              | Native smooth scroll                         | ~300ms     | Shows the relationship between views        |
 | 10  | Header border         | `scrollY > 8`            | opacity                                      | 150ms      | Separates header from content once scrolled |
@@ -608,7 +613,7 @@ Four further inconsistencies were found and fixed while propagating:
   widens it at `2xl`. Style doc now carries both `container` (1120px) and
   `container-wide` (1280px) tokens.
 - **`1-prd.md` §3** requires direct GitHub/LinkedIn/email links in the hero. The rail
-  is `lg`-and-up only, so below `lg` the hero renders a `SocialLinks` row (§5.1 item 6).
+  is `sm`-and-up only, so below `sm` the hero renders a `SocialLinks` row (§5.1 item 6).
 
 - **`1-prd.md` §3** specified "Primary CTA to view projects, secondary CTA to download
   resume." Confirmed as resume + contact instead, and the PRD has been updated to

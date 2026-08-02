@@ -325,7 +325,7 @@ wrong.
 
 **Deliverables**
 
-- `SocialRail` in `components/layout/` — fixed left edge, vertically centred, `lg`+ only.
+- `SocialRail` in `components/layout/` — fixed left edge, vertically centred, `sm`+ only.
 - Tiles: GitHub, LinkedIn, Email, X. 48px collapsed, expanding rightward on hover **and
   focus**, `rounded-r-md`.
 - ~~`SocialLinks`~~ — **built in E07**, its first consumer. Still reused by the hero
@@ -338,7 +338,8 @@ wrong.
 
 - Focus expansion works identically to hover — a keyboard user sees the same labels.
 - Each tile has an `aria-label`, so the visual label is enhancement only.
-- The rail does not overlap the container at 1024px.
+- The rail does not overlap page content at any width where it is visible. It overlays
+  the container gutter by design (`4-interaction-design.md` §7).
 - Rail and hero social links are never both visible.
 - Profiling confirms the `width` animation triggers no layout recalculation outside the
   rail. If it does, fall back to `scaleX` per `4-interaction-design.md` §7.
@@ -360,7 +361,7 @@ wrong.
   `profile.portrait`. Text-only ships now; two-column with portrait activates when the
   image lands.
 - Content stack: eyebrow → `h1` name → intro → current position → `primary` "View
-  Resume" + `secondary` "Contact" → `SocialLinks` (below `lg` only).
+  Resume" + `secondary` "Contact" → `SocialLinks` (below `sm` only).
 - `CurrentRoleSection` — static card, role/company `h3`, date range, scope bullets,
   stack badges.
 
