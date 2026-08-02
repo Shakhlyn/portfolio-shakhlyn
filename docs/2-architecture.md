@@ -494,10 +494,10 @@ The implementation will target:
 
 ### CSS Strategy
 
-- Tailwind for styling.
-- Design tokens in `tailwind.config.ts`.
+- Tailwind CSS v4 for styling, using its CSS-first configuration. No `tailwind.config.ts`.
+- Design tokens in `src/styles/index.css`, exposed to Tailwind via `@theme inline`.
 - No CSS-in-JS.
-- No separate CSS files except `src/styles/index.css` for Tailwind directives and design tokens.
+- No separate CSS files except `src/styles/index.css` for the Tailwind import, design tokens, and the theme mapping.
 - Use `clsx` or local `cn` utility for conditional classes if already present or if needed.
 
 ### Requirements Traceability

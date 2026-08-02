@@ -27,7 +27,7 @@ this file, follow this file and flag the conflict instead of silently picking on
 | Language | TypeScript (strict mode) | No `any` unless justified with a comment |
 | UI | React 18+ (function components + hooks only) | No class components |
 | Routing | `react-router-dom` v6+ | Use data router (`createBrowserRouter`) |
-| Styling | Tailwind CSS | No CSS-in-JS, no separate `.css` files except `index.css` for Tailwind directives + design tokens |
+| Styling | Tailwind CSS v4 (CSS-first config) | No CSS-in-JS, no separate `.css` files except `index.css` for the Tailwind import, design tokens, and the `@theme` mapping. No `tailwind.config.ts` |
 | Animation | **Motion (formerly Framer Motion)** — `motion/react` | See §6 |
 | Build tool | Vite | Fast HMR, sane defaults for React+TS |
 | Package manager | yarn | Never mix lockfiles |
@@ -163,7 +163,9 @@ preferences, but things that cause bugs, re-renders, or maintenance debt.
   `vite.config.ts`) instead of long relative `../../../` chains.
 - Routes: src/app/api/[epic-name]/
 - Components: src/components/[epic-name]/
-- Hooks: src/hooks/use-[feature].ts
+- Hooks: src/hooks/useFeature.ts — camelCase, file name matches the exported hook
+  (`useTheme.ts`, `useActiveSection.ts`). Hooks are the one exception to the
+  kebab-case file convention used by services and types below.
 - Services: src/services/[epic-name].service.ts
 - Types: src/types/[epic-name].types.ts
 - Import order enforced by ESLint (`eslint-plugin-import` or `simple-import-sort`):
@@ -173,14 +175,17 @@ preferences, but things that cause bugs, re-renders, or maintenance debt.
 ## 6. Styling Conventions (Tailwind)
 
 - Design tokens (colors, font sizes, spacing scale) are defined once in
-  `tailwind.config.ts` under `theme.extend` — never use arbitrary values
-  (`text-[17px]`, `bg-[#1a1a1a]`) unless there is truly no token that fits.
+  `src/styles/index.css` — CSS custom properties on `:root`/`.dark`, exposed to
+  Tailwind through an `@theme inline` block (Tailwind v4 CSS-first config).
+  Never use arbitrary values (`text-[17px]`, `bg-[#1a1a1a]`) unless there is
+  truly no token that fits.
 - Class order is enforced by `prettier-plugin-tailwindcss` — don't hand-order
   classes, let the formatter do it.
 - Use `clsx` (or `cn` utility wrapping `clsx` + `tailwind-merge`) for
   conditional classes — never string concatenation.
-- Dark mode: use Tailwind's `class` strategy from day one, even if only one
-  theme ships initially. It's a near-zero-cost signal of engineering care.
+- Dark mode: class-based from day one, declared with
+  `@custom-variant dark (&:where(.dark, .dark *));` in `index.css`, even if only
+  one theme ships initially. It's a near-zero-cost signal of engineering care.
 - Responsive-first: write mobile styles unprefixed, then layer `sm:` `md:`
   `lg:` `xl:`.
 - No inline `style={}` props except for values genuinely computed at runtime
@@ -292,4 +297,4 @@ A section (e.g. "Hero", "Projects grid") is done when:
 - [ ] Animates in on scroll/mount per §6, respects reduced motion.
 - [ ] Typed with no `any`, no ESLint errors.
 - [ ] Content pulled from `data/`, not hardcoded.
-- [ ] Visually consistent with the design tokens in `tailwind.config.ts`.
+- [ ] Visually consistent with the design tokens in `src/styles/index.css`.

@@ -80,8 +80,9 @@ at once.
 
 **Deliverables**
 
-- Tailwind CSS installed and wired to `src/styles/index.css`; the scaffold's
-  `src/App.css` and default `index.css` content removed.
+- Tailwind CSS v4 installed via `@tailwindcss/vite` and wired to
+  `src/styles/index.css`; the scaffold's `src/App.css` and default `index.css`
+  content removed. No `tailwind.config.ts` — v4 is configured in CSS.
 - `@/` path alias in both `tsconfig.json` and `vite.config.ts`.
 - ESLint: `typescript-eslint`, `react-hooks`, `jsx-a11y`, `simple-import-sort`.
   **`jsx-a11y` errors configured as errors, not warnings** (`AGENTS.md` §10).
@@ -116,11 +117,12 @@ when tokens arrive. Building tokens first makes that impossible.
 - All semantic tokens from `3-style-preference.md` §2.2–2.3 as CSS custom properties in
   `src/styles/index.css`, stored as space-separated RGB channels so `/30` opacity
   modifiers work.
-- `tailwind.config.ts`: `darkMode: 'class'`, colour tokens, `fontFamily`, the type scale
-  from §3.2, `maxWidth` (`container` 1120px, `container-wide` 1280px, `content` 768px),
-  the two shadows, and the spacing subset.
-- `useTheme` hook: `localStorage` → `prefers-color-scheme` → light, applying `.dark` to
-  `<html>`.
+- `@theme inline` block in the same file mapping every token into Tailwind: colours,
+  `--font-*`, the type scale from §3.2, `--container-*` (`container` 1120px,
+  `container-wide` 1280px, `content` 768px), and the two shadows. Plus
+  `@custom-variant dark` for class-based dark mode. No `tailwind.config.ts`.
+- `useTheme` hook (`src/hooks/useTheme.ts`): `localStorage` → `prefers-color-scheme` →
+  light, applying `.dark` to `<html>`.
 - `ThemeToggle` component — 40×40px, `rounded-full`, `aria-label` describing the
   *action* ("Switch to dark theme"), not the current state.
 - **Pre-paint inline script in `index.html`** that sets the theme class before first

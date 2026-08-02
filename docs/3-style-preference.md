@@ -66,9 +66,9 @@ components. A component uses `bg-surface`, never `bg-zinc-50`. This is what make
 one theme definition drive both light and dark.
 
 Tokens are implemented as CSS custom properties in `src/styles/index.css` and mapped
-into Tailwind in `tailwind.config.ts` (see §9). Dark mode uses Tailwind's `class`
-strategy, so the `.dark` class on `<html>` swaps the custom property values and every
-component follows automatically.
+into Tailwind through an `@theme inline` block in that same file (see §9). Dark mode
+is class-based via `@custom-variant`, so the `.dark` class on `<html>` swaps the custom
+property values and every component follows automatically.
 
 ### 2.2 Light Theme
 
@@ -552,7 +552,8 @@ and never a raw stack trace in production.
 
 ## 7. Dark Mode
 
-- Tailwind `class` strategy on `<html>`, driven by `useTheme` (architecture §4).
+- Class-based dark mode on `<html>` (`@custom-variant dark`), driven by `useTheme`
+  (architecture §4).
 - Resolution order: stored `localStorage` preference → `prefers-color-scheme` →
   light.
 - The theme class must be applied by a tiny blocking inline script in `index.html`
@@ -618,59 +619,78 @@ signals a state change, or guides the eye — delete it.
 
 ## 9. Token Implementation
 
+**Tailwind CSS v4, CSS-first configuration.** There is no `tailwind.config.ts` — the
+theme is declared in CSS, in the single stylesheet the project is allowed
+(`AGENTS.md` §2). This is a deliberate update from an earlier draft of this document,
+which described the v3 JavaScript config; every token value below is unchanged, only
+the file it lives in moved.
+
 ### `src/styles/index.css`
 
-Semantic tokens as CSS custom properties on `:root`, overridden under `.dark`. This
-is the only stylesheet in the project (`AGENTS.md` §2). Example shape:
+The file has four parts, in this order: the Tailwind import and dark variant, the raw
+token values, the `@theme` mapping that turns them into utility classes, and base
+element styles.
 
 ```css
+@import 'tailwindcss';
+
+/* Class-based dark mode — v4's replacement for darkMode: 'class' */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --color-bg: 255 255 255;
-  --color-surface: 250 250 250;
-  --color-fg: 24 24 27;
-  --color-accent: 124 58 237;
-  /* … */
+  --bg: 255 255 255;
+  --surface: 250 250 250;
+  --fg: 24 24 27;
+  --accent: 124 58 237;
+  /* … one per token in §2.2 */
 }
 
 .dark {
-  --color-bg: 11 12 15;
-  --color-surface: 19 20 23;
-  --color-fg: 228 228 231;
-  --color-accent: 167 139 250;
-  /* … */
+  --bg: 11 12 15;
+  --surface: 19 20 23;
+  --fg: 228 228 231;
+  --accent: 167 139 250;
+  /* … one per token in §2.3 */
+}
+
+@theme inline {
+  --color-bg: rgb(var(--bg));
+  --color-surface: rgb(var(--surface));
+  --color-fg: rgb(var(--fg));
+  --color-accent: rgb(var(--accent));
+  /* … one per token in §2.2 / §2.3 */
+
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --text-display: 2.25rem;      /* + line-height / weight / tracking pairs per §3.2 */
+  --text-eyebrow: 0.75rem;
+
+  --container-container: 1120px;
+  --container-container-wide: 1280px;
+  --container-content: 768px;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.10), 0 4px 6px -4px rgb(0 0 0 / 0.05);
 }
 ```
 
-Values are stored as space-separated RGB channels so Tailwind opacity modifiers
-(`bg-accent/30`) work.
+Two details that are load-bearing:
 
-### `tailwind.config.ts`
-
-```ts
-theme: {
-  extend: {
-    colors: {
-      bg: 'rgb(var(--color-bg) / <alpha-value>)',
-      surface: 'rgb(var(--color-surface) / <alpha-value>)',
-      // … one entry per token in §2.2 / §2.3
-    },
-    fontFamily: { sans: [...], mono: [...] },
-    maxWidth: {
-      container: '1120px',
-      'container-wide': '1280px',
-      content: '768px',
-    },
-    fontSize: { /* the scale in §3.2 */ },
-  },
-}
-darkMode: 'class'
-```
+- Raw values are stored as **space-separated RGB channels**, wrapped in `rgb()` only
+  inside `@theme`. This is what makes opacity modifiers (`bg-accent/30`) resolve
+  correctly against a runtime-swapped variable.
+- The block is `@theme inline`, not plain `@theme`. Without `inline`, the generated
+  utilities capture the token value at build time and dark mode stops swapping.
+- `max-w-container` / `max-w-content` come from the `--container-*` namespace in v4,
+  which feeds both `max-w-*` and `w-*`. The `--container-container` repetition is
+  namespace + token name, not a typo.
 
 Rules:
 
 - Every colour, font size, max-width, and radius used in the app resolves to a token
-  defined here. Arbitrary values (`text-[17px]`, `bg-[#1a1a1a]`) are not permitted
-  unless no token can fit, and that case requires a comment.
+  defined in `@theme`. Arbitrary values (`text-[17px]`, `bg-[#1a1a1a]`) are not
+  permitted unless no token can fit, and that case requires a comment.
 - Class order is left to `prettier-plugin-tailwindcss`. Do not hand-order.
 - Conditional classes go through `cn()`, never template-string concatenation.
 
