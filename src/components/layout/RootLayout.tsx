@@ -2,20 +2,20 @@ import type { ReactElement } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { ErrorBoundary } from '@/components/layout/ErrorBoundary';
+import { Footer } from '@/components/layout/Footer';
+import { Header } from '@/components/layout/Header';
 import { PageTransition } from '@/components/layout/PageTransition';
-import { ThemeToggle } from '@/components/layout/ThemeToggle';
-import { Container } from '@/components/ui/Container';
 import { FOCUS_RING } from '@/constants/styles';
-import { PROFILE } from '@/data/profile';
+import { useHashScroll } from '@/hooks/useHashScroll';
 import { useRouteFocus } from '@/hooks/useRouteFocus';
 import { cn } from '@/lib/cn';
 
 /**
- * The app shell. Header and Footer are minimal semantic placeholders here —
- * the real Navigation, MobileNavigation, and SocialRail are E07 and E08.
+ * The app shell. SocialRail is E08 and is not mounted yet.
  */
 export const RootLayout = (): ReactElement => {
   useRouteFocus();
+  useHashScroll();
 
   return (
     <>
@@ -30,12 +30,7 @@ export const RootLayout = (): ReactElement => {
         Skip to content
       </a>
 
-      <header className="fixed inset-x-0 top-0 z-40 h-16 border-b border-border bg-bg/80 backdrop-blur-sm">
-        <Container className="flex h-full items-center justify-between">
-          <span className="text-h3 font-semibold text-fg">{PROFILE.name}</span>
-          <ThemeToggle />
-        </Container>
-      </header>
+      <Header />
 
       {/* pt-16 clears the fixed header so content is never underneath it. */}
       <main id="main" tabIndex={-1} className="pt-16 focus-visible:outline-none">
@@ -46,11 +41,7 @@ export const RootLayout = (): ReactElement => {
         </ErrorBoundary>
       </main>
 
-      <footer className="border-t border-border py-12">
-        <Container className="text-body-sm text-fg-subtle">
-          {PROFILE.name} · {new Date().getFullYear()}
-        </Container>
-      </footer>
+      <Footer />
     </>
   );
 };
