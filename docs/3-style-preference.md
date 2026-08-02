@@ -19,7 +19,8 @@ decoration for its own sake.
 
 ### Decision: Technical Minimal, Violet Accent
 
-- Near-neutral zinc surfaces in both themes.
+- Near-neutral zinc surfaces on a white page in light mode; a dark navy ramp in dark
+  mode. Both stay near-neutral enough that the single accent hue does the signalling.
 - Generous whitespace and a single, narrow content column.
 - Exactly one accent hue (violet), used sparingly: primary CTAs, links, focus rings,
   active nav state, and section eyebrow labels.
@@ -72,44 +73,58 @@ property values and every component follows automatically.
 
 ### 2.2 Light Theme
 
-| Token | Hex | Role |
-|---|---|---|
-| `bg` | `#ffffff` | Page background |
-| `surface` | `#fafafa` | Cards, elevated panels, code blocks |
-| `surface-hover` | `#f4f4f5` | Card / row hover state |
-| `border` | `#e4e4e7` | Hairline dividers, card outlines (decorative) |
-| `border-strong` | `#8b8b94` | Form control outlines (interactive, needs 3:1) |
-| `fg` | `#18181b` | Headings, primary body text |
-| `fg-muted` | `#52525b` | Secondary body copy, descriptions |
-| `fg-subtle` | `#71717a` | Metadata, captions, timestamps |
-| `accent` | `#7c3aed` | Links, focus ring, primary button fill |
+| Token           | Hex       | Role                                             |
+| --------------- | --------- | ------------------------------------------------ |
+| `bg`            | `#ffffff` | Page background                                  |
+| `surface`       | `#fafafa` | Cards, elevated panels, code blocks              |
+| `surface-hover` | `#f4f4f5` | Card / row hover state                           |
+| `border`        | `#e4e4e7` | Hairline dividers, card outlines (decorative)    |
+| `border-strong` | `#8b8b94` | Form control outlines (interactive, needs 3:1)   |
+| `fg`            | `#18181b` | Headings, primary body text                      |
+| `fg-muted`      | `#52525b` | Secondary body copy, descriptions                |
+| `fg-subtle`     | `#71717a` | Metadata, captions, timestamps                   |
+| `accent`        | `#7c3aed` | Links, focus ring, primary button fill           |
 | `accent-strong` | `#6d28d9` | Accent hover / pressed, accent text on tinted bg |
-| `accent-soft` | `#f5f3ff` | Badge and eyebrow background tint |
-| `on-accent` | `#ffffff` | Text/icons on an accent fill |
-| `danger` | `#b91c1c` | Form validation errors |
-| `success` | `#15803d` | Form submission success |
+| `accent-soft`   | `#f5f3ff` | Badge and eyebrow background tint                |
+| `on-accent`     | `#ffffff` | Text/icons on an accent fill                     |
+| `danger`        | `#b91c1c` | Form validation errors                           |
+| `success`       | `#15803d` | Form submission success                          |
 
 ### 2.3 Dark Theme
 
-| Token | Hex | Role |
-|---|---|---|
-| `bg` | `#0b0c0f` | Page background |
-| `surface` | `#131417` | Cards, elevated panels, code blocks |
-| `surface-hover` | `#1a1b1f` | Card / row hover state |
-| `border` | `#2a2b30` | Hairline dividers, card outlines (decorative) |
-| `border-strong` | `#5f5f68` | Form control outlines (interactive, needs 3:1) |
-| `fg` | `#e4e4e7` | Headings, primary body text |
-| `fg-muted` | `#a1a1aa` | Secondary body copy, descriptions |
-| `fg-subtle` | `#8b8b94` | Metadata, captions, timestamps |
-| `accent` | `#a78bfa` | Links, focus ring, primary button fill |
-| `accent-strong` | `#c4b5fd` | Accent hover / pressed |
-| `accent-soft` | `#1c1830` | Badge and eyebrow background tint |
-| `on-accent` | `#0b0c0f` | Text/icons on an accent fill |
-| `danger` | `#f87171` | Form validation errors |
-| `success` | `#4ade80` | Form submission success |
+The dark theme is **dark navy** — not neutral zinc, and not pure black.
 
-**Dark theme is not pure black.** `#0b0c0f` avoids the halation that pure `#000`
-causes against light text, and gives `surface` room to read as elevated.
+| Token           | Hex       | Role                                           |
+| --------------- | --------- | ---------------------------------------------- |
+| `bg`            | `#0a0e1a` | Page background                                |
+| `surface`       | `#111726` | Cards, elevated panels, code blocks            |
+| `surface-hover` | `#182032` | Card / row hover state                         |
+| `border`        | `#252e42` | Hairline dividers, card outlines (decorative)  |
+| `border-strong` | `#606c85` | Form control outlines (interactive, needs 3:1) |
+| `fg`            | `#e3e8f2` | Headings, primary body text                    |
+| `fg-muted`      | `#a4aec4` | Secondary body copy, descriptions              |
+| `fg-subtle`     | `#8c96ad` | Metadata, captions, timestamps                 |
+| `accent`        | `#a78bfa` | Links, focus ring, primary button fill         |
+| `accent-strong` | `#c4b5fd` | Accent hover / pressed                         |
+| `accent-soft`   | `#1c1b38` | Badge and eyebrow background tint              |
+| `on-accent`     | `#0a0e1a` | Text/icons on an accent fill                   |
+| `danger`        | `#f87171` | Form validation errors                         |
+| `success`       | `#4ade80` | Form submission success                        |
+
+**Dark theme is not pure black.** `#0a0e1a` avoids the halation that pure `#000` causes
+against light text, and gives `surface` room to read as elevated. True black would also
+flatten the elevation model in §4.4 — which is expressed as a background shift rather
+than a shadow — because there is nothing below black to shift down from.
+
+**The whole neutral ramp is navy-tinted together**, not just `bg`. Tinting the page blue
+while leaving zinc-grey cards on top produces a hue clash that reads as an oversight, so
+surfaces, borders, and all three text tiers carry the same hue.
+
+**The accent stays violet in both themes.** Violet is a near-neighbour to navy on the
+colour wheel, so it still reads as emphasis rather than as a second competing brand
+colour (§2.5). Every accent pair was re-verified against the new background in §2.4.
+
+**Light theme is unchanged** — `bg` is and remains `#ffffff`.
 
 ### 2.4 Verified Contrast Ratios
 
@@ -117,24 +132,29 @@ All pairs below were computed against the WCAG 2.1 relative-luminance formula. T
 pairs target AA (4.5:1 normal, 3:1 large); interactive outlines and focus rings
 target the 3:1 non-text requirement.
 
-| Pair | Light | Dark | Requirement | Status |
-|---|---|---|---|---|
-| `fg` on `bg` | 17.72 | 15.41 | 4.5 | AAA |
-| `fg` on `surface` | 16.97 | 14.52 | 4.5 | AAA |
-| `fg-muted` on `bg` | 7.73 | 7.63 | 4.5 | AAA |
-| `fg-muted` on `surface` | 7.41 | 7.19 | 4.5 | AAA |
-| `fg-subtle` on `bg` | 4.83 | 5.79 | 4.5 | AA |
-| `accent` on `bg` | 5.70 | 7.19 | 4.5 | AA |
-| `on-accent` on `accent` fill | 5.70 | 7.19 | 4.5 | AA |
-| `accent-strong` on `accent-soft` | 6.48 | 9.30 | 4.5 | AA |
-| `danger` on `bg` | 6.47 | 7.07 | 4.5 | AA |
-| `success` on `bg` | 5.02 | 11.22 | 4.5 | AA |
-| `border-strong` on `bg` (control outline) | 3.38 | 3.10 | 3.0 | AA |
-| focus ring (`accent`) on `bg` | 5.70 | 7.19 | 3.0 | AA |
+| Pair                                      | Light | Dark  | Requirement | Status |
+| ----------------------------------------- | ----- | ----- | ----------- | ------ |
+| `fg` on `bg`                              | 17.72 | 15.67 | 4.5         | AAA    |
+| `fg` on `surface`                         | 16.97 | 14.55 | 4.5         | AAA    |
+| `fg-muted` on `bg`                        | 7.73  | 8.65  | 4.5         | AAA    |
+| `fg-muted` on `surface`                   | 7.41  | 8.03  | 4.5         | AAA    |
+| `fg-subtle` on `bg`                       | 4.83  | 6.49  | 4.5         | AA     |
+| `accent` on `bg`                          | 5.70  | 7.08  | 4.5         | AA     |
+| `on-accent` on `accent` fill              | 5.70  | 7.08  | 4.5         | AA     |
+| `accent-strong` on `accent-soft`          | 6.48  | 9.00  | 4.5         | AA     |
+| `danger` on `bg`                          | 6.47  | 6.96  | 4.5         | AA     |
+| `success` on `bg`                         | 5.02  | 11.05 | 4.5         | AA     |
+| `border-strong` on `bg` (control outline) | 3.38  | 3.65  | 3.0         | AA     |
+| focus ring (`accent`) on `bg`             | 5.70  | 7.08  | 3.0         | AA     |
 
-`border` (`#e4e4e7` / `#2a2b30`) is **decorative only** — 1.27 and 1.38 respectively.
-It may never be the sole indicator of an interactive control's boundary. Form inputs
-use `border-strong`.
+The dark column was **recomputed** when the theme moved from zinc to navy — not carried
+over. Every pair still passes, and most improved slightly: `fg-subtle` went 5.79 → 6.49
+and `border-strong` went 3.10 → 3.65, the latter being the tightest pair in the system
+and the one that had the least headroom before.
+
+`border` (`#e4e4e7` / `#252e42`) is **decorative only** — 1.27 and 1.42 respectively. It
+may never be the sole indicator of an interactive control's boundary. Form inputs use
+`border-strong`.
 
 ### 2.5 Colour Usage Rules
 
@@ -154,10 +174,10 @@ use `border-strong`.
 ### 3.1 Decision: System Font Stack
 
 ```css
---font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
-             Arial, sans-serif;
---font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas,
-             'Liberation Mono', monospace;
+--font-sans:
+  system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+--font-mono:
+  ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
 ```
 
 This satisfies `docs/2-architecture.md` §7 Font Strategy: zero font requests, zero
@@ -175,17 +195,17 @@ uppercase eyebrow labels. It is never used for body copy.
 
 Mobile-first. The second value applies from the `md:` breakpoint up.
 
-| Role | Size (mobile → desktop) | Weight | Line height | Tracking |
-|---|---|---|---|---|
-| `display` (h1, hero) | 36px → 56px | 600 | 1.05 | -0.02em |
-| `h1` (inner pages) | 30px → 40px | 600 | 1.1 | -0.02em |
-| `h2` (section titles) | 24px → 30px | 600 | 1.2 | -0.01em |
-| `h3` (card titles) | 18px → 20px | 600 | 1.3 | -0.01em |
-| `body-lg` (hero sub, intro) | 17px → 19px | 400 | 1.6 | 0 |
-| `body` (default) | 16px → 17px | 400 | 1.65 | 0 |
-| `body-sm` (card copy, meta) | 14px → 15px | 400 | 1.6 | 0 |
-| `eyebrow` (section label) | 12px | 500 | 1.2 | 0.08em, uppercase, mono |
-| `code` | 14px → 15px | 400 | 1.5 | 0 |
+| Role                        | Size (mobile → desktop) | Weight | Line height | Tracking                |
+| --------------------------- | ----------------------- | ------ | ----------- | ----------------------- |
+| `display` (h1, hero)        | 36px → 56px             | 600    | 1.05        | -0.02em                 |
+| `h1` (inner pages)          | 30px → 40px             | 600    | 1.1         | -0.02em                 |
+| `h2` (section titles)       | 24px → 30px             | 600    | 1.2         | -0.01em                 |
+| `h3` (card titles)          | 18px → 20px             | 600    | 1.3         | -0.01em                 |
+| `body-lg` (hero sub, intro) | 17px → 19px             | 400    | 1.6         | 0                       |
+| `body` (default)            | 16px → 17px             | 400    | 1.65        | 0                       |
+| `body-sm` (card copy, meta) | 14px → 15px             | 400    | 1.6         | 0                       |
+| `eyebrow` (section label)   | 12px                    | 500    | 1.2         | 0.08em, uppercase, mono |
+| `code`                      | 14px → 15px             | 400    | 1.5         | 0                       |
 
 **Weights in use: 400, 500, 600 only.** No 700+ — system-stack bold at large sizes
 reads heavy and undermines the restrained tone. No italics except in blockquotes.
@@ -200,7 +220,7 @@ reads heavy and undermines the restrained tone. No italics except in blockquotes
 - Never centre a paragraph longer than two lines. Hero copy is left-aligned.
 - No text over images. No all-caps outside the `eyebrow` role.
 - Links inside prose: `accent` colour, `underline underline-offset-4
-  decoration-1 decoration-accent/40`, becoming `decoration-accent` on hover. Links
+decoration-1 decoration-accent/40`, becoming `decoration-accent` on hover. Links
   are never colour-only.
 
 ---
@@ -217,14 +237,14 @@ Values outside this subset require a reason.
 
 ### 4.2 Layout Grid
 
-| Token | Value | Use |
-|---|---|---|
-| `container` max width | 1120px | Page shell up to `2xl` |
+| Token                      | Value  | Use                                       |
+| -------------------------- | ------ | ----------------------------------------- |
+| `container` max width      | 1120px | Page shell up to `2xl`                    |
 | `container-wide` max width | 1280px | Page shell from `2xl` (1536px) up — final |
-| `content` max width | 768px | Prose, about copy, writing posts |
-| Gutter (mobile) | 20px | `px-5` |
-| Gutter (`sm:`) | 24px | `sm:px-6` |
-| Gutter (`lg:`) | 32px | `lg:px-8` |
+| `content` max width        | 768px  | Prose, about copy, writing posts          |
+| Gutter (mobile)            | 20px   | `px-5`                                    |
+| Gutter (`sm:`)             | 24px   | `sm:px-6`                                 |
+| Gutter (`lg:`)             | 32px   | `lg:px-8`                                 |
 
 `Container` is a UI component (`components/ui/Container.tsx`) that owns
 `mx-auto w-full max-w-container 2xl:max-w-container-wide px-5 sm:px-6 lg:px-8`. No
@@ -246,12 +266,12 @@ design must hold from **320px to 1920px with no horizontal scroll** (`AGENTS.md`
 
 ### 4.3 Radii
 
-| Token | Value | Applied to |
-|---|---|---|
-| `rounded-sm` | 4px | Badges, code chips |
-| `rounded-md` | 6px | Buttons, inputs |
-| `rounded-lg` | 10px | Cards, image frames |
-| `rounded-full` | — | Avatar, icon buttons, theme toggle |
+| Token          | Value | Applied to                         |
+| -------------- | ----- | ---------------------------------- |
+| `rounded-sm`   | 4px   | Badges, code chips                 |
+| `rounded-md`   | 6px   | Buttons, inputs                    |
+| `rounded-lg`   | 10px  | Cards, image frames                |
+| `rounded-full` | —     | Avatar, icon buttons, theme toggle |
 
 No radius above 10px on rectangular surfaces. Large radii read as consumer-app, not
 engineering portfolio.
@@ -260,12 +280,12 @@ engineering portfolio.
 
 Elevation is expressed as **border + background shift**, not shadow.
 
-| Level | Treatment |
-|---|---|
-| 0 — page | `bg` |
-| 1 — card | `bg-surface` + `border border-border` |
-| 1 hover | `bg-surface-hover` + `border-accent/30` |
-| 2 — overlay | `bg-surface` + `border` + `shadow-lg` |
+| Level       | Treatment                               |
+| ----------- | --------------------------------------- |
+| 0 — page    | `bg`                                    |
+| 1 — card    | `bg-surface` + `border border-border`   |
+| 1 hover     | `bg-surface-hover` + `border-accent/30` |
+| 2 — overlay | `bg-surface` + `border` + `shadow-lg`   |
 
 Only two shadows exist, both neutral:
 
@@ -303,17 +323,17 @@ Each is prop-driven and content-agnostic — no hardcoded copy, no route knowled
 Three variants, three sizes. Implemented with `cn()` (clsx + tailwind-merge), never
 string concatenation.
 
-| Variant | Idle | Hover | Use |
-|---|---|---|---|
-| `primary` | `bg-accent text-on-accent` | `bg-accent-strong` | One per view: the main CTA |
-| `secondary` | `bg-transparent text-fg border border-border` | `bg-surface-hover border-border-strong` | Companion actions |
-| `ghost` | `bg-transparent text-fg-muted` | `text-fg bg-surface-hover` | Tertiary / icon-adjacent |
+| Variant     | Idle                                          | Hover                                   | Use                        |
+| ----------- | --------------------------------------------- | --------------------------------------- | -------------------------- |
+| `primary`   | `bg-accent text-on-accent`                    | `bg-accent-strong`                      | One per view: the main CTA |
+| `secondary` | `bg-transparent text-fg border border-border` | `bg-surface-hover border-border-strong` | Companion actions          |
+| `ghost`     | `bg-transparent text-fg-muted`                | `text-fg bg-surface-hover`              | Tertiary / icon-adjacent   |
 
-| Size | Height | Padding | Text |
-|---|---|---|---|
-| `sm` | 32px | `px-3` | `body-sm` / 500 |
-| `md` | 40px | `px-4` | `body-sm` / 500 |
-| `lg` | 48px | `px-6` | `body` / 500 |
+| Size | Height | Padding | Text            |
+| ---- | ------ | ------- | --------------- |
+| `sm` | 32px   | `px-3`  | `body-sm` / 500 |
+| `md` | 40px   | `px-4`  | `body-sm` / 500 |
+| `lg` | 48px   | `px-6`  | `body` / 500    |
 
 All buttons: `rounded-md`, `inline-flex items-center gap-2`, the shared focus ring,
 `transition-colors duration-150`, and `disabled:opacity-50
@@ -374,12 +394,12 @@ hidden "(opens in a new tab)".
 
 A `role="status" aria-live="polite"` region above the submit button.
 
-| State | Appearance |
-|---|---|
-| idle | Renders nothing |
-| submitting | Spinner + "Sending…", `fg-muted` (button also disabled) |
-| success | Check icon + confirmation, `success` on `surface`, `rounded-md p-3` |
-| error | Alert icon + failure message **and the direct email address as fallback**, `danger` on `surface` |
+| State      | Appearance                                                                                       |
+| ---------- | ------------------------------------------------------------------------------------------------ |
+| idle       | Renders nothing                                                                                  |
+| submitting | Spinner + "Sending…", `fg-muted` (button also disabled)                                          |
+| success    | Check icon + confirmation, `success` on `surface`, `rounded-md p-3`                              |
+| error      | Alert icon + failure message **and the direct email address as fallback**, `danger` on `surface` |
 
 The error state must always expose the mailto fallback — architecture §9 requires no
 silent failure path.
@@ -583,12 +603,12 @@ Governed by `AGENTS.md` §7 and architecture §7. Motion is imported from
 
 ### Timing
 
-| Interaction | Duration | Easing |
-|---|---|---|
-| Hover / colour transitions | 150ms | `ease-out` |
-| Scroll reveal | 400ms | `[0.16, 1, 0.3, 1]` |
-| Page transition | 200ms | `ease-out` |
-| Mobile menu | 200ms | `ease-out` |
+| Interaction                | Duration | Easing              |
+| -------------------------- | -------- | ------------------- |
+| Hover / colour transitions | 150ms    | `ease-out`          |
+| Scroll reveal              | 400ms    | `[0.16, 1, 0.3, 1]` |
+| Page transition            | 200ms    | `ease-out`          |
+| Mobile menu                | 200ms    | `ease-out`          |
 
 ### Patterns
 
@@ -646,9 +666,9 @@ element styles.
 }
 
 .dark {
-  --bg: 11 12 15;
-  --surface: 19 20 23;
-  --fg: 228 228 231;
+  --bg: 10 14 26;
+  --surface: 17 23 38;
+  --fg: 227 232 242;
   --accent: 167 139 250;
   /* … one per token in §2.3 */
 }
@@ -663,7 +683,7 @@ element styles.
   --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
-  --text-display: 2.25rem;      /* + line-height / weight / tracking pairs per §3.2 */
+  --text-display: 2.25rem; /* + line-height / weight / tracking pairs per §3.2 */
   --text-eyebrow: 0.75rem;
 
   --container-container: 1120px;
@@ -671,7 +691,7 @@ element styles.
   --container-content: 768px;
 
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.05);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.10), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.05);
 }
 ```
 
@@ -774,4 +794,3 @@ A section ships only when all of the following hold:
 - Contact form states and the mailto fallback trace to architecture §9 and PRD
   §Reliability.
 - Token implementation rules trace to `AGENTS.md` §6 Styling Conventions.
-

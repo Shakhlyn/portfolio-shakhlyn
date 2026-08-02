@@ -50,14 +50,14 @@ from `2-architecture.md` §8 and nothing else — the sections that fill them ar
   (`AGENTS.md` §8).
 - Routes per `2-architecture.md` §3:
 
-  | Path | Loading |
-  |---|---|
-  | `/` | eager — it is the LCP route |
-  | `/projects/:slug` | lazy |
-  | `/resume` | lazy |
-  | `/writing` | lazy |
-  | `/writing/:slug` | lazy |
-  | `/*` | 404 (E03-T05) |
+  | Path              | Loading                     |
+  | ----------------- | --------------------------- |
+  | `/`               | eager — it is the LCP route |
+  | `/projects/:slug` | lazy                        |
+  | `/resume`         | lazy                        |
+  | `/writing`        | lazy                        |
+  | `/writing/:slug`  | lazy                        |
+  | `/*`              | 404 (E03-T05)               |
 
 - Lazy via the router's native `lazy:` property rather than `React.lazy` + `Suspense` —
   the data router resolves it before rendering, so there is no fallback flash between

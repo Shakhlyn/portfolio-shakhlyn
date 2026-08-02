@@ -4,7 +4,26 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>portfolio</title>
+    <title>Portfolio</title>
+    <!--
+      Applies the theme class before first paint. Blocking and non-module by
+      design: `defer` or `type="module"` would run this after paint, which is
+      exactly the white flash it exists to prevent.
+      The storage key mirrors THEME_STORAGE_KEY in src/constants/theme.ts.
+    -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('portfolio-theme');
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (stored === 'dark' || (stored === null && prefersDark)) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (error) {
+          /* localStorage unavailable — fall through to the light default. */
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

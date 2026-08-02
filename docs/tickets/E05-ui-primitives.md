@@ -60,7 +60,7 @@ against a dark card.
 **Scope**
 
 - Owns exactly: `mx-auto w-full max-w-container 2xl:max-w-container-wide px-5 sm:px-6
-  lg:px-8` (`3-style-preference.md` §4.2).
+lg:px-8` (`3-style-preference.md` §4.2).
 - **No section reimplements this.** A second copy is how one section ends up 4px off at
   `lg` and nobody can find why.
 - Accepts `children`, `className` (merged via `cn`), and an `as` prop for the rendered
@@ -275,12 +275,12 @@ against a dark card.
 - Four states as a **discriminated union**, not four optional booleans
   (`AGENTS.md` §4):
 
-  | State | Renders |
-  |---|---|
-  | `idle` | nothing |
-  | `submitting` | spinner + "Sending…" in `fg-muted` |
-  | `success` | check icon + message, `success` on `surface`, `rounded-md p-3` |
-  | `error` | alert icon + message **plus the direct email address as a fallback** |
+  | State        | Renders                                                              |
+  | ------------ | -------------------------------------------------------------------- |
+  | `idle`       | nothing                                                              |
+  | `submitting` | spinner + "Sending…" in `fg-muted`                                   |
+  | `success`    | check icon + message, `success` on `surface`, `rounded-md p-3`       |
+  | `error`      | alert icon + message **plus the direct email address as a fallback** |
 
 - **The error state must always expose the mailto fallback.** `2-architecture.md` §9
   requires no silent failure path — if the form breaks, the recruiter still has a way to

@@ -20,16 +20,19 @@ wrong — fix the ticket rather than the code.
 
 ## Phase 1 — Foundation
 
-| Epic | File | Tickets | Depends on |
-|---|---|---|---|
-| E01 Tooling & Project Scaffold | [E01-tooling.md](E01-tooling.md) | 7 | — |
-| E02 Design Tokens & Theming | [E02-tokens-theming.md](E02-tokens-theming.md) | 5 | E01 |
-| E03 Routing, App Shell & Errors | [E03-routing-shell.md](E03-routing-shell.md) | 6 | E02 |
-| E04 Content Data Layer & Types | [E04-data-layer.md](E04-data-layer.md) | 5 | E02 |
-| E05 UI Primitives | [E05-ui-primitives.md](E05-ui-primitives.md) | 9 | E02 |
-| E06 Motion Foundation | [E06-motion-foundation.md](E06-motion-foundation.md) | 4 | E02 |
+**Progress lives in [STATUS.md](STATUS.md)** (roll-up) plus one `E0X-status.md` per
+epic. Point me at those files to pick the work back up.
 
-**39 tickets.** E01 → E02 is a hard sequence. E03, E04, E05, and E06 are independent of
+| Epic                            | Tickets                                              | Status                         | #   | Depends on |
+| ------------------------------- | ---------------------------------------------------- | ------------------------------ | --- | ---------- |
+| E01 Tooling & Project Scaffold  | [E01-tooling.md](E01-tooling.md)                     | [E01-status.md](E01-status.md) | 7   | —          |
+| E02 Design Tokens & Theming     | [E02-tokens-theming.md](E02-tokens-theming.md)       | [E02-status.md](E02-status.md) | 5   | E01        |
+| E03 Routing, App Shell & Errors | [E03-routing-shell.md](E03-routing-shell.md)         | [E03-status.md](E03-status.md) | 6   | E02        |
+| E04 Content Data Layer & Types  | [E04-data-layer.md](E04-data-layer.md)               | [E04-status.md](E04-status.md) | 5   | E02        |
+| E05 UI Primitives               | [E05-ui-primitives.md](E05-ui-primitives.md)         | [E05-status.md](E05-status.md) | 9   | E02        |
+| E06 Motion Foundation           | [E06-motion-foundation.md](E06-motion-foundation.md) | [E06-status.md](E06-status.md) | 4   | E02        |
+
+**36 tickets.** E01 → E02 is a hard sequence. E03, E04, E05, and E06 are independent of
 each other once E02 lands and can be built in any order.
 
 Nothing user-visible ships in Phase 1. The point of the phase is that everything after
@@ -42,7 +45,10 @@ it is fast to build and hard to build wrong.
 **Size.** One ticket is one Conventional Commit. If a ticket needs two commits to
 describe honestly, it was written too large — split it.
 
-**Status.** Track with the checkbox in each ticket heading. `[ ]` open, `[x]` merged.
+**Status.** The `E0X-status.md` files are the single source of truth for progress —
+the `[ ]` checkboxes in the ticket headings are part of the ticket text and are left
+alone, so the two can never drift. Update the epic's status file when you finish a
+ticket, then the roll-up in [STATUS.md](STATUS.md) if the counts changed.
 
 **Global Definition of Done** from `5-epic-list.md` applies to every ticket and is not
 repeated in each one. The short version — it must pass all four gates:
@@ -70,10 +76,10 @@ could verify every box without asking you what you meant.
 Two ambiguities in the source documents were resolved before these tickets were
 written. Both are now fixed in the source documents themselves.
 
-| # | Ambiguity | Decision | Documents updated |
-|---|---|---|---|
-| 1 | `3-style-preference.md` §9 specified a `tailwind.config.ts` with `theme.extend` and `darkMode: 'class'` — Tailwind v3 syntax | **Tailwind v4, CSS-first.** No `tailwind.config.ts`. Tokens and the `@theme inline` mapping live in `src/styles/index.css`; dark mode via `@custom-variant`. Every token *value* in §2.2–2.3 and §3.2 is unchanged — only the file it lives in moved | `AGENTS.md` §2, §6, §14 · `2-architecture.md` §7 · `3-style-preference.md` §2.1, §7, §9 · `5-epic-list.md` E01, E02 |
-| 2 | `AGENTS.md` §5 contradicted itself on hook filenames — camelCase in one bullet, `use-[feature].ts` in another | **camelCase only.** `useTheme.ts`, `useActiveSection.ts`, `useHashScroll.ts`, `useCarousel.ts`. Services and types keep kebab-case | `AGENTS.md` §5 |
+| #   | Ambiguity                                                                                                                    | Decision                                                                                                                                                                                                                                             | Documents updated                                                                                                   |
+| --- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| 1   | `3-style-preference.md` §9 specified a `tailwind.config.ts` with `theme.extend` and `darkMode: 'class'` — Tailwind v3 syntax | **Tailwind v4, CSS-first.** No `tailwind.config.ts`. Tokens and the `@theme inline` mapping live in `src/styles/index.css`; dark mode via `@custom-variant`. Every token _value_ in §2.2–2.3 and §3.2 is unchanged — only the file it lives in moved | `AGENTS.md` §2, §6, §14 · `2-architecture.md` §7 · `3-style-preference.md` §2.1, §7, §9 · `5-epic-list.md` E01, E02 |
+| 2   | `AGENTS.md` §5 contradicted itself on hook filenames — camelCase in one bullet, `use-[feature].ts` in another                | **camelCase only.** `useTheme.ts`, `useActiveSection.ts`, `useHashScroll.ts`, `useCarousel.ts`. Services and types keep kebab-case                                                                                                                   | `AGENTS.md` §5                                                                                                      |
 
 ---
 

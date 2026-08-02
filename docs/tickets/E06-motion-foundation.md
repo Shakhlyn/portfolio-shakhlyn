@@ -28,15 +28,15 @@ animations exist. If it is not on that list, it does not ship (`AGENTS.md` §7).
 - `src/constants/motion.ts` — durations and easings from `3-style-preference.md` §8, in
   `SCREAMING_SNAKE_CASE`:
 
-  | Constant | Value | Used by |
-  |---|---|---|
-  | `DURATION_HOVER` | 150ms, `ease-out` | hover / colour transitions |
-  | `DURATION_REVEAL` | 400ms, `[0.16, 1, 0.3, 1]` | scroll reveal |
-  | `DURATION_PAGE` | 200ms, `ease-out` | page transition |
-  | `DURATION_MENU` | 200ms, `ease-out` | mobile sheet |
-  | `STAGGER_CARDS` | 0.06s | project cards |
-  | `STAGGER_BADGES` | 0.04s | skill badges |
-  | `VIEWPORT_ONCE` | `{ once: true, margin: '-80px' }` | every scroll reveal |
+  | Constant          | Value                             | Used by                    |
+  | ----------------- | --------------------------------- | -------------------------- |
+  | `DURATION_HOVER`  | 150ms, `ease-out`                 | hover / colour transitions |
+  | `DURATION_REVEAL` | 400ms, `[0.16, 1, 0.3, 1]`        | scroll reveal              |
+  | `DURATION_PAGE`   | 200ms, `ease-out`                 | page transition            |
+  | `DURATION_MENU`   | 200ms, `ease-out`                 | mobile sheet               |
+  | `STAGGER_CARDS`   | 0.06s                             | project cards              |
+  | `STAGGER_BADGES`  | 0.04s                             | skill badges               |
+  | `VIEWPORT_ONCE`   | `{ once: true, margin: '-80px' }` | every scroll reveal        |
 
 - `src/lib/motion.ts` — shared `variants` objects: `fadeUp` (opacity 0→1, y 12→0),
   `staggerContainer`, and `pageTransition` (opacity + y 8).
@@ -83,7 +83,7 @@ the one that makes a vestibular-sensitive visitor close the tab.
     and are not vestibular triggers.
   - Animation 9 (carousel scroll): `behavior: 'auto'` instead of `'smooth'`.
   - Animation 11 (spinner): static "Sending…" text.
-  The hook covers 1–7; expose a boolean for 9 and 11 to consume.
+    The hook covers 1–7; expose a boolean for 9 and 11 to consume.
 - camelCase filename per the decision in `docs/tickets/README.md`.
 
 **Acceptance**

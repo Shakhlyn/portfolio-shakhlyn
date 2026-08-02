@@ -124,7 +124,7 @@ when tokens arrive. Building tokens first makes that impossible.
 - `useTheme` hook (`src/hooks/useTheme.ts`): `localStorage` → `prefers-color-scheme` →
   light, applying `.dark` to `<html>`.
 - `ThemeToggle` component — 40×40px, `rounded-full`, `aria-label` describing the
-  *action* ("Switch to dark theme"), not the current state.
+  _action_ ("Switch to dark theme"), not the current state.
 - **Pre-paint inline script in `index.html`** that sets the theme class before first
   paint.
 
@@ -206,7 +206,7 @@ data on day one and never hardcodes copy it will have to tear out.
 
 > **Content gate.** This epic is blocked on real content for: candidate name, target
 > role, contact links, project names and descriptions, skills, and the resume file.
-> `1-prd.md` §6 lists these as *not acceptable* as launch placeholders. Draft copy is
+> `1-prd.md` §6 lists these as _not acceptable_ as launch placeholders. Draft copy is
 > fine to start; launch is not.
 
 ---
@@ -292,7 +292,7 @@ wrong.
 - `MobileNavigation` — hamburger below `lg`, full-width sheet, focus trap, scroll lock,
   `SocialLinks` row, closes on all five triggers, restores focus and scroll position.
 - `useActiveSection` — `IntersectionObserver` scroll spy, `rootMargin
-  '-20% 0px -70% 0px'`, topmost-wins, home route only, suppressed ~700ms after a nav
+'-20% 0px -70% 0px'`, topmost-wins, home route only, suppressed ~700ms after a nav
   click.
 - `useHashScroll` — resolves `/#section` after paint on mount and on hash change.
 - Anchor navigation moves focus to the target heading (`tabIndex={-1}` +
@@ -546,7 +546,7 @@ These epics are not polish. Each maps to a numeric target the site is expected t
 
 ## E16 — Accessibility & Responsive Hardening
 
-**Goal:** A dedicated audit pass. Accessibility is checked *within* each epic; this
+**Goal:** A dedicated audit pass. Accessibility is checked _within_ each epic; this
 verifies the assembled whole, where most real failures live.
 
 **Deliverables**
@@ -634,11 +634,11 @@ recruiter's 90-second scan. E11–E14 broaden it; E15–E18 make it fast and cor
 
 ## Open Risks
 
-| Risk | Epic | Mitigation |
-|---|---|---|
-| Scroll spy + smooth scroll + focus management interact badly | E07 | Build and verify the three behaviours separately before combining |
-| Carousel arrow state desyncs after resize | E10 | Resize re-evaluation is an explicit acceptance criterion |
-| Rail `width` animation causes layout recalculation | E08 | Profile it; documented `scaleX` fallback |
-| Inline PDF viewer unsupported on iOS Safari | E12 | Always offer the direct download link |
-| Theme flash on reload | E02 | Pre-paint inline script, treated as non-optional |
-| Content not ready at launch | E04, E09, E10, E12 | Begin collection in Phase 1 |
+| Risk                                                         | Epic               | Mitigation                                                        |
+| ------------------------------------------------------------ | ------------------ | ----------------------------------------------------------------- |
+| Scroll spy + smooth scroll + focus management interact badly | E07                | Build and verify the three behaviours separately before combining |
+| Carousel arrow state desyncs after resize                    | E10                | Resize re-evaluation is an explicit acceptance criterion          |
+| Rail `width` animation causes layout recalculation           | E08                | Profile it; documented `scaleX` fallback                          |
+| Inline PDF viewer unsupported on iOS Safari                  | E12                | Always offer the direct download link                             |
+| Theme flash on reload                                        | E02                | Pre-paint inline script, treated as non-optional                  |
+| Content not ready at launch                                  | E04, E09, E10, E12 | Begin collection in Phase 1                                       |

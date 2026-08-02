@@ -28,14 +28,14 @@ The site is a **single scrolling home page** for content a recruiter scans in
 sequence, plus **two standalone routes** for content people arrive at directly or
 want to link to.
 
-| Nav item | Type | Target |
-|---|---|---|
-| Home | Anchor | `#home` (hero) |
-| Projects | Anchor | `#projects` |
-| About | Anchor | `#about` |
-| Blog | **Route** | `/writing` |
-| Contact | Anchor | `#contact` |
-| Resume | **Route** | `/resume` |
+| Nav item | Type      | Target         |
+| -------- | --------- | -------------- |
+| Home     | Anchor    | `#home` (hero) |
+| Projects | Anchor    | `#projects`    |
+| About    | Anchor    | `#about`       |
+| Blog     | **Route** | `/writing`     |
+| Contact  | Anchor    | `#contact`     |
+| Resume   | **Route** | `/resume`      |
 
 Six items — comfortable at every width, no label truncation needed.
 
@@ -86,22 +86,22 @@ correct and free of horizontal overflow from **320px to 1920px**.
 
 Tailwind defaults — no custom breakpoints needed.
 
-| Name | Min width | Primary change |
-|---|---|---|
-| *(base)* | 320px | Single column, hamburger nav, social rail hidden |
-| `sm` | 640px | Larger type step, 2-up badge rows |
-| `md` | 768px | 2 project cards per view, footer goes horizontal |
-| `lg` | 1024px | **Desktop nav replaces hamburger. Social rail appears. Hero may go two-column.** |
-| `xl` | 1280px | 3 project cards per view |
-| `2xl` | 1536px | Container reaches final width; layout stops growing |
+| Name     | Min width | Primary change                                                                   |
+| -------- | --------- | -------------------------------------------------------------------------------- |
+| _(base)_ | 320px     | Single column, hamburger nav, social rail hidden                                 |
+| `sm`     | 640px     | Larger type step, 2-up badge rows                                                |
+| `md`     | 768px     | 2 project cards per view, footer goes horizontal                                 |
+| `lg`     | 1024px    | **Desktop nav replaces hamburger. Social rail appears. Hero may go two-column.** |
+| `xl`     | 1280px    | 3 project cards per view                                                         |
+| `2xl`    | 1536px    | Container reaches final width; layout stops growing                              |
 
 ### Container behaviour
 
-| Viewport | Container max width |
-|---|---|
-| < 1120px | Fluid, minus gutters |
-| 1120–1535px | 1120px |
-| ≥ 1536px | **1280px, final** |
+| Viewport    | Container max width  |
+| ----------- | -------------------- |
+| < 1120px    | Fluid, minus gutters |
+| 1120–1535px | 1120px               |
+| ≥ 1536px    | **1280px, final**    |
 
 Above 1536px the layout stops growing and the page centres in more whitespace. Prose
 stays capped at ~68 characters regardless of viewport
@@ -113,7 +113,7 @@ container. Everything else respects it.
 
 ### Rules
 
-- No horizontal page scroll at any width. The only horizontal scrolling is *inside*
+- No horizontal page scroll at any width. The only horizontal scrolling is _inside_
   the project carousels, and it is deliberate and contained.
 - Touch targets ≥ 44×44px below `lg`.
 - Layout must survive 200% browser zoom — this is why breakpoints key off layout needs,
@@ -186,7 +186,7 @@ The case that breaks naively-built hybrid sites. On `/writing` or `/resume`, cli
 
 1. Navigate to `/#about`.
 2. After the home route mounts, scroll to the target.
-3. The scroll must run *after* paint — a `useHashScroll` hook handles it on mount and
+3. The scroll must run _after_ paint — a `useHashScroll` hook handles it on mount and
    on hash change, never a bare `setTimeout` guess.
 
 A direct external hit on `https://site/#contact` must behave identically.
@@ -205,7 +205,7 @@ A direct external hit on `https://site/#contact` must behave identically.
 
 ### Focus management on anchor navigation
 
-Scrolling moves the *eye*, not the *keyboard*. On anchor navigation the target
+Scrolling moves the _eye_, not the _keyboard_. On anchor navigation the target
 section's heading receives programmatic focus (`tabIndex={-1}` +
 `.focus({ preventScroll: true })`), so the next Tab continues from inside that section.
 Without this, keyboard users are dropped back at the top of the document — the most
@@ -224,7 +224,7 @@ Only two, both cheap:
 2. Scroll spy (§3).
 
 No parallax, no scroll-jacking, no pinned sections, no scroll progress bar, and no
-element whose *size* changes with scroll position — content must never reflow mid-scroll,
+element whose _size_ changes with scroll position — content must never reflow mid-scroll,
 because that is what destroys CLS.
 
 ---
@@ -362,14 +362,14 @@ Two-column at `lg` (form 60% / direct links 40%), stacked below.
 
 Form behaviour — Netlify Forms, per `docs/2-architecture.md` §9:
 
-| Moment | Behaviour |
-|---|---|
-| Typing | No validation. Validating every keystroke punishes people mid-word. |
-| Blur | Validate that field only, if touched. |
-| Submit | Validate all. On failure, focus the first invalid field and announce the count. |
-| Submitting | Button disabled, spinner + "Sending…", fields read-only. |
-| Success | Form replaced by a success message, `role="status"`. Focus moves to it. |
-| Error | Form retained **with values intact**, error message plus the raw email address as fallback. |
+| Moment     | Behaviour                                                                                   |
+| ---------- | ------------------------------------------------------------------------------------------- |
+| Typing     | No validation. Validating every keystroke punishes people mid-word.                         |
+| Blur       | Validate that field only, if touched.                                                       |
+| Submit     | Validate all. On failure, focus the first invalid field and announce the count.             |
+| Submitting | Button disabled, spinner + "Sending…", fields read-only.                                    |
+| Success    | Form replaced by a success message, `role="status"`. Focus moves to it.                     |
+| Error      | Form retained **with values intact**, error message plus the raw email address as fallback. |
 
 Values are never cleared on error — retyping a message because a network call failed is
 the fastest way to lose a contact. The honeypot field is visually hidden but stays in
@@ -516,19 +516,19 @@ the rail; if the profiler disagrees, fall back to `scaleX`.
 Every animation on the site, with its trigger and justification. If it is not on this
 list, it does not ship (`AGENTS.md` §7).
 
-| # | Element | Trigger | Motion | Duration | Purpose |
-|---|---|---|---|---|---|
-| 1 | Hero content | Mount | opacity 0→1, y 12→0 | 400ms | Establishes reading order on arrival |
-| 2 | Section content | First scroll into view | opacity 0→1, y 12→0 | 400ms | Signals a new content block |
-| 3 | Project cards | Parent subsection reveal | Staggered #2, 60ms apart | 400ms | Groups the set, guides eye left→right |
-| 4 | Skill badges | Parent section reveal | Staggered #2, 40ms apart | 300ms | Same |
-| 5 | Route change | Navigation | opacity + y 8, `mode="wait"` | 200ms | Confirms the page changed |
-| 6 | Mobile nav sheet | Toggle | opacity + y −8 | 200ms | Connects the sheet to its trigger |
-| 7 | Social rail tile | Hover / focus | width + label opacity (see §7 exception) | 200ms | Discloses the label on demand |
-| 8 | Buttons, links, cards | Hover / focus | `transition-colors`, card `translateY(-2px)` | 150ms | Confirms interactivity |
-| 9 | Carousel scroll | Arrow click | Native smooth scroll | ~300ms | Shows the relationship between views |
-| 10 | Header border | `scrollY > 8` | opacity | 150ms | Separates header from content once scrolled |
-| 11 | Form submit spinner | Submitting | Rotation | 800ms loop | The only state proof during a network call |
+| #   | Element               | Trigger                  | Motion                                       | Duration   | Purpose                                     |
+| --- | --------------------- | ------------------------ | -------------------------------------------- | ---------- | ------------------------------------------- |
+| 1   | Hero content          | Mount                    | opacity 0→1, y 12→0                          | 400ms      | Establishes reading order on arrival        |
+| 2   | Section content       | First scroll into view   | opacity 0→1, y 12→0                          | 400ms      | Signals a new content block                 |
+| 3   | Project cards         | Parent subsection reveal | Staggered #2, 60ms apart                     | 400ms      | Groups the set, guides eye left→right       |
+| 4   | Skill badges          | Parent section reveal    | Staggered #2, 40ms apart                     | 300ms      | Same                                        |
+| 5   | Route change          | Navigation               | opacity + y 8, `mode="wait"`                 | 200ms      | Confirms the page changed                   |
+| 6   | Mobile nav sheet      | Toggle                   | opacity + y −8                               | 200ms      | Connects the sheet to its trigger           |
+| 7   | Social rail tile      | Hover / focus            | width + label opacity (see §7 exception)     | 200ms      | Discloses the label on demand               |
+| 8   | Buttons, links, cards | Hover / focus            | `transition-colors`, card `translateY(-2px)` | 150ms      | Confirms interactivity                      |
+| 9   | Carousel scroll       | Arrow click              | Native smooth scroll                         | ~300ms     | Shows the relationship between views        |
+| 10  | Header border         | `scrollY > 8`            | opacity                                      | 150ms      | Separates header from content once scrolled |
+| 11  | Form submit spinner   | Submitting               | Rotation                                     | 800ms loop | The only state proof during a network call  |
 
 Rules:
 
@@ -540,7 +540,7 @@ Rules:
   hand-delayed children.
 - Total stagger per group capped at ~300ms. A 10-card stagger at 60ms is 600ms of
   waiting — cap the stagger, not the card count.
-- The two project subsections reveal independently, each when *it* enters view. One
+- The two project subsections reveal independently, each when _it_ enters view. One
   600ms cascade across both groups would delay the second group's content.
 - Nothing animates longer than 400ms except the intentional spinner loop.
 
@@ -561,15 +561,15 @@ When `useReducedMotion()` returns true:
 
 ## 9. Keyboard Map
 
-| Key | Context | Result |
-|---|---|---|
-| `Tab` | Global | Skip link → header → nav → main content → social rail → footer |
-| `Enter` | Nav anchor | Scroll to section, move focus to its heading |
-| `Escape` | Mobile sheet open | Close, return focus to hamburger |
-| `Escape` | Rail tile focused | Blur, collapse |
-| `←` `→` | Carousel focused | Native horizontal scroll within that carousel only |
-| `Tab` | Off-screen carousel card | Scrolls into view automatically |
-| `Enter` | Card title / buttons | Follow link |
+| Key      | Context                  | Result                                                         |
+| -------- | ------------------------ | -------------------------------------------------------------- |
+| `Tab`    | Global                   | Skip link → header → nav → main content → social rail → footer |
+| `Enter`  | Nav anchor               | Scroll to section, move focus to its heading                   |
+| `Escape` | Mobile sheet open        | Close, return focus to hamburger                               |
+| `Escape` | Rail tile focused        | Blur, collapse                                                 |
+| `←` `→`  | Carousel focused         | Native horizontal scroll within that carousel only             |
+| `Tab`    | Off-screen carousel card | Scrolls into view automatically                                |
+| `Enter`  | Card title / buttons     | Follow link                                                    |
 
 The skip link is the first focusable element on every page: hidden until focused, then
 pinned top-left.
@@ -584,14 +584,14 @@ decision and what still needs updating elsewhere.
 These were flagged as conflicts, decided, and **propagated to the other documents**.
 All four documents now describe the same flow.
 
-| # | Conflict | Decision | Propagated to |
-|---|---|---|---|
-| 1 | Hero portrait forbidden by style doc §6.2 | Both layouts supported, switched by the optional `portrait` field in `profile.ts` (§5.1). Text-only ships now. | `3-style-preference.md` §6.2 rewritten; `2-architecture.md` §5 notes the field |
-| 2 | Responsive range | 320–1920px. No custom breakpoint; container caps at 1280px. | This doc §2. Style doc §4.2/§12 already said 320–1920 — no change needed |
-| 3 | Single `projects.ts` | One file, one type, plus a `category` discriminator. One nav link, one section, two subsections. | `2-architecture.md` §5 data files + grouping note |
-| 4 | Social rail and carousel absent from component tree | Both confirmed. | `2-architecture.md` §6 tree, feature modules, and hooks; `3-style-preference.md` §6.4 and §6.11 |
-| 5 | Heading order | Follow `2-architecture.md` §8. One Projects `h2`, two `h3` subsections, project titles at `h4`. | `2-architecture.md` §8 heading plan updated |
-| 6 | Two `ProjectsSection` instances | One `ProjectCarousel` component, two instances with different data. | `2-architecture.md` §6 |
+| #   | Conflict                                            | Decision                                                                                                       | Propagated to                                                                                   |
+| --- | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| 1   | Hero portrait forbidden by style doc §6.2           | Both layouts supported, switched by the optional `portrait` field in `profile.ts` (§5.1). Text-only ships now. | `3-style-preference.md` §6.2 rewritten; `2-architecture.md` §5 notes the field                  |
+| 2   | Responsive range                                    | 320–1920px. No custom breakpoint; container caps at 1280px.                                                    | This doc §2. Style doc §4.2/§12 already said 320–1920 — no change needed                        |
+| 3   | Single `projects.ts`                                | One file, one type, plus a `category` discriminator. One nav link, one section, two subsections.               | `2-architecture.md` §5 data files + grouping note                                               |
+| 4   | Social rail and carousel absent from component tree | Both confirmed.                                                                                                | `2-architecture.md` §6 tree, feature modules, and hooks; `3-style-preference.md` §6.4 and §6.11 |
+| 5   | Heading order                                       | Follow `2-architecture.md` §8. One Projects `h2`, two `h3` subsections, project titles at `h4`.                | `2-architecture.md` §8 heading plan updated                                                     |
+| 6   | Two `ProjectsSection` instances                     | One `ProjectCarousel` component, two instances with different data.                                            | `2-architecture.md` §6                                                                          |
 
 Four further inconsistencies were found and fixed while propagating:
 

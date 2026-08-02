@@ -1,0 +1,21 @@
+Per AGENTS.md, these are flagged rather than silently resolved. Each needs a decision before implementation.
+
+3-style-preference.md §6.2 forbids a hero portrait. This document specifies one, per your direction. That line needs amending — I have not edited that file.
+=> decision: provide two hero section--one with portrait image, another without portrait. I need to have both. when i'll have proper image, I'll use the portrait one; for now, i'll use without the portrait
+
+3-style-preference.md §4.2 and §12 state a 320–1920px range. Now 320–2160px, with the container cap and 3xl breakpoint in §2 above.
+=> decision: pixel range should be 320-1920px
+
+2-architecture.md §5 defines a single projects.ts. Splitting professional from personal requires a category discriminator on the project type in src/types/project.types.ts. It stays one data file and one type.
+=> one project navlink that displays two subsection--both professional project and the personal project.
+
+2-architecture.md §6 component tree has no social rail and no carousel. Two additions: SocialRail (in components/layout/) and ProjectCarousel (in components/sections/), plus a useCarousel hook. SocialLinks still exists and is reused inside the mobile sheet and footer.
+=> need social rail and carousel. update what needs to update including the architecture
+
+2-architecture.md §8 heading order lists Featured Projects as one h2. It is now two: "Professional Projects" and "Personal Projects". Still one h1 per page.
+=> follow architecture.md
+
+2-architecture.md §6 lists one ProjectsSection. It is now instantiated twice with different data, not duplicated as two components.
+=> Project section should have two sub project section like I said earlier.
+
+

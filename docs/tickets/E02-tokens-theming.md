@@ -192,7 +192,7 @@ reusable, no business logic" (`AGENTS.md` §3). The sun and moon icons themselve
 
 - [ ] Reachable by keyboard alone; `Enter` and `Space` both activate it.
 - [ ] Visible focus ring, not clipped by any parent.
-- [ ] `aria-label` updates to describe the *next* action after toggling.
+- [ ] `aria-label` updates to describe the _next_ action after toggling.
 - [ ] 40×40px hit area; meets the 44px touch minimum via padding at mobile widths.
 - [ ] Correct in both themes.
 - [ ] No temporary mount left in `App.tsx`.

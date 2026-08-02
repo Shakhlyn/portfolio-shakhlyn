@@ -639,7 +639,6 @@ Direct contact links must also be present:
 
 No analytics script or page-view tracking will be included in v1.
 
-
 ### Requirements Traceability
 
 - Netlify Forms traces to user discovery answer and PRD Contact module.

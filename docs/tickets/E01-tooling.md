@@ -246,15 +246,15 @@ yarn typecheck && yarn lint && yarn format:check && yarn build
 
 Then confirm each rule bites:
 
-| Probe | Expected |
-|---|---|
-| `const x: any = 1` | `yarn lint` errors |
-| `<img src="/x.png" />` | `yarn lint` errors (not warns) |
-| Imports in wrong order | `yarn lint --fix` reorders them |
-| `export function f() { return 1 }` | `yarn lint` errors on missing return type |
-| `const s: string = 1` | `yarn typecheck` errors |
-| Scrambled `className` order | `yarn format` reorders |
-| `let a: string; a.length` | `yarn typecheck` errors (strict null checks live) |
+| Probe                              | Expected                                          |
+| ---------------------------------- | ------------------------------------------------- |
+| `const x: any = 1`                 | `yarn lint` errors                                |
+| `<img src="/x.png" />`             | `yarn lint` errors (not warns)                    |
+| Imports in wrong order             | `yarn lint --fix` reorders them                   |
+| `export function f() { return 1 }` | `yarn lint` errors on missing return type         |
+| `const s: string = 1`              | `yarn typecheck` errors                           |
+| Scrambled `className` order        | `yarn format` reorders                            |
+| `let a: string; a.length`          | `yarn typecheck` errors (strict null checks live) |
 
 **Acceptance**
 
