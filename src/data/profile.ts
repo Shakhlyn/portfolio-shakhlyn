@@ -8,6 +8,7 @@ import type { ProfileType } from '@/types/profile.types';
  */
 export const PROFILE: ProfileType = {
   name: 'Shaokh Al Mahmud Shakhlyn',
+  wordmark: 'Shakhlyn',
   roleFraming: 'Software Engineer',
   eyebrow: 'Dhaka, Bangladesh',
   valueProposition:

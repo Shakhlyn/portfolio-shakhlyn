@@ -19,7 +19,14 @@ export interface SocialLinksType {
 }
 
 export interface ProfileType {
+  /** Full name. Used as the hero h1. */
   name: string;
+  /**
+   * Short display name for the header wordmark. Separate from `name` because
+   * the full legal name does not fit an h-16 bar at 320px, and deriving it by
+   * slicing `name` would hardcode an assumption about name structure.
+   */
+  wordmark: string;
   /** Target role framing, e.g. "Full-stack & AI Engineer". */
   roleFraming: string;
   /** Mono eyebrow above the h1 — availability or location. */

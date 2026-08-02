@@ -18,6 +18,21 @@ export const NAV_ITEMS: readonly NavItemType[] = [
   { kind: 'route', label: 'Resume', path: '/resume', emphasised: true },
 ];
 
+/**
+ * Anchor targets the scroll spy observes, in DOM order.
+ *
+ * Only sections that have a nav entry belong here — #current-role, #skills, and
+ * #resume are part of the scan path but have no nav item
+ * (docs/4-interaction-design.md §1), so highlighting nothing while they are in
+ * view is correct.
+ *
+ * Module-level constant so its identity is stable across renders and does not
+ * retrigger the observer effect.
+ */
+export const ANCHOR_SECTION_IDS: readonly string[] = NAV_ITEMS.filter(
+  (item) => item.kind === 'anchor',
+).map((item) => item.sectionId);
+
 /** Targets offered by the 404 page (docs/3-style-preference.md §6.13). */
 export const NOT_FOUND_LINKS: readonly NavItemType[] = [
   { kind: 'route', label: 'Home', path: '/' },
