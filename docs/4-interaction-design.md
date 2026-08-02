@@ -508,12 +508,13 @@ the rail; if the profiler disagrees, fall back to `scaleX`.
 
 ### Constraints
 
-- The rail must not overlap page **content** at any width where it is visible. It
-  deliberately _does_ overlay the container's left gutter: at 640px that gutter is 24px
-  and the collapsed rail is 48px, so avoiding all overlap would mean shifting the page
-  right and giving up a centred layout. The gutter is whitespace — prose, cards, and
-  controls all begin inside the content box, so nothing collides. Check the rail's right
-  edge against the container's **content box**, not its padding box.
+- The rail must not overlap page **content** at any width where it is visible. The
+  default gutter is narrower than the rail (24px at 640px, 32px at 1024px against a 48px
+  collapsed tile), so the container widens its **left** gutter to 56px from `sm` through
+  `lg`. From `xl` the centred container already starts right of 48px and the gutter
+  returns to normal. Between 640px and 1279px the content therefore sits ~16px right of
+  centre; that asymmetry is the accepted cost of keeping the rail from `sm`. Check the
+  rail's right edge against the container's **content box**, not its padding box.
 - Marked up as `<nav aria-label="Social links">` so screen readers can skip it, and it
   comes **after** `<main>` in DOM order while rendering visually left. It is
   supplementary and should not sit between the header and page content in the tab order.
