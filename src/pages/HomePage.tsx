@@ -1,20 +1,17 @@
 import type { ReactElement } from 'react';
 
-import { Container } from '@/components/ui/Container';
+import { CurrentRoleSection } from '@/components/sections/CurrentRoleSection';
+import { HeroSection } from '@/components/sections/HeroSection';
 import { Section } from '@/components/ui/Section';
-import { PROFILE } from '@/data/profile';
 
 /**
- * SCAFFOLD — E07-T03.
+ * The home page. Hero and Current Role are real (E09); the four sections below
+ * them are still the E07-T03 anchor scaffold, replaced by their owning epics —
+ * Projects E10, About and Skills E11, Resume E12, Contact E13.
  *
- * These are empty section anchors, not the real sections. Without targets in
- * the DOM no E07 acceptance criterion is verifiable: the scroll spy has nothing
- * to observe, focusSection has nothing to focus, and every nav anchor is a dead
- * link.
- *
- * Each placeholder is replaced by its owning epic — Hero and Current Role E09,
- * Projects E10, About and Skills E11, Resume E12, Contact E13. No copy is
- * invented here; headings only.
+ * The scaffold stays until then because the nav depends on it: without targets
+ * in the DOM the scroll spy has nothing to observe and every remaining nav
+ * anchor is a dead link.
  *
  * Order is fixed by docs/4-interaction-design.md §1.
  */
@@ -24,23 +21,9 @@ const PLACEHOLDER = 'min-h-96';
 
 export const HomePage = (): ReactElement => (
   <>
-    <section id="home" className="scroll-mt-20 pt-24 pb-16">
-      <Container>
-        <h1
-          tabIndex={-1}
-          className="max-w-content text-display text-fg focus-visible:outline-none md:text-display-md"
-        >
-          {PROFILE.name}
-        </h1>
-        <p className="mt-4 max-w-content text-body-lg text-fg-muted md:text-body-lg-md">
-          {PROFILE.roleFraming}
-        </p>
-      </Container>
-    </section>
+    <HeroSection />
 
-    <Section id="current-role" title="Current Role">
-      <div className={PLACEHOLDER} />
-    </Section>
+    <CurrentRoleSection />
 
     <Section id="projects" title="Projects">
       <div className={PLACEHOLDER} />
