@@ -31,6 +31,23 @@ Last updated: **2026-08-02**
 acceptance criteria that need a browser — theme flash, focus order, contrast,
 reduced motion — not unwritten code.
 
+## Phase 2
+
+| Epic                                     | Done | Needs manual check | Blocked | Not started | Total |
+| ---------------------------------------- | ---- | ------------------ | ------- | ----------- | ----- |
+| [E07 Header & Navigation](E07-status.md) | 14   | 0                  | 0       | 0           | 14    |
+| E08 Social Rail                          | 0    | 0                  | 0       | 6           | ~6    |
+
+E07 was verified with 27 automated checks in a real browser (headless Chrome over
+CDP against a production build), so none of its criteria are left pending a manual
+pass. One is verified in a weaker form and must be re-tested once sections have real
+content — see [E07-status.md](E07-status.md).
+
+**E07 also fixed two pre-existing defects**: an anchor offset that stacked
+`scroll-padding-top` with `scroll-mt-20`, and route-change focus that had never
+worked because it raced `PageTransition`'s exit animation. The second one retires a
+pending E03-T06 check — and shows why the 🔍 items above are worth actually running.
+
 ## Gate status
 
 All four gates pass on the current tree:

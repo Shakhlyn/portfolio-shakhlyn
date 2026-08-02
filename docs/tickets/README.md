@@ -32,7 +32,13 @@ epic. Point me at those files to pick the work back up.
 | E05 UI Primitives               | [E05-ui-primitives.md](E05-ui-primitives.md)         | [E05-status.md](E05-status.md) | 9   | E02        |
 | E06 Motion Foundation           | [E06-motion-foundation.md](E06-motion-foundation.md) | [E06-status.md](E06-status.md) | 4   | E02        |
 
-**36 tickets.** E01 → E02 is a hard sequence. E03, E04, E05, and E06 are independent of
+### Phase 2 — Layout & Navigation
+
+| Epic                    | Tickets                          | Status                         | #   | Depends on |
+| ----------------------- | -------------------------------- | ------------------------------ | --- | ---------- |
+| E07 Header & Navigation | [E07-tickets.md](E07-tickets.md) | [E07-status.md](E07-status.md) | 14  | E02–E06    |
+
+**36 Phase 1 tickets, 14 in E07.** E01 → E02 is a hard sequence. E03, E04, E05, and E06 are independent of
 each other once E02 lands and can be built in any order.
 
 Nothing user-visible ships in Phase 1. The point of the phase is that everything after
