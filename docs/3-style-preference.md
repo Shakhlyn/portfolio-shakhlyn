@@ -699,7 +699,7 @@ attached to the screen edge.
 - Collapsed: 48px wide, 20px icon centred, `bg-surface`, `border border-border`
   (no left border), `text-fg-muted`.
 - Expanded on hover **or focus**: grows rightward to **a single fixed width shared by
-  every tile** (144px — a 96px label well plus the 48px icon square), `bg-accent`,
+  every tile** (128px — an 80px label well plus the 48px icon square), `bg-accent`,
   `text-on-accent`. One tile at a time; the stack never shifts vertically.
 
   The width is uniform rather than shrink-wrapped to each label. Sized to its own text,

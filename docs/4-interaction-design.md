@@ -637,13 +637,13 @@ COLLAPSED           HOVERED / FOCUSED
 ├────┤              ├────┤
 │ ✉  │              │ ✉  │
 └────┘              └────┘
- 48px                 144px
+ 48px                 128px
 ```
 
 ### Expansion behaviour
 
 - Collapsed: 48px wide, icon only, centred.
-- On **hover or keyboard focus**, that tile alone expands rightward to a fixed 144px —
+- On **hover or keyboard focus**, that tile alone expands rightward to a fixed 128px —
   **the same width for every tile**, not shrink-wrapped to the label. The label sits left
   of the icon and fades in as the icon settles at the trailing edge.
 - Duration 100ms `ease-out`. Only one tile expands at a time; the others never shift,
