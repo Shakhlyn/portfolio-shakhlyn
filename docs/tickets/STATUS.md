@@ -43,6 +43,21 @@ reduced motion — not unwritten code.
 | Epic                                     | Done | Needs manual check | Blocked | Not started | Total |
 | ---------------------------------------- | ---- | ------------------ | ------- | ----------- | ----- |
 | [E09 Hero & Current Role](E09-status.md) | 8    | 0                  | 0       | 0           | 8     |
+| [E10 Projects](E10-status.md)            | 11   | 0                  | 1       | 0           | 12    |
+
+E10 was verified with **86 automated browser checks, 85 passing**. It found one real
+defect of its own: 69px of horizontal **page** scroll at 1440, caused not by the
+deliberate mobile bleed the ticket was written to guard but by `sr-only` spans —
+`overflow-x: auto` does not clip absolutely positioned descendants unless the scroller is
+also their containing block. Fixed with `relative` on the track.
+
+**E10-T09 is blocked, not done.** Scroll-reveal animations do not run anywhere on the
+site: `whileInView` elements never receive their `initial` variant, so content is at
+opacity 1 before it enters view and no fade occurs. This was confirmed **pre-existing** by
+building `88ce89e` in a separate worktree and reproducing it against E09's
+`CurrentRoleSection`. The fix belongs to E06's motion foundation, so it is recorded rather
+than made quietly inside a Projects epic — detail in [E10-status.md](E10-status.md) §3.
+It also means the 🔍 reduced-motion items above are not the only motion work outstanding.
 
 E09 was verified with 33 automated browser checks the same way as E07 and E08. It found
 one real defect of its own — the portrait slot shrank to 233px against a specified 280px

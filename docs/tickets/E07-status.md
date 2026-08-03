@@ -132,3 +132,21 @@ src/data/navigation.ts       (mod) src/components/layout/RootLayout.tsx (mod)
 src/data/profile.ts          (mod) src/pages/HomePage.tsx               (mod)
 src/types/profile.types.ts   (mod) src/styles/index.css                 (mod)
 ```
+
+---
+
+## Later edit by E10 (cross-epic, deliberate)
+
+**E10-T05 modified `src/data/navigation.ts`**, which this epic owns.
+`4-interaction-design.md` §5.3 requires the Projects nav item to disappear when both
+project categories are empty, and the nav is data — there is no way to satisfy that from
+inside `components/sections/`. `NAV_ITEMS` and `NOT_FOUND_LINKS` now pass through a
+`withoutEmptyProjects()` predicate evaluated once at import; `ANCHOR_SECTION_IDS` follows
+for free because it already derives from `NAV_ITEMS`.
+
+No file under `src/components/layout/` or `src/hooks/` changed — `Navigation`,
+`MobileNavigation`, and `useActiveSection` consume the same exports they always did, just
+with one fewer entry when there is nothing to link to. Verified against a temporarily
+emptied `PROJECTS`: the desktop nav and the mobile sheet drop to 5 items, the spy never
+reports `projects`, and the 404 link row omits it. Detail in
+[E10-status.md](E10-status.md) §4.

@@ -44,11 +44,17 @@ epic. Point me at those files to pick the work back up.
 | Epic                    | Tickets                          | Status                         | #   | Depends on |
 | ----------------------- | -------------------------------- | ------------------------------ | --- | ---------- |
 | E09 Hero & Current Role | [E09-tickets.md](E09-tickets.md) | [E09-status.md](E09-status.md) | 8   | E07, E08   |
-| E10 Projects            | [E10-tickets.md](E10-tickets.md) | _not started_                  | 12  | E07        |
+| E10 Projects            | [E10-tickets.md](E10-tickets.md) | [E10-status.md](E10-status.md) | 12  | E07        |
 
-**8 of 8 done.** E09-T08 (portrait treatment) was unblocked by the supplied photograph
-and shipped the same day — the seam built ahead of it took the image with no layout
-change and zero CLS, which is what building the seam separately was for.
+**E09: 8 of 8 done.** E09-T08 (portrait treatment) was unblocked by the supplied
+photograph and shipped the same day — the seam built ahead of it took the image with no
+layout change and zero CLS, which is what building the seam separately was for.
+
+**E10: 11 of 12 done, 1 blocked.** T09 (staggered card reveals) is written to spec but
+cannot be verified: `whileInView` reveals do not animate anywhere on the site, which was
+confirmed pre-existing by reproducing it at `88ce89e` against E09's `CurrentRoleSection`.
+Fixing it means changing E06's motion foundation, so it is recorded rather than absorbed
+into a Projects epic.
 
 **36 Phase 1 tickets, 14 in E07, 8 in E08.** E01 → E02 is a hard sequence. E03, E04, E05, and E06 are independent of
 each other once E02 lands and can be built in any order.
