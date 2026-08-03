@@ -24,6 +24,17 @@ interface ButtonAsLinkProps extends ButtonBaseProps {
   /** Renders a plain anchor with new-tab semantics instead of a router Link. */
   external?: boolean;
   /**
+   * Suggested filename, which also switches this to a plain same-origin anchor
+   * carrying `download`. A router `Link` to a static asset under `public/` is
+   * intercepted by the router and resolves to the catch-all 404 instead of the
+   * file, because the path looks like a route.
+   *
+   * A filename rather than a boolean: `download` with no value lets the server's
+   * `Content-Disposition` name the file, which on a static host means the
+   * visitor saves whatever the URL happened to end in.
+   */
+  download?: string;
+  /**
    * A link never takes a click handler. A <button> that navigates cannot be
    * middle-clicked, opened in a new tab, or copied as a link, and screen
    * readers announce the wrong role.
@@ -66,7 +77,17 @@ export const Button = ({
   );
 
   if ('href' in props) {
-    const { href, external } = props;
+    const { href, external, download } = props;
+
+    // Checked before `external`: a download is same-origin and must not open a
+    // new tab, so it would be wrong for `external` to win by position here.
+    if (download) {
+      return (
+        <a href={href} download={download} className={classes}>
+          {children}
+        </a>
+      );
+    }
 
     if (external) {
       return (

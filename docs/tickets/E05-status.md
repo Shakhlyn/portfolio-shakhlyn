@@ -93,3 +93,24 @@ page cannot collide.
 unused-variable lint errors when destructuring. Exclusivity is instead enforced by
 union narrowing with `'href' in props`, which gives the same compile-time guarantee —
 an object with both `href` and `onClick` matches neither member.
+
+---
+
+## Extended by E12-T02 (2026-08-03)
+
+`Button`'s link branch gained a **`download?: string`** case on `ButtonAsLinkProps`,
+rendering a plain same-origin `<a href download>` instead of a router `Link` or an
+external new-tab anchor.
+
+This is a cross-epic touch into an E05 primitive, declared rather than done quietly
+(`AGENTS.md` §13). It was necessary, not convenient: `/resume`'s download points at
+`public/resume/Shaokh_Al_Mahmud_Shakhlyn-resume.pdf`, and `<Link to="/resume/Shaokh_Al_Mahmud_Shakhlyn-resume.pdf">` is
+intercepted by React Router and resolves to the catch-all 404, because the path looks
+like a route. Neither existing branch produces a working download.
+
+The value is a filename rather than a boolean so the saved file is named deliberately;
+`download` with no value defers to the server's `Content-Disposition`, which a static
+host does not set. The case is checked **before** `external` in the render body, since
+a download is same-origin and must not open a new tab.
+
+All four pre-existing call-site shapes still type-check unchanged.
