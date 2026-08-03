@@ -469,15 +469,19 @@ container gutter via `scroll-padding-inline`.
 
 - Image: fixed 16:9, explicit dimensions, `loading="lazy"` (below the fold).
 - Hover, pointer devices only via `@media (hover: hover)`: background to
-  `surface-hover`, border to `accent/30`, `-translate-y-0.5`. No hover transforms on
-  touch, where they fire on tap and stick.
-- **GitHub and Live buttons render only when that URL exists in the data** — no dead
-  links, no disabled placeholders (`docs/2-architecture.md` §11).
-- Both open in a new tab with `rel="noreferrer"` and a visually hidden "(opens in a new
-  tab)".
-- **The card title is the only card-level link** — not a wrapper around the whole card.
-  Nested interactive elements inside an anchor are invalid HTML and break the GitHub and
-  Live buttons.
+  `surface-hover`, border to `accent/30`. **No `-translate-y-0.5`** — the lift signals a
+  single click target, and the card is not one (see below). No hover transforms on touch,
+  where they fire on tap and stick.
+- **Case study, GitHub, and Live buttons each render only when that slug or URL exists
+  in the data** — no dead links, no disabled placeholders
+  (`docs/2-architecture.md` §11). A project with none of the three renders no button row.
+- Case study is an internal router link to `/projects/:slug`, same tab. GitHub and Live
+  are external: new tab, `rel="noreferrer"`, and a visually hidden "(opens in a new tab)".
+- **The card is not a link and the title is not a link.** Every destination is an
+  explicit, named button. The card must never be wrapped in an anchor — nested
+  interactive elements inside an anchor are invalid HTML and break the buttons inside it.
+  An earlier draft made the title the sole card-level anchor; three named buttons satisfy
+  the same no-nesting constraint while telling the visitor where each one goes.
 
 ---
 
@@ -624,7 +628,7 @@ When `useReducedMotion()` returns true:
 | `Escape` | Rail tile focused        | Blur, collapse                                                 |
 | `←` `→`  | Carousel focused         | Native horizontal scroll within that carousel only             |
 | `Tab`    | Off-screen carousel card | Scrolls into view automatically                                |
-| `Enter`  | Card title / buttons     | Follow link                                                    |
+| `Enter`  | Card buttons             | Follow link                                                    |
 
 The skip link is the first focusable element on every page: hidden until focused, then
 pinned top-left.
@@ -639,17 +643,19 @@ decision and what still needs updating elsewhere.
 These were flagged as conflicts, decided, and **propagated to the other documents**.
 All four documents now describe the same flow.
 
-| #   | Conflict                                            | Decision                                                                                                                                                                                                 | Propagated to                                                                                   |
-| --- | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| 1   | Hero portrait forbidden by style doc §6.2           | Both layouts supported, switched by an explicit `layout: 'stacked' \| 'split'` field in `profile.ts` (§5.1). `stacked` ships now; the `split` seam ships with it, its portrait later.                    | `3-style-preference.md` §6.2 rewritten; `2-architecture.md` §5 notes the field                  |
-| 2   | Responsive range                                    | 320–1920px. No custom breakpoint; container caps at 1280px.                                                                                                                                              | This doc §2. Style doc §4.2/§12 already said 320–1920 — no change needed                        |
-| 3   | Single `projects.ts`                                | One file, one type, plus a `category` discriminator. One nav link, one section, two subsections.                                                                                                         | `2-architecture.md` §5 data files + grouping note                                               |
-| 4   | Social rail and carousel absent from component tree | Both confirmed.                                                                                                                                                                                          | `2-architecture.md` §6 tree, feature modules, and hooks; `3-style-preference.md` §6.4 and §6.11 |
-| 5   | Heading order                                       | Follow `2-architecture.md` §8. One Projects `h2`, two `h3` subsections, project titles at `h4`.                                                                                                          | `2-architecture.md` §8 heading plan updated                                                     |
-| 6   | Two `ProjectsSection` instances                     | One `ProjectCarousel` component, two instances with different data.                                                                                                                                      | `2-architecture.md` §6                                                                          |
-| 7   | Hero `h1`: name, or name + positioning?             | **Name only.** §5.1 assigns elements; `3-style-preference.md` §6.2 described the block, not the heading — a category error, not a contradiction. Stack is `h1`(name) → role framing → value proposition. | `3-style-preference.md` §6.2 reworded to defer element assignment here; this doc §5.1 item list |
-| 8   | Eyebrow on Current Role                             | **Omitted.** Eyebrows are wayfinding for repeated, scannable sets. `Section`'s optional eyebrow is an opt-in.                                                                                            | `3-style-preference.md` §6.3; this doc §5.2                                                     |
-| 9   | Motion for elements absent from the §8 inventory    | **Default is animation 2 with no child orchestration.** Adding motion to an unlisted element is a §8 amendment ticket, not an in-epic judgement call. Applied first to the Current Role stack badges.    | This doc §8 preamble, §5.2                                                                      |
+| #   | Conflict                                            | Decision                                                                                                                                                                                                                                                                                                        | Propagated to                                                                                   |
+| --- | --------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| 1   | Hero portrait forbidden by style doc §6.2           | Both layouts supported, switched by an explicit `layout: 'stacked' \| 'split'` field in `profile.ts` (§5.1). `stacked` ships now; the `split` seam ships with it, its portrait later.                                                                                                                           | `3-style-preference.md` §6.2 rewritten; `2-architecture.md` §5 notes the field                  |
+| 2   | Responsive range                                    | 320–1920px. No custom breakpoint; container caps at 1280px.                                                                                                                                                                                                                                                     | This doc §2. Style doc §4.2/§12 already said 320–1920 — no change needed                        |
+| 3   | Single `projects.ts`                                | One file, one type, plus a `category` discriminator. One nav link, one section, two subsections.                                                                                                                                                                                                                | `2-architecture.md` §5 data files + grouping note                                               |
+| 4   | Social rail and carousel absent from component tree | Both confirmed.                                                                                                                                                                                                                                                                                                 | `2-architecture.md` §6 tree, feature modules, and hooks; `3-style-preference.md` §6.4 and §6.11 |
+| 5   | Heading order                                       | Follow `2-architecture.md` §8. One Projects `h2`, two `h3` subsections, project titles at `h4`.                                                                                                                                                                                                                 | `2-architecture.md` §8 heading plan updated                                                     |
+| 6   | Two `ProjectsSection` instances                     | One `ProjectCarousel` component, two instances with different data.                                                                                                                                                                                                                                             | `2-architecture.md` §6                                                                          |
+| 7   | Hero `h1`: name, or name + positioning?             | **Name only.** §5.1 assigns elements; `3-style-preference.md` §6.2 described the block, not the heading — a category error, not a contradiction. Stack is `h1`(name) → role framing → value proposition.                                                                                                        | `3-style-preference.md` §6.2 reworded to defer element assignment here; this doc §5.1 item list |
+| 8   | Eyebrow on Current Role                             | **Omitted.** Eyebrows are wayfinding for repeated, scannable sets. `Section`'s optional eyebrow is an opt-in.                                                                                                                                                                                                   | `3-style-preference.md` §6.3; this doc §5.2                                                     |
+| 9   | Motion for elements absent from the §8 inventory    | **Default is animation 2 with no child orchestration.** Adding motion to an unlisted element is a §8 amendment ticket, not an in-epic judgement call. Applied first to the Current Role stack badges.                                                                                                           | This doc §8 preamble, §5.2                                                                      |
+| 10  | Project card link model                             | **Three named buttons, no title link.** Case study → `/projects/:slug`, GitHub, Live — each conditional on its data. The card and its title are never anchors, so nothing nests. The card loses the `-translate-y-0.5` hover, which promised a click target it no longer is.                                    | This doc §6 card behaviour, §9 · `3-style-preference.md` §6.4 · `5-epic-list.md` E10            |
+| 11  | Case study `Links` `h2` with no external links      | **Omitted entirely.** `2-architecture.md` §8 lists the maximum heading set, not a per-project guarantee. Most projects are client work behind a login; a retained heading would resolve to an apology on the majority of pages, and a heading that introduces nothing costs the reader attention for no return. | `3-style-preference.md` §6.10 · `2-architecture.md` §8 · `5-epic-list.md` E10                   |
 
 Four further inconsistencies were found and fixed while propagating:
 

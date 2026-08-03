@@ -592,8 +592,15 @@ h2: Problem
 h2: Approach
 h2: Stack
 h2: Outcome
-h2: Links
+h2: Links          # only when the project has a repository or live URL
 ```
+
+This is the **maximum** heading set for a project page, not a guarantee that all five
+render. `Links` is omitted when the project has neither a `githubUrl` nor a `liveUrl`
+(`docs/3-style-preference.md` §6.10, `docs/4-interaction-design.md` §10 row 11) — most of
+this work is client software behind a customer login, and a heading introducing an empty
+list is worse than an outline that varies by project. The four content headings always
+render and never reorder.
 
 Resume page:
 

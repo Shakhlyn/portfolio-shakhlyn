@@ -504,10 +504,24 @@ are visible at base / `md` / `xl`. All cards in a track are equal height.
 
 Card anatomy, top to bottom: 16:9 image frame (`rounded-lg overflow-hidden`,
 `bg-surface-hover` placeholder, explicit `width`/`height` to prevent CLS,
-`loading="lazy"`) → `h4` title, which is the card's only link → two-line clamped
-`body-sm` summary in `fg-muted` → `Badge` row (max 5, remainder as `+N`) → button row
-with `secondary` `sm` "GitHub" and "Live" buttons, rendering **only** links that exist
-in the data (architecture §11 broken-link prevention).
+`loading="lazy"`) → `h4` title as **plain text** → two-line clamped `body-sm` summary in
+`fg-muted` → `Badge` row (max 5, remainder as `+N`) → button row of up to three
+`secondary` `sm` buttons — "Case study" (internal, → `/projects/:slug`), "GitHub", and
+"Live" — each rendering **only** when its URL or slug exists in the data
+(architecture §11 broken-link prevention).
+
+**Every card destination is a button; the title is not a link.** An earlier draft made
+the `h4` title the sole card-level anchor, to keep interactive elements from nesting inside an
+anchor. Three explicit buttons satisfy that constraint better: they are siblings, never
+children of a link, and they name their destinations instead of hiding "case study",
+"repository", and "live product" behind one title whose target the visitor cannot
+predict. A card whose project has none of the three renders no buttons — that is a card
+with nothing to link to, not a card with a broken link.
+
+Because the card is no longer a single interactive surface, it does **not** take
+`Card`'s `interactive` treatment. It keeps the background and border hover, which group
+the card under the pointer, and drops the `-translate-y-0.5` lift, which promises a click
+target the card as a whole no longer is.
 
 Headings inside a card are `h4`, since the subsection heading is `h3`. Level order is
 never skipped for visual reasons (§3.3).
@@ -561,6 +575,13 @@ Post page: `max-w-content` prose, `h1`, date line, then article body.
 `h1` project name, `fg-muted` one-line summary, `Badge` stack row, hero image, then
 `h2` sections in the fixed order Problem → Approach → Stack → Outcome → Links, each
 `max-w-content`.
+
+**The Links `h2` is omitted entirely when the project has neither a repository nor a
+live URL.** Most of the work here is client software behind a customer login, so a
+retained heading would resolve to an apology on the majority of project pages. A heading
+that introduces nothing is worse than an outline that varies: the visitor pays attention
+to it and gets nothing back. Architecture §8's heading plan lists the maximum set of
+project-page headings, not a guarantee that all five appear on every project.
 
 ### 6.11 Social Rail
 

@@ -414,10 +414,12 @@ unwieldy.
   throttling, resize re-evaluation.
 - Arrow buttons — subsection header, hidden below `md`, disabled at both ends, hidden
   entirely when nothing overflows, distinctly labelled per group.
-- `ProjectCard` — 16:9 image, `h4` title as the **only** card-level link, clamped
-  summary, badges, conditional GitHub and Live buttons.
+- `ProjectCard` — 16:9 image, `h4` title as **plain text**, clamped summary, badges, and
+  a row of up to three conditional `secondary` `sm` buttons: Case study, GitHub, Live.
+  The card is never an anchor (`4-interaction-design.md` §6, §10 row 10).
 - `ProjectPage` + `ProjectCaseStudy` at `/projects/:slug` — `h2` order Problem →
-  Approach → Stack → Outcome → Links.
+  Approach → Stack → Outcome → Links, with **Links omitted** when the project has no
+  repository or live URL (§10 row 11).
 
 **Acceptance**
 
@@ -427,7 +429,8 @@ unwieldy.
 - Each scroller is a labelled `role="region"` with `tabindex="0"`; arrow keys scroll it.
 - Tabbing to an off-screen card scrolls it into view without landing flush to the edge.
 - **Only links present in the data render** — no dead links, no disabled placeholders.
-- No nested interactive elements inside an anchor.
+  A project with no case study, no repository, and no live URL renders no button row.
+- No nested interactive elements inside an anchor. The card is not an anchor at all.
 - An empty category hides its subsection; two empty categories hide the section and its
   nav item.
 - Unknown `:slug` resolves to the 404, not a crash.
@@ -630,10 +633,13 @@ verifies the assembled whole, where most real failures live.
 - Lighthouse targets confirmed **against the deployed site**, not just locally.
 - No broken internal or external links in production.
 - Yarn is the only package manager used in the build (`packageManager` field honoured).
-- **`grep -rn "INVENTED FIGURE" src/` returns nothing.** Development placeholder
-  metrics were added to the data layer on 2026-08-03; `1-prd.md` §6 lists fabricated
-  metrics as never acceptable at launch, so this is a hard deploy gate, not a checklist
-  nicety. Each marker is replaced with a real figure or its clause is deleted.
+- **`grep -rnE "INVENTED FIGURE|PLACEHOLDER PROJECT|PLACEHOLDER SCREENSHOT" src/` returns
+  nothing.** Development placeholders were added to the data layer — invented outcome
+  metrics on 2026-08-03, then placeholder projects and generated screenshots during E10
+  so both carousels overflow and the 16:9 frame is verifiable before real screenshots
+  exist. `1-prd.md` §6 lists fabricated metrics **and** placeholder project names as
+  never acceptable at launch, so this is a hard deploy gate, not a checklist nicety. Each
+  marker is replaced with real content or the entry is deleted.
 
 **Traceability:** `1-prd.md` §5 Reliability · `2-architecture.md` §1, §9, §10
 
@@ -660,7 +666,8 @@ recruiter's 90-second scan. E11–E14 broaden it; E15–E18 make it fast and cor
 | Risk                                                         | Epic               | Mitigation                                                        |
 | ------------------------------------------------------------ | ------------------ | ----------------------------------------------------------------- |
 | Scroll spy + smooth scroll + focus management interact badly | E07                | Build and verify the three behaviours separately before combining |
-| Carousel arrow state desyncs after resize                    | E10                | Resize re-evaluation is an explicit acceptance criterion          |
+| Carousel arrow state desyncs after resize                    | E10                | `ResizeObserver` on the track, not a window listener; measured    |
+| Full-bleed carousel track causes horizontal **page** scroll  | E10                | Bleed only below `sm`, where the container gutter is symmetric    |
 | Rail `width` animation causes layout recalculation           | E08                | Profile it; documented `scaleX` fallback                          |
 | Inline PDF viewer unsupported on iOS Safari                  | E12                | Always offer the direct download link                             |
 | Theme flash on reload                                        | E02                | Pre-paint inline script, treated as non-optional                  |
