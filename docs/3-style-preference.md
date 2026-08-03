@@ -576,6 +576,34 @@ On the `/resume` page itself: a `primary` "Download PDF" carrying the file type 
 in the label or adjacent `fg-subtle` text, and the in-browser viewer. Both paths point at
 the single stable asset path from `src/data/resume.ts`.
 
+**The viewer slot.** `max-w-content`, `rounded-lg`, `border border-border`, `bg-surface` —
+elevation level 1 (§4.4), the same treatment as a card. It is **aspect-ratio-locked to the
+PDF's own page ratio** so it reserves its exact final height before the document paints,
+contributing zero CLS. This is the hero portrait slot's technique (§6.2) applied to a
+second asset that arrives after first paint, and it is the reason the ratio is a value in
+the markup rather than a height guess: the committed file is A4, so the lock is 210/297.
+A ratio is one of the few things no design token expresses, so the arbitrary value is
+permitted here and carries a comment naming the paper size it came from (§9).
+
+**The fallback panel.** Where the browser cannot display a PDF inline, the slot renders a
+panel in the same frame, at the same locked ratio, so the section's height does not change
+between the two states. Centred inside it: one `fg-muted` `body-sm` sentence, and nothing
+else. It is **not** styled as an error — `danger` is reserved for form feedback (§2.5),
+and a browser without an inline PDF viewer is a capability difference, not a fault.
+
+**The action sits beneath the slot and is unconditional.** A `secondary` Button carrying
+`RESUME.viewLabel`, opening the file in a new tab, rendered identically in both states.
+Putting a second action inside the panel would give the fallback state two controls with
+the same name pointing at the same file — three, counting Download — so the panel
+explains and the button acts.
+
+It is unconditional because it is the one guarantee the page makes: the file is always one
+click away. A guarantee must not rest on a capability check that can be wrong, and this
+one cannot be verified on the browser it exists for.
+
+It is `secondary`, not `primary`, because Download is this view's single `primary`
+(§5.1). Saving the file is the main action; opening it full-size is the companion.
+
 ### 6.8 Contact
 
 Two-column at `lg:` (form 60% / direct links 40%), stacked below.

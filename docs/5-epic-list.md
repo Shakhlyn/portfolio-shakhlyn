@@ -473,7 +473,13 @@ unwieldy.
 - `ResumePage` at `/resume` with `ResumeViewer` and `ResumeDownloadLink`. **No
   home-page `#resume` section** — the resume is route-only, entered from the hero CTA and
   the nav button (`4-interaction-design.md` §1, §5.6).
-- PDF committed at `public/resume/shakhlyn-resume.pdf`.
+- An **aspect-ratio-locked viewer slot** at the PDF's own page ratio, so it reserves its
+  height before the document paints and contributes zero CLS
+  (`3-style-preference.md` §6.7).
+- A **fallback panel** in that same frame where the browser cannot display a PDF inline,
+  keeping the `h2: View` heading introducing something real, with the direct link to the
+  file rendered in **both** states (`4-interaction-design.md` §5.6).
+- PDF committed at `../public/resume/Shaokh_Al_Mahmud_Shakhlyn-resume.pdf`.
 
 **Acceptance**
 
