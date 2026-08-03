@@ -321,7 +321,7 @@ wrong.
 
 ## E08 — Social Rail
 
-**Goal:** The fixed left rail from `docs/img.png`, plus the `SocialLinks` fallback below
+**Goal:** The fixed left rail from `../src/assets/img.png`, plus the `SocialLinks` fallback below
 `lg`.
 
 **Deliverables**

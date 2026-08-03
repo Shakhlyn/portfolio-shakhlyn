@@ -483,7 +483,7 @@ container gutter via `scroll-padding-inline`.
 
 ## 7. Floating Social Rail
 
-Matches the reference in `docs/img.png`.
+Matches the reference in `../src/assets/img.png`.
 
 ### Position
 

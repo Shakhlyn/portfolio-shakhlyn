@@ -1,6 +1,6 @@
 # E08 — Social Rail
 
-**Goal:** The fixed left rail from `docs/img.png`, driven by the same `profile.ts` link
+**Goal:** The fixed left rail from `../../src/assets/img.png`, driven by the same `profile.ts` link
 data as the `SocialLinks` built in E07.
 
 **Depends on:** E02 (tokens), E05 (`IconLink`, icons, focus ring), E06 (reduced motion),
