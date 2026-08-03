@@ -167,3 +167,34 @@ uptime. If it stops delivering, the form cannot tell. The page does not depend o
 same section renders the address as selectable text and the social links beside it, and the
 transport is one function in one file, so switching provider is a single commit touching no
 component.
+
+## 10. Post-epic changes
+
+Two changes after the eight E13 commits, each its own commit.
+
+**Buttons had no pointer cursor, site-wide.** Reported against the contact form's submit
+button, but the cause is global: Tailwind v4's Preflight sets `cursor: default` on
+`button`, reverting v3's `pointer`, and the codebase carried no `cursor` rule anywhere. So
+`ThemeToggle`, the mobile nav trigger, and both carousel arrows read as unclickable too.
+Fixed once in `src/styles/index.css`'s base layer rather than in `Button`, because the
+cause is a framework default and two of those controls are raw `<button>`s that never pass
+through `Button`. `:not(:disabled)` keeps a disabled control showing the default arrow.
+
+**The footer's social row now renders below `sm` only.** At `sm` and up the fixed rail is
+on screen at the same moment the footer is, so the same four links appeared twice within
+one viewport — three times on the home page, counting the contact section. Hidden by
+breakpoint rather than deleted: the footer is the only social surface on every route at
+every width, and deleting it would leave a phone visitor on `/projects/:slug` or `/resume`
+with no visible link at all. `3-style-preference.md` §6.12 amended, and the governing rule
+written down there: **the rail is the social surface at `sm` and up; every other copy
+exists only below it.**
+
+Copy counts after the change — at `sm`+: rail and the contact section, down from three.
+Below `sm`: hero, contact, footer, and the nav sheet, with no rail, each serving a
+different point in the scroll.
+
+**Neither is visually verified**, for the same reason as §5: no browser tooling. The
+cursor rule was confirmed to reach the built CSS as
+`button:not(:disabled),[role=button]:not(:disabled){cursor:pointer}`, and `.sm\:hidden` was
+confirmed to compile inside `@media (width>=40rem)` — both facts about the bundle, not
+about what a pointer does on screen.

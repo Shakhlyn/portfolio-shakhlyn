@@ -708,8 +708,20 @@ Behaviour, timing, and the documented `width`-animation exception are in
 
 ### 6.12 Footer
 
-`border-t border-border`, `py-12`. Name + current year at left in `fg-subtle`, social
-icons at right. No sitemap sprawl, no newsletter, no "built with ❤️".
+`border-t border-border`, `py-12`. Name + current year at left in `fg-subtle`. No
+sitemap sprawl, no newsletter, no "built with ❤️".
+
+**Social icons render below `sm` only** — at `sm` and up the footer is name and year
+alone. The rail (§6.11) is fixed to the viewport edge and is therefore on screen at the
+moment the footer is, so a second copy of the same four links a few hundred pixels away
+is duplication rather than redundancy. This is the mutual-exclusion rule
+`4-interaction-design.md` §5.1 already applies to the hero's `SocialLinks`, generalised:
+**the rail is the social surface at `sm` and up; every other copy exists only below it.**
+
+They are hidden by breakpoint rather than removed, because the footer is the only social
+surface present on every route at every width. Deleting them outright would leave a phone
+visitor on `/projects/:slug` or `/resume` with no visible social link anywhere — the rail
+is hidden below `sm`, and the hero and contact rows are home-page only.
 
 ### 6.13 404
 
