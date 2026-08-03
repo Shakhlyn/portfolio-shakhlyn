@@ -509,6 +509,17 @@ Form behaviour — FormSubmit, per `docs/2-architecture.md` §9:
 | Success    | Form replaced by a success message, `role="status"`. Focus moves to it.                     |
 | Error      | Form retained **with values intact**, error message plus the raw email address as fallback. |
 
+**The announced count rides in `FormStatus`'s existing error state.** The live region is
+already `role="status" aria-live="polite"` and already mounted while idle, so a count
+written into it is announced without a fourth `FormState` variant and without touching an
+E05 component. The visitor therefore hears both halves of the failure — "3 fields need
+attention" from the region, then the specific message on the field focus lands in.
+
+Two consequences worth stating, because both are visible: the mailto fallback `FormStatus`
+appends to every error is shown for a validation failure too, which is harmless and
+occasionally the more useful path; and the count is recomputed only on submit, so it stands
+unchanged while the visitor fixes fields and is replaced the next time they submit.
+
 Values are never cleared on error — retyping a message because a network call failed is
 the fastest way to lose a contact. The `_honey` honeypot is visually hidden but stays in
 the DOM, because the provider reads it from the submitted body.

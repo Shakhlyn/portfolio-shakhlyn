@@ -655,12 +655,17 @@ Email and Message are **required** and marked with `*` in the label text per §5
 colour. A field's asterisk and its validator must not be able to disagree, which they can
 the moment either is decided in a component.
 
-**The honeypot's accessibility treatment is an open decision** and is deliberately not
-recorded here yet. The clause this replaced required the field to "remain in the
-accessibility tree as hidden but present per Netlify's detection" — self-contradictory,
-and its justification is void now that the provider reads `_honey` from the request body
-and never inspects the page. What replaces it is a live question (E13 Open Question 1),
-and a spec that guessed would be worse than one that is visibly waiting.
+**The honeypot is hidden from everyone, not only from sighted visitors.** It is positioned
+off-screen with CSS — never `display:none`, which some clients drop from the submitted body
+— and carries `tabindex="-1"`, `aria-hidden="true"`, and `autocomplete="off"`.
+
+The clause this replaced required the field to "remain in the accessibility tree as hidden
+but present per Netlify's detection". That was self-contradictory, its justification is
+void now that the provider reads `_honey` from the request body and never inspects the
+page, and read literally it built a trap that only a screen reader user can fall into: they
+hear a labelled field, fill it in good faith, and their message is discarded in silence —
+the exact failure `2-architecture.md` §11 forbids. A honeypot works by being invisible to
+humans; a human using a screen reader is a human.
 
 ### 6.9 Writing
 
