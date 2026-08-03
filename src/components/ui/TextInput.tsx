@@ -1,4 +1,4 @@
-import type { InputHTMLAttributes, ReactElement } from 'react';
+import type { InputHTMLAttributes, ReactElement, Ref } from 'react';
 import { useId } from 'react';
 
 import { AlertIcon } from '@/components/ui/icons/AlertIcon';
@@ -16,6 +16,13 @@ interface TextInputProps extends Omit<
   label: string;
   /** Validation message. Presence switches the field into its error state. */
   error?: string;
+  /**
+   * Forwarded to the `<input>`, so a form can move focus to its first invalid
+   * field (docs/4-interaction-design.md §5.7). A plain prop, not
+   * `forwardRef` — React 19 passes `ref` through props for function components,
+   * and the type must say so because `InputHTMLAttributes` does not carry it.
+   */
+  ref?: Ref<HTMLInputElement>;
   className?: string;
 }
 
@@ -30,6 +37,7 @@ export const TextInput = ({
   label,
   error,
   required,
+  ref,
   className,
   ...props
 }: TextInputProps): ReactElement => {
@@ -46,6 +54,7 @@ export const TextInput = ({
 
       <input
         {...props}
+        ref={ref}
         id={id}
         required={required}
         aria-invalid={error ? true : undefined}

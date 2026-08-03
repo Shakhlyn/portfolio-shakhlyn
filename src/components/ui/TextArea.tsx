@@ -1,4 +1,4 @@
-import type { ReactElement, TextareaHTMLAttributes } from 'react';
+import type { ReactElement, Ref, TextareaHTMLAttributes } from 'react';
 import { useId } from 'react';
 
 import { AlertIcon } from '@/components/ui/icons/AlertIcon';
@@ -11,6 +11,13 @@ interface TextAreaProps extends Omit<
 > {
   label: string;
   error?: string;
+  /**
+   * Forwarded to the `<textarea>`, so a form can move focus to its first invalid
+   * field (docs/4-interaction-design.md §5.7). A plain prop, not `forwardRef` —
+   * React 19 passes `ref` through props for function components, and the type
+   * must say so because `TextareaHTMLAttributes` does not carry it.
+   */
+  ref?: Ref<HTMLTextAreaElement>;
   className?: string;
 }
 
@@ -19,6 +26,7 @@ export const TextArea = ({
   label,
   error,
   required,
+  ref,
   className,
   ...props
 }: TextAreaProps): ReactElement => {
@@ -34,6 +42,7 @@ export const TextArea = ({
 
       <textarea
         {...props}
+        ref={ref}
         id={id}
         required={required}
         aria-invalid={error ? true : undefined}
