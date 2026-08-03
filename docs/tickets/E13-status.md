@@ -198,3 +198,11 @@ cursor rule was confirmed to reach the built CSS as
 `button:not(:disabled),[role=button]:not(:disabled){cursor:pointer}`, and `.sm\:hidden` was
 confirmed to compile inside `@media (width>=40rem)` — both facts about the bundle, not
 about what a pointer does on screen.
+
+**X/Twitter link added.** `profile.ts` gained `x: 'https://x.com/Shakhlyn'` — one line, no
+component touched, which is the property E04 was built for. It appears everywhere social
+links render: the rail at `sm`+, and `SocialLinks` in the contact section, the mobile nav
+sheet, the hero below `sm`, and the footer below `sm`. This also closes
+`2-architecture.md` §9's "Direct contact links must also be present: Email, LinkedIn,
+GitHub, Twitter/X", which was previously satisfied three-quarters of the way — the channel,
+its icon, and the presence filter had all shipped in E08 with no URL to render.

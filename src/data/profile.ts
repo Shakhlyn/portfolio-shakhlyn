@@ -52,8 +52,7 @@ export const PROFILE: ProfileType = {
     email: 'mailto:shakhlyn.sh.du@gmail.com',
     linkedin: 'https://linkedin.com/in/shakhlyn',
     github: 'https://github.com/shakhlyn',
-    // No X/Twitter on the CV. Omitted rather than guessed — the rail and
-    // SocialLinks render only links that exist.
+    x: 'https://x.com/Shakhlyn',
   },
 };
 
