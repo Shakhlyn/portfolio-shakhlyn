@@ -698,8 +698,16 @@ attached to the screen edge.
 
 - Collapsed: 48px wide, 20px icon centred, `bg-surface`, `border border-border`
   (no left border), `text-fg-muted`.
-- Expanded on hover **or focus**: grows rightward to fit its `body-sm` label,
-  `bg-accent`, `text-on-accent`. One tile at a time; the stack never shifts vertically.
+- Expanded on hover **or focus**: grows rightward to **a single fixed width shared by
+  every tile** (144px — a 96px label well plus the 48px icon square), `bg-accent`,
+  `text-on-accent`. One tile at a time; the stack never shifts vertically.
+
+  The width is uniform rather than shrink-wrapped to each label. Sized to its own text,
+  "X" settled some 60px narrower than "LinkedIn", and because only one tile is ever open
+  the difference reads as the rail moving rather than as the labels differing. The cost is
+  empty space beside the shortest label; the return is an edge that lands in the same
+  place every time.
+
 - `shadow-sm` at rest, `shadow-lg` when expanded.
 - Standard focus ring (§4.5), offset so it is not clipped by the viewport edge.
 

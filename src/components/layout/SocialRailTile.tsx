@@ -57,16 +57,25 @@ export const SocialRailTile = ({ channel }: SocialRailTileProps): ReactElement =
       )}
     >
       {/*
-        Label sits left of the icon (§7). Width animates via max-width so it can
-        size to its own text; a fixed width would clip "LinkedIn" or pad "X".
-        This is the single documented width-animation exception (§7) — the rail
-        is position: fixed, so it is outside document flow.
+        Label sits left of the icon (§7). This is the single documented
+        width-animation exception (§7) — the rail is position: fixed, so it is
+        outside document flow and its width cannot reflow the page.
+
+        **A fixed width, not max-width, so every tile expands to the same 144px.**
+        Shrink-wrapping each label to its own text made the stack ragged: "X"
+        settled ~60px narrower than "LinkedIn", and since only one tile is open at
+        a time the differing widths read as the rail moving rather than as the
+        labels differing. Uniform width costs "X" some empty space and buys an
+        edge that lands in the same place every time.
+
+        `w-24` (96px) fits "LinkedIn" at body-sm/500 with the pl-4 gutter and puts
+        the tile at 96 + 47 + 1 = 144px, which is the ~140px §7's diagram states.
       */}
       <span
         className={cn(
-          'max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-40 group-focus-visible:max-w-40',
+          'w-0 overflow-hidden whitespace-nowrap group-hover:w-24 group-focus-visible:w-24',
           reducedMotion ? 'duration-0' : 'duration-100',
-          'transition-[max-width] ease-out',
+          'transition-[width] ease-out',
         )}
       >
         <span
