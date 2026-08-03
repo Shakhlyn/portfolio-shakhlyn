@@ -692,7 +692,7 @@ project-page headings, not a guarantee that all five appear on every project.
 ### 6.11 Social Rail
 
 Fixed to the left viewport edge, vertically centred, `sm` and up only. A vertical
-stack of 48px-tall tiles — GitHub, LinkedIn, Email, X — each a flex row of
+stack of 48px-tall tiles — GitHub, LinkedIn, X, Email — each a flex row of
 `[label][icon]`, rounded on the **right edge only** (`rounded-r-md`) so it reads as
 attached to the screen edge.
 

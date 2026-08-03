@@ -9,6 +9,11 @@ import type { PresentSocialChannelType, SocialChannelType } from '@/types/social
  * The four social channels, in the order fixed by
  * docs/4-interaction-design.md §7.
  *
+ * **Email is last, and the three profile links come first.** `mailto:` is a
+ * different kind of destination from the other three — it hands the visitor to
+ * their mail client rather than opening a page — so it sits at the end of the
+ * run instead of inside it.
+ *
  * Both `SocialLinks` and `SocialRail` render from this list, because
  * docs/5-epic-list.md E08 requires them to be "driven by the same profile.ts
  * link data". Two inline copies would be two places for the order to drift.
@@ -19,8 +24,8 @@ import type { PresentSocialChannelType, SocialChannelType } from '@/types/social
 export const SOCIAL_CHANNELS: readonly SocialChannelType[] = [
   { key: 'github', label: 'GitHub', Icon: GitHubIcon },
   { key: 'linkedin', label: 'LinkedIn', Icon: LinkedInIcon },
-  { key: 'email', label: 'Email', Icon: EmailIcon },
   { key: 'x', label: 'X', Icon: XIcon },
+  { key: 'email', label: 'Email', Icon: EmailIcon },
 ];
 
 /**

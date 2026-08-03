@@ -622,7 +622,7 @@ collides with thumbs, which is why the cut-off exists at all.
 
 ### Structure
 
-A vertical stack of tiles: GitHub, LinkedIn, Email, X. Each tile is a flex row of
+A vertical stack of tiles: GitHub, LinkedIn, X, Email. Each tile is a flex row of
 `[label][icon]`, 48px tall, rounded on the **right edge only** so it reads as attached
 to the screen edge.
 
@@ -631,11 +631,11 @@ COLLAPSED           HOVERED / FOCUSED
 ┌────┐              ┌──────────────┐
 │ ⌥  │              │  GitHub   ⌥  │
 ├────┤              ├────┬─────────┘
-│ ✉  │              │ ✉  │
-├────┤              ├────┤
 │ in │              │ in │
 ├────┤              ├────┤
 │ 𝕏  │              │ 𝕏  │
+├────┤              ├────┤
+│ ✉  │              │ ✉  │
 └────┘              └────┘
  48px                ~140px
 ```
@@ -663,7 +663,9 @@ the rail; if the profiler disagrees, fall back to `scaleX`.
 ### Content
 
 - GitHub, LinkedIn, X → external, new tab, `rel="noreferrer"`.
-- Email → `mailto:`, same tab.
+- Email → `mailto:`, same tab, and **last in the stack**: it is the one tile that
+  leaves the browser for a mail client rather than opening a page, so it closes the run
+  instead of interrupting the three profile links.
 - Tiles render only for links present in `src/data/profile.ts`. No placeholder tiles.
 
 ### Constraints
