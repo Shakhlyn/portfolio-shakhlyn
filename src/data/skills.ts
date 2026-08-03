@@ -38,27 +38,16 @@ export const SKILL_GROUPS: readonly SkillGroupType[] = [
   {
     id: 'backend',
     label: 'Backend',
-    skills: ['FastAPI', 'Django', 'Express.js', 'Node.js', 'REST APIs', 'Jinja'],
+    skills: ['FastAPI', 'Express.js', 'Node.js', 'Jinja'],
   },
   {
     id: 'data',
     label: 'Data',
-    skills: ['PostgreSQL', 'MongoDB', 'Mongoose'],
+    skills: ['PostgreSQL', 'MongoDB'],
   },
   {
-    id: 'infrastructure',
-    label: 'Infrastructure',
-    skills: ['Git', 'Linux', 'Keycloak', 'Vite', 'npm', 'Postman'],
-  },
-  {
-    id: 'practices',
-    label: 'Practices',
-    skills: [
-      'Reusable component architecture',
-      'REST API integration',
-      'Production debugging',
-      'Requirements clarification',
-      'Cross-functional collaboration',
-    ],
+    id: 'tools & infrastructure',
+    label: 'Tools & Infrastructure',
+    skills: ['Git', 'Linux', 'Vim', 'Keycloak', 'Vite', 'npm', 'Postman'],
   },
 ];

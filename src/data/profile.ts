@@ -31,7 +31,7 @@ export const PROFILE: ProfileType = {
   // Label text from docs/3-style-preference.md §6.2 item 6.
   heroCtas: {
     resume: 'View Resume',
-    contact: 'Contact',
+    contact: 'Let\'s Talk',
   },
   layout: 'split',
   /**
