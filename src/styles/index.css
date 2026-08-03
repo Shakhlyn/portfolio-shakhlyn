@@ -21,6 +21,15 @@
   --fg-subtle: 113 113 122;
   --accent: 124 58 237;
   --accent-strong: 109 40 217;
+  /*
+   * The fill behind on-accent text, kept separate from --accent because the two
+   * roles need different luminance in this theme. White on --accent is 5.70:1 —
+   * AA, but thin for a 15px label on a saturated field. The fill goes one step
+   * darker for 7.10:1 (AAA) while --accent stays put for links, rings, and
+   * eyebrows, where it sits on the page background rather than under text.
+   */
+  --accent-fill: 109 40 217; /* #6d28d9 */
+  --accent-fill-hover: 91 33 182; /* #5b21b6 */
   --accent-soft: 245 243 255;
   --on-accent: 255 255 255;
   --danger: 185 28 28;
@@ -54,6 +63,13 @@
   --fg-subtle: 140 150 173; /* #8c96ad */
   --accent: 167 139 250; /* #a78bfa */
   --accent-strong: 196 181 253; /* #c4b5fd */
+  /*
+   * Dark needs no correction: on-accent (#0a0e1a) on --accent is already
+   * 7.08:1. The tokens exist so one Button rule serves both themes, and here
+   * they alias the values the fill already used.
+   */
+  --accent-fill: 167 139 250; /* #a78bfa */
+  --accent-fill-hover: 196 181 253; /* #c4b5fd */
   --accent-soft: 28 27 56; /* #1c1b38 */
   --on-accent: 10 14 26; /* #0a0e1a */
   --danger: 248 113 113; /* #f87171 */
@@ -80,6 +96,8 @@
   --color-fg-subtle: rgb(var(--fg-subtle));
   --color-accent: rgb(var(--accent));
   --color-accent-strong: rgb(var(--accent-strong));
+  --color-accent-fill: rgb(var(--accent-fill));
+  --color-accent-fill-hover: rgb(var(--accent-fill-hover));
   --color-accent-soft: rgb(var(--accent-soft));
   --color-on-accent: rgb(var(--on-accent));
   --color-danger: rgb(var(--danger));

@@ -73,43 +73,47 @@ property values and every component follows automatically.
 
 ### 2.2 Light Theme
 
-| Token           | Hex       | Role                                             |
-| --------------- | --------- | ------------------------------------------------ |
-| `bg`            | `#ffffff` | Page background                                  |
-| `surface`       | `#fafafa` | Cards, elevated panels, code blocks              |
-| `surface-hover` | `#f4f4f5` | Card / row hover state                           |
-| `border`        | `#e4e4e7` | Hairline dividers, card outlines (decorative)    |
-| `border-strong` | `#8b8b94` | Form control outlines (interactive, needs 3:1)   |
-| `fg`            | `#18181b` | Headings, primary body text                      |
-| `fg-muted`      | `#52525b` | Secondary body copy, descriptions                |
-| `fg-subtle`     | `#71717a` | Metadata, captions, timestamps                   |
-| `accent`        | `#7c3aed` | Links, focus ring, primary button fill           |
-| `accent-strong` | `#6d28d9` | Accent hover / pressed, accent text on tinted bg |
-| `accent-soft`   | `#f5f3ff` | Badge and eyebrow background tint                |
-| `on-accent`     | `#ffffff` | Text/icons on an accent fill                     |
-| `danger`        | `#b91c1c` | Form validation errors                           |
-| `success`       | `#15803d` | Form submission success                          |
+| Token               | Hex       | Role                                             |
+| ------------------- | --------- | ------------------------------------------------ |
+| `bg`                | `#ffffff` | Page background                                  |
+| `surface`           | `#fafafa` | Cards, elevated panels, code blocks              |
+| `surface-hover`     | `#f4f4f5` | Card / row hover state                           |
+| `border`            | `#e4e4e7` | Hairline dividers, card outlines (decorative)    |
+| `border-strong`     | `#8b8b94` | Form control outlines (interactive, needs 3:1)   |
+| `fg`                | `#18181b` | Headings, primary body text                      |
+| `fg-muted`          | `#52525b` | Secondary body copy, descriptions                |
+| `fg-subtle`         | `#71717a` | Metadata, captions, timestamps                   |
+| `accent`            | `#7c3aed` | Links, focus ring, primary button fill           |
+| `accent-strong`     | `#6d28d9` | Accent hover / pressed, accent text on tinted bg |
+| `accent-fill`       | `#6d28d9` | Fill behind `on-accent` text (primary button)    |
+| `accent-fill-hover` | `#5b21b6` | That fill, hovered / pressed                     |
+| `accent-soft`       | `#f5f3ff` | Badge and eyebrow background tint                |
+| `on-accent`         | `#ffffff` | Text/icons on an accent fill                     |
+| `danger`            | `#b91c1c` | Form validation errors                           |
+| `success`           | `#15803d` | Form submission success                          |
 
 ### 2.3 Dark Theme
 
 The dark theme is **dark navy** — not neutral zinc, and not pure black.
 
-| Token           | Hex       | Role                                           |
-| --------------- | --------- | ---------------------------------------------- |
-| `bg`            | `#0a0e1a` | Page background                                |
-| `surface`       | `#111726` | Cards, elevated panels, code blocks            |
-| `surface-hover` | `#182032` | Card / row hover state                         |
-| `border`        | `#252e42` | Hairline dividers, card outlines (decorative)  |
-| `border-strong` | `#606c85` | Form control outlines (interactive, needs 3:1) |
-| `fg`            | `#e3e8f2` | Headings, primary body text                    |
-| `fg-muted`      | `#a4aec4` | Secondary body copy, descriptions              |
-| `fg-subtle`     | `#8c96ad` | Metadata, captions, timestamps                 |
-| `accent`        | `#a78bfa` | Links, focus ring, primary button fill         |
-| `accent-strong` | `#c4b5fd` | Accent hover / pressed                         |
-| `accent-soft`   | `#1c1b38` | Badge and eyebrow background tint              |
-| `on-accent`     | `#0a0e1a` | Text/icons on an accent fill                   |
-| `danger`        | `#f87171` | Form validation errors                         |
-| `success`       | `#4ade80` | Form submission success                        |
+| Token               | Hex       | Role                                           |
+| ------------------- | --------- | ---------------------------------------------- |
+| `bg`                | `#0a0e1a` | Page background                                |
+| `surface`           | `#111726` | Cards, elevated panels, code blocks            |
+| `surface-hover`     | `#182032` | Card / row hover state                         |
+| `border`            | `#252e42` | Hairline dividers, card outlines (decorative)  |
+| `border-strong`     | `#606c85` | Form control outlines (interactive, needs 3:1) |
+| `fg`                | `#e3e8f2` | Headings, primary body text                    |
+| `fg-muted`          | `#a4aec4` | Secondary body copy, descriptions              |
+| `fg-subtle`         | `#8c96ad` | Metadata, captions, timestamps                 |
+| `accent`            | `#a78bfa` | Links, focus ring, primary button fill         |
+| `accent-strong`     | `#c4b5fd` | Accent hover / pressed                         |
+| `accent-fill`       | `#a78bfa` | Fill behind `on-accent` text (primary button)  |
+| `accent-fill-hover` | `#c4b5fd` | That fill, hovered / pressed                   |
+| `accent-soft`       | `#1c1b38` | Badge and eyebrow background tint              |
+| `on-accent`         | `#0a0e1a` | Text/icons on an accent fill                   |
+| `danger`            | `#f87171` | Form validation errors                         |
+| `success`           | `#4ade80` | Form submission success                        |
 
 **Dark theme is not pure black.** `#0a0e1a` avoids the halation that pure `#000` causes
 against light text, and gives `surface` room to read as elevated. True black would also
@@ -140,7 +144,8 @@ target the 3:1 non-text requirement.
 | `fg-muted` on `surface`                   | 7.41  | 8.03  | 4.5         | AAA    |
 | `fg-subtle` on `bg`                       | 4.83  | 6.49  | 4.5         | AA     |
 | `accent` on `bg`                          | 5.70  | 7.08  | 4.5         | AA     |
-| `on-accent` on `accent` fill              | 5.70  | 7.08  | 4.5         | AA     |
+| `on-accent` on `accent-fill`              | 7.10  | 7.08  | 4.5         | AAA    |
+| `on-accent` on `accent-fill-hover`        | 8.98  | 10.43 | 4.5         | AAA    |
 | `accent-strong` on `accent-soft`          | 6.48  | 9.00  | 4.5         | AA     |
 | `danger` on `bg`                          | 6.47  | 6.96  | 4.5         | AA     |
 | `success` on `bg`                         | 5.02  | 11.05 | 4.5         | AA     |
@@ -151,6 +156,20 @@ The dark column was **recomputed** when the theme moved from zinc to navy — no
 over. Every pair still passes, and most improved slightly: `fg-subtle` went 5.79 → 6.49
 and `border-strong` went 3.10 → 3.65, the latter being the tightest pair in the system
 and the one that had the least headroom before.
+
+**`accent-fill` exists because one hue cannot do both jobs in light mode.** `accent`
+sits _on_ the page background as link text, focus rings, and eyebrows, where 5.70:1
+is comfortable. The primary button puts white text _on top of_ that same hue, and
+5.70:1 there reads thin at a 15px label — legal, but not what a hiring manager should
+have to squint at. The fill is one step darker (7.10:1, AAA) and the hue is unchanged.
+Dark mode needed no correction and the two tokens alias its existing values, so a
+single Button rule serves both themes.
+
+**Disabled is not the same as busy.** `disabled:opacity-50` is the correct affordance
+for a control that is unavailable, and WCAG exempts inactive controls from contrast —
+but it drops a primary button's label to 2.26:1, and a button mid-request is not
+inactive: its text is still information the visitor is reading. A control that is busy
+keeps full opacity and says so with `aria-busy`; only a genuinely unavailable one fades.
 
 `border` (`#e4e4e7` / `#252e42`) is **decorative only** — 1.27 and 1.42 respectively. It
 may never be the sole indicator of an interactive control's boundary. Form inputs use
@@ -325,7 +344,7 @@ string concatenation.
 
 | Variant     | Idle                                          | Hover                                   | Use                        |
 | ----------- | --------------------------------------------- | --------------------------------------- | -------------------------- |
-| `primary`   | `bg-accent text-on-accent`                    | `bg-accent-strong`                      | One per view: the main CTA |
+| `primary`   | `bg-accent-fill text-on-accent`               | `bg-accent-fill-hover`                  | One per view: the main CTA |
 | `secondary` | `bg-transparent text-fg border border-border` | `bg-surface-hover border-border-strong` | Companion actions          |
 | `ghost`     | `bg-transparent text-fg-muted`                | `text-fg bg-surface-hover`              | Tertiary / icon-adjacent   |
 

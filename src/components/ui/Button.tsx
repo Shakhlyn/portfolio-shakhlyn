@@ -45,7 +45,11 @@ interface ButtonAsLinkProps extends ButtonBaseProps {
 type ButtonProps = ButtonAsButtonProps | ButtonAsLinkProps;
 
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
-  primary: 'bg-accent text-on-accent hover:bg-accent-strong',
+  // accent-fill, not accent: white on --accent is 5.70:1, which passes AA but
+  // reads thin at label sizes. The fill token is a step darker in light mode
+  // (7.10:1) and identical in dark, where no correction was needed
+  // (docs/3-style-preference.md §2.2–2.4).
+  primary: 'bg-accent-fill text-on-accent hover:bg-accent-fill-hover',
   secondary:
     'bg-transparent text-fg border border-border hover:bg-surface-hover hover:border-border-strong',
   ghost: 'bg-transparent text-fg-muted hover:text-fg hover:bg-surface-hover',

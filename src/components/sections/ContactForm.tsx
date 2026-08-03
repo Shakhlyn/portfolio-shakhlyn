@@ -158,11 +158,23 @@ export const ContactForm = (): ReactElement => {
         reducedMotion={reducedMotion}
       />
 
+      {/*
+        `disabled:opacity-100` because this button is **busy, not unavailable**.
+        Button's generic disabled treatment fades to 50%, which drops the label
+        to 2.26:1 against its own fill — below AA, on the one control whose text
+        the visitor is still reading while they wait. WCAG exempts genuinely
+        inactive controls from contrast; a control mid-request is not one.
+
+        `disabled` still blocks a double submit, and `aria-busy` distinguishes
+        the two states for assistive tech. The spinner and "Sending…" live in
+        FormStatus above (§5.7), so the button does not need to fade to say it.
+      */}
       <Button
         type="submit"
         size="lg"
         disabled={isSubmitting}
-        className="w-full sm:w-auto"
+        aria-busy={isSubmitting}
+        className="w-full disabled:opacity-100 sm:w-auto"
       >
         {CONTACT.submitLabel}
       </Button>
