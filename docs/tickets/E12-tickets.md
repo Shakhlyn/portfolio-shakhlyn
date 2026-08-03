@@ -720,6 +720,58 @@ checked in this environment at all.
 
 ---
 
+### E12-T11 — Give every element on the route one shared width
+
+**Depends on:** E12-T10
+**Files:**
+
+- Modify: `src/pages/ResumePage.tsx`
+- Modify: `src/components/sections/ResumeViewer.tsx`
+- Modify: `src/components/sections/ResumeDownloadLink.tsx`
+- Modify: `docs/3-style-preference.md` — §6.7
+- Modify: `docs/4-interaction-design.md` — §10 row 18
+
+**Commit:** `fix(resume): widen the whole page column, not just the preview`
+
+**Scope**
+
+- In: moving the width rule to a single wrapper so the heading, the preview, the panel and
+  both actions cannot diverge.
+- Out: the viewer parameters (E12-T10), which are unchanged.
+
+**Implementation notes**
+
+E12-T10 widened the embed alone and left everything else at `max-w-content`. Measured at
+1440: the frame's left edge sat at 192px and the `h1`, the "View in browser" button, the
+`Download` heading and its button all sat at 336px — so the action row was **144px indented
+from the frame it belongs to**, and the download block was indented from the preview above
+it. T10 traded alignment for reading width; measured, that trade is not worth taking.
+
+Both are available instead. `3-style-preference.md` §3.3 caps the _body measure_ at ~68
+characters, and this route has no body copy — an `h1`, an `h2`, one metadata line and two
+buttons. Nothing on it needs a prose cap, so the column itself takes
+`max-w-content lg:max-w-none` and every element inherits one width.
+
+The frame and the panel drop their own width classes entirely. Sizing a child independently
+of the block it reads with is what produced the defect; the fix is that only one element
+owns width on this route.
+
+**Acceptance**
+
+- At 320, 375, 768, 1024, 1440 and 1920, the `h1`, the preview frame, the "View in browser"
+  button, the `Download` heading and the download anchor all report the **same**
+  `getBoundingClientRect().left`.
+- The column is `min(768, content box)` below `lg` and the full content box at `lg` and
+  above; the embed's width equals the column's at every width.
+- The failure panel fills the column too, and the missing state keeps every left edge
+  aligned.
+- The column stays centred (equal left/right gaps within 1px) at all six widths.
+- Unchanged: CLS 0, preview height `<= 0.8 * innerHeight`, no horizontal page scroll.
+
+**Traceability:** `3-style-preference.md` §6.7, §3.3 · `4-interaction-design.md` §10 row 18
+
+---
+
 ## Coverage
 
 Every E12 deliverable and acceptance criterion from `docs/5-epic-list.md`, mapped to the

@@ -46,7 +46,7 @@ epic. Point me at those files to pick the work back up.
 | E09 Hero & Current Role | [E09-tickets.md](E09-tickets.md) | [E09-status.md](E09-status.md) | 8   | E07, E08   |
 | E10 Projects            | [E10-tickets.md](E10-tickets.md) | [E10-status.md](E10-status.md) | 12  | E07        |
 | E11 About & Skills      | [E11-tickets.md](E11-tickets.md) | [E11-status.md](E11-status.md) | 7   | E07        |
-| E12 Resume              | [E12-tickets.md](E12-tickets.md) | [E12-status.md](E12-status.md) | 10  | E07, E09   |
+| E12 Resume              | [E12-tickets.md](E12-tickets.md) | [E12-status.md](E12-status.md) | 11  | E07, E09   |
 
 **E09: 8 of 8 done.** E09-T08 (portrait treatment) was unblocked by the supplied
 photograph and shipped the same day — the seam built ahead of it took the image with no
@@ -63,7 +63,7 @@ pre-existing E07 discrepancy — the scroll spy retains the last observed sectio
 `navigation.ts` claims nothing should be highlighted — recorded in
 [E11-status.md](E11-status.md) §3 for an E07 amendment ticket rather than fixed in place.
 
-**E12: 10 of 10 done, across three passes.** 89 browser checks. Two defects were fixed in
+**E12: 11 of 11 done, across four passes.** 102 browser checks. Two defects were fixed in
 the specification before any code was written — a fallback panel with a redundant second
 control, and a hook specified as `useEffect` + `useState` that
 `react-hooks/set-state-in-effect` correctly rejected ([E12-status.md](E12-status.md) §3).

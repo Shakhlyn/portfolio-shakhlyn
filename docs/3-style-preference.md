@@ -584,13 +584,18 @@ centres a paragraph longer than two lines. Between `sm` and `xl` the page inheri
 (`4-interaction-design.md` §7), so the centreline sits ~16px right of true viewport centre
 in that range; that asymmetry is accepted site-wide and is not corrected here.
 
-**Text holds the 768px measure; the preview is the one element allowed to outgrow it.**
-The heading, the failure panel, and both action rows stay at `max-w-content`. From `lg` the
-embed fills the container's content box instead — roughly 936px at 1024, 1056px at 1440,
-1216px at 1920. A resume is a document, not prose: the wider it renders, the less the
-visitor has to zoom, which is the whole reason the preview exists. It uses `max-w-none`
-rather than a larger fixed width so it can never overflow the shell, whatever the shell
-later becomes.
+**The column is `max-w-content` below `lg` and the full container content box above it**,
+and _everything_ on the route widens with it — heading, preview, panel, both actions. From
+`lg` that is roughly 936px at 1024, 1056px at 1440, 1216px at 1920. A resume is a document,
+not prose: the wider it renders, the less the visitor has to zoom, which is the whole reason
+the preview exists. §3.3's 68-character measure protects paragraphs, and this route has
+none — an `h1`, an `h2`, one metadata line and two buttons.
+
+**One width, shared.** An earlier version widened only the embed and left everything else at
+768px, which put the "View in browser" button 144px inside the left edge of the very frame
+it belongs to. Elements that read as one block must be sized by one rule; the column uses
+`max-w-none` at `lg` rather than a larger fixed width so it can never overflow the shell,
+whatever the shell later becomes.
 
 **The viewer slot.** `rounded-lg`, `border border-border`, `bg-surface` — elevation level 1
 (§4.4), the same treatment as a card. It is **aspect-ratio-locked to the PDF's own page

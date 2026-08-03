@@ -24,9 +24,14 @@ import { Container } from '@/components/ui/Container';
  *
  * **The centred column is this page's layout, and it is one element.** The
  * heading, the viewer, and the download all share its edges, so the page reads
- * as a document rather than as three blocks pinned to the left of a 1120px
- * shell. Copy inside it stays left-aligned — `3-style-preference.md` §3.3 never
- * centres a paragraph longer than two lines.
+ * as a document rather than as blocks pinned to the left of a 1120px shell.
+ *
+ * **It widens to the full container at `lg`, and everything widens with it.**
+ * An earlier version widened only the preview, which left the "View in browser"
+ * button 144px indented from the very frame it belongs to. The 68-character
+ * measure (`3-style-preference.md` §3.3) protects paragraphs, and this route has
+ * none — an `h1`, an `h2`, one metadata line and two buttons. Nothing here needs
+ * a prose cap, and one shared width is what keeps every left edge honest.
  *
  * It is an inner wrapper rather than `max-w-content` on `Container`'s
  * `className`. `Container` carries `2xl:max-w-container-wide`; `tailwind-merge`
@@ -39,16 +44,18 @@ import { Container } from '@/components/ui/Container';
  * site-wide by §7; opting this route out would let the rail overlap the column.
  */
 export const ResumePage = (): ReactElement => (
-  <Container as="section" className="space-y-12 py-16 md:py-20">
-    <h1
-      tabIndex={-1}
-      className="mx-auto w-full max-w-content text-h1 text-fg focus-visible:outline-none md:text-h1-md"
-    >
-      Resume
-    </h1>
+  <Container as="section" className="py-16 md:py-20">
+    <div className="mx-auto w-full max-w-content space-y-12 lg:max-w-none">
+      <h1
+        tabIndex={-1}
+        className="text-h1 text-fg focus-visible:outline-none md:text-h1-md"
+      >
+        Resume
+      </h1>
 
-    <ResumeViewer />
+      <ResumeViewer />
 
-    <ResumeDownloadLink />
+      <ResumeDownloadLink />
+    </div>
   </Container>
 );

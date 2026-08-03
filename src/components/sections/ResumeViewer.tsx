@@ -22,10 +22,12 @@ import { usePdfAvailable } from '@/hooks/usePdfAvailable';
  * saying where it came from. Re-check it if the PDF is ever regenerated at US
  * Letter — that is `51/66`.
  *
- * Width comes from the centred column in `ResumePage`, not from here.
+ * Width comes from the page column in `ResumePage`, which every element on the
+ * route shares. Sizing the frame independently is what left the action row
+ * indented from the frame it belongs to.
  */
 const EMBED_FRAME =
-  'mx-auto aspect-[210/297] max-h-[80vh] w-full max-w-content overflow-hidden rounded-lg border border-border bg-surface lg:max-w-none';
+  'aspect-[210/297] max-h-[80vh] w-full overflow-hidden rounded-lg border border-border bg-surface';
 
 /**
  * PDF Open Parameters, read by the browser's own viewer. The only lever we have
@@ -48,17 +50,13 @@ const EMBED_FRAME =
  */
 const VIEWER_PARAMS = '#navpanes=0&pagemode=none&view=FitH';
 
-/** The prose measure. The embed is the one element allowed to outgrow it. */
-const TEXT_COLUMN = 'mx-auto w-full max-w-content';
-
 /**
  * The frame for both non-embed states. **Deliberately not aspect-locked.** The
  * lock exists to reserve space for a document that is arriving; where none is,
  * holding 1086px of empty rectangle around one sentence is the defect, not the
  * reservation.
  */
-const PANEL_FRAME =
-  'mx-auto w-full max-w-content rounded-lg border border-border bg-surface p-6 text-center';
+const PANEL_FRAME = 'w-full rounded-lg border border-border bg-surface p-6 text-center';
 
 /** The browser has no inline PDF viewer. Not a fault — a capability difference. */
 const CANNOT_EMBED = 'This browser cannot display the PDF inline.';
@@ -132,7 +130,7 @@ export const ResumeViewer = (): ReactElement => {
       )}
 
       {/* Bare path, no viewer parameters — see `VIEWER_PARAMS`. */}
-      <div className={`${TEXT_COLUMN} mt-4`}>
+      <div className="mt-4">
         <Button href={RESUME.filePath} external variant="secondary">
           {RESUME.viewLabel}
         </Button>

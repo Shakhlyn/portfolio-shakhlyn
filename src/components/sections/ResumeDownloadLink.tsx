@@ -25,10 +25,7 @@ const downloadFileName = (filePath: string): string =>
  * before they commit.
  */
 export const ResumeDownloadLink = (): ReactElement => (
-  <section
-    aria-labelledby="resume-download-heading"
-    className="mx-auto w-full max-w-content"
-  >
+  <section aria-labelledby="resume-download-heading">
     <h2 id="resume-download-heading" className="text-h2 text-fg md:text-h2-md">
       Download
     </h2>

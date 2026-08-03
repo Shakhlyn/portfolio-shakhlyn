@@ -1,6 +1,6 @@
 # E12 — Resume — Status
 
-**10 of 10 tickets done, across three passes.** 89 automated browser checks, all passing.
+**11 of 11 tickets done, across four passes.** 102 automated browser checks, all passing.
 
 T01–T06 shipped the route. T07–T08 fixed two defects that reached a real viewport (§8).
 T09–T10 fixed two more (§9): Chromium's thumbnail sidebar was eating ~200px of the frame,
@@ -307,3 +307,42 @@ green run.
 **Firefox and Safari** honour these parameters differently and cannot be exercised in this
 environment — the same category as the standing iOS Safari gap in §7. All three degrade to a
 working embed with default chrome, which is what the page did before this pass.
+
+---
+
+## 10. Fourth pass — E12-T11 (2026-08-03)
+
+**T10's breakout broke alignment**, reported immediately and confirmed by measurement.
+
+At 1440 the preview's left edge sat at 192px while the `h1`, the "View in browser" button,
+the `Download` heading and its anchor all sat at 336px. The action row was **144px indented
+from the frame it belongs to**, and the download block was indented from the preview above
+it. T10 had knowingly traded alignment for reading width; measured on a real page, that
+trade is not worth taking.
+
+Both are available. `3-style-preference.md` §3.3 caps the _body measure_, and `/resume` has
+no body copy — an `h1`, an `h2`, one metadata line and two buttons. So the **column** takes
+`max-w-content lg:max-w-none` and every element inherits it, instead of the embed being
+sized independently. The frame and the panel dropped their own width classes entirely.
+
+Measured after: at 1440 all five elements report `left = 192`, and the column, the embed and
+the panel are all 1056px. At 1920, 1216px. Below `lg`, 768px or the content box, whichever
+is smaller.
+
+### 10.1 The check that was missing, now written
+
+Nothing in the suite compared elements to _each other_ — every geometry check measured one
+element against the container. The new one asserts that the `h1`, the frame, the View
+button, the `Download` heading and the download anchor share a single left edge at all six
+widths, and again in the missing-file state.
+
+This is the fourth time in E12 that the escaped defect was a property no check thought to
+ask about (§8.2, §9). The pattern is consistent enough to name: **checks derived from the
+ticket verify the ticket, not the page.** The ones that have caught real problems here all
+compare something to something else — element to element, state to state, build to build.
+
+One stale criterion in `verify-e12.mjs` was updated rather than deleted: it asserted the
+column is 768px at 1440, which T11 deliberately changed. It now asserts the embed fills the
+column exactly, with the six-width geometry left to `verify-e12b.mjs`.
+
+Suite after this pass: **248/248**, with E12's own two harnesses at 38 and 64.
