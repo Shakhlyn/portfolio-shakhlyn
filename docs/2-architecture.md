@@ -230,7 +230,7 @@ The resume PDF should be committed as a static file because:
 Recommended path:
 
 ```text
-public/resume/shakhlyn-resume.pdf
+public/resume/Shaokh_Al_Mahmud_Shakhlyn-resume.pdf
 ```
 
 The `/resume` route can embed or link to this file, and all direct download CTAs should use the same stable asset path.

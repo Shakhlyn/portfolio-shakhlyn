@@ -178,7 +178,7 @@ was typed.
 
 **Scope**
 
-- `resume.ts`: **one** stable path — `/resume/shakhlyn-resume.pdf`
+- `resume.ts`: **one** stable path — `/resume/Shaokh_Al_Mahmud_Shakhlyn-resume.pdf`
   (`2-architecture.md` §5) — plus label, file type, and file size. That single constant
   is consumed by the hero CTA, the nav button, the `#resume` section, and `/resume`.
   Four hardcoded copies of a path is four chances for one of them to rot.

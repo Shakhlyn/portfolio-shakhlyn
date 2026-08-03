@@ -13,11 +13,11 @@ import type { ResumeType } from '@/types/resume.types';
  * §6 permits a clearly marked draft during development; the resume file is NOT
  * acceptable as a launch placeholder.
  *
- * TODO(content): replace public/resume/shakhlyn-resume.pdf with your own
+ * TODO(content): replace public/resume/Shaokh_Al_Mahmud_Shakhlyn-resume.pdf with your own
  * formatted resume, then update `fileSize` to match.
  */
 export const RESUME: ResumeType = {
-  filePath: '/resume/shakhlyn-resume.pdf',
+  filePath: '/resume/Shaokh_Al_Mahmud_Shakhlyn-resume.pdf',
   downloadLabel: 'Download PDF',
   viewLabel: 'View in browser',
   fileType: 'PDF',

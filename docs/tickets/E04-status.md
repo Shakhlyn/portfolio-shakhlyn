@@ -52,12 +52,12 @@ the PRD intends.
 Nothing is missing any more — the gaps are filled with working placeholders rather than
 empty strings, so every downstream epic has something real to build against.
 
-| Asset                               | What shipped                                                                                                                                                    | Replace before launch? |
-| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| `public/resume/shakhlyn-resume.pdf` | Real 2-page PDF typeset from your CV text, **stamped "Draft" in red across the top** so it cannot be mistaken for the real thing. 76 KB, wired into `resume.ts` | **Yes**                |
-| `public/og/portfolio-og.png`        | 1200×630 card built from the project's own design tokens — navy background, violet rule, name, role, stack chips                                                | **Yes**                |
-| `src/data/about.ts`                 | Three draft paragraphs, every fact from the CV, wording mine                                                                                                    | **Yes — voice**        |
-| `SITE_URL`                          | `https://shakhlyn.dev` — a **guess**, not a registered domain                                                                                                   | **Yes**                |
+| Asset                                                | What shipped                                                                                                                                                    | Replace before launch? |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| `public/resume/Shaokh_Al_Mahmud_Shakhlyn-resume.pdf` | Real 2-page PDF typeset from your CV text, **stamped "Draft" in red across the top** so it cannot be mistaken for the real thing. 76 KB, wired into `resume.ts` | **Yes**                |
+| `public/og/portfolio-og.png`                         | 1200×630 card built from the project's own design tokens — navy background, violet rule, name, role, stack chips                                                | **Yes**                |
+| `src/data/about.ts`                                  | Three draft paragraphs, every fact from the CV, wording mine                                                                                                    | **Yes — voice**        |
+| `SITE_URL`                                           | `https://shakhlyn.dev` — a **guess**, not a registered domain                                                                                                   | **Yes**                |
 
 The resume PDF is generated, not fabricated: every line came from the CV text you
 supplied. It exists so E12 (`ResumeViewer`, download link, file-size label) is testable
