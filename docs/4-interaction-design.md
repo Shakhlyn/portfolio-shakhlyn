@@ -234,9 +234,37 @@ Only two, both cheap:
    outlier against three other statements and is corrected here.
 2. Scroll spy (§3).
 
-No parallax, no scroll-jacking, no pinned sections, no scroll progress bar, and no
-element whose _size_ changes with scroll position — content must never reflow mid-scroll,
-because that is what destroys CLS.
+No parallax, no pinned sections, no scroll progress bar, and no element whose _size_
+changes with scroll position — content must never reflow mid-scroll, because that is what
+destroys CLS.
+
+**Documented exception to the no-scroll-jacking rule: the project carousels (§6).** A
+vertical wheel gesture whose pointer is over a carousel travels that carousel sideways
+until it runs out, then hands the gesture back to the page. This is the narrowest form the
+behaviour can take, and the limits are what make it acceptable rather than the intent:
+
+- **Nothing is pinned and no scroll position is locked.** The page is never prevented from
+  moving; it simply is not asked to move while the gesture is being consumed elsewhere.
+- **The pointer is the switch.** Move it off the track mid-gesture and scrolling is
+  immediately normal again. A visitor who does not want this never has to fight it.
+- **Both ends release.** At the last card a downward gesture scrolls on to the next
+  section; at the first card an upward one scrolls back. There is no state in which the
+  page refuses to move.
+- **One card per gesture, not pixel-following.** The track snaps `x mandatory`, and a
+  handler that adds raw wheel delta to `scrollLeft` moves nothing at all: a mouse notch is
+  ~100px and a trackpad delta ~12px, neither crosses the half-card mark that decides which
+  snap point wins, so the browser re-snaps to the card it started on. Wheel intent is
+  accumulated instead, and crossing 40px steps one whole card — which lands exactly on the
+  next snap point. A 260ms cooldown follows each step, so one trackpad flick advances one
+  card rather than the whole set.
+- **Keyboard and touch are unaffected.** Touch has no wheel events and keeps its native
+  swipe; `ArrowDown`/`ArrowUp` step one card only while the track itself holds focus, and
+  release at the ends exactly as the wheel does (§9).
+
+The full pinned-section version of this idea — where the section sticks to the viewport
+and all vertical travel is consumed until the carousels are exhausted — remains
+prohibited. It traps a visitor who wants to reach About behind eight wheel gestures, and
+it breaks deep links and Back, which is the difference between an affordance and a trap.
 
 ---
 
@@ -439,6 +467,11 @@ container gutter via `scroll-padding-inline`.
 - Scrollbar visually hidden; scrolling never disabled.
 - Arrows scroll by one card width + gap via `scrollBy({ behavior: 'smooth' })`, falling
   back to instant under reduced motion.
+- **A vertical wheel gesture over the track steps it one card sideways** per gesture,
+  until it reaches an end and releases to the page — the documented §4 exception, with its
+  limits and the snap-interaction reasoning listed there.
+  Horizontal gestures are never intercepted: the track already scrolls natively on those,
+  and taking them over would fight trackpad inertia for nothing.
 - No auto-advance, no looping, no dot indicators. Auto-advancing carousels move content
   out from under people who are still reading.
 
@@ -627,6 +660,7 @@ When `useReducedMotion()` returns true:
 | `Escape` | Mobile sheet open        | Close, return focus to hamburger                               |
 | `Escape` | Rail tile focused        | Blur, collapse                                                 |
 | `←` `→`  | Carousel focused         | Native horizontal scroll within that carousel only             |
+| `↑` `↓`  | Carousel focused         | Step one card sideways; at either end, scroll the page instead |
 | `Tab`    | Off-screen carousel card | Scrolls into view automatically                                |
 | `Enter`  | Card buttons             | Follow link                                                    |
 
@@ -643,19 +677,20 @@ decision and what still needs updating elsewhere.
 These were flagged as conflicts, decided, and **propagated to the other documents**.
 All four documents now describe the same flow.
 
-| #   | Conflict                                            | Decision                                                                                                                                                                                                                                                                                                        | Propagated to                                                                                   |
-| --- | --------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| 1   | Hero portrait forbidden by style doc §6.2           | Both layouts supported, switched by an explicit `layout: 'stacked' \| 'split'` field in `profile.ts` (§5.1). `stacked` ships now; the `split` seam ships with it, its portrait later.                                                                                                                           | `3-style-preference.md` §6.2 rewritten; `2-architecture.md` §5 notes the field                  |
-| 2   | Responsive range                                    | 320–1920px. No custom breakpoint; container caps at 1280px.                                                                                                                                                                                                                                                     | This doc §2. Style doc §4.2/§12 already said 320–1920 — no change needed                        |
-| 3   | Single `projects.ts`                                | One file, one type, plus a `category` discriminator. One nav link, one section, two subsections.                                                                                                                                                                                                                | `2-architecture.md` §5 data files + grouping note                                               |
-| 4   | Social rail and carousel absent from component tree | Both confirmed.                                                                                                                                                                                                                                                                                                 | `2-architecture.md` §6 tree, feature modules, and hooks; `3-style-preference.md` §6.4 and §6.11 |
-| 5   | Heading order                                       | Follow `2-architecture.md` §8. One Projects `h2`, two `h3` subsections, project titles at `h4`.                                                                                                                                                                                                                 | `2-architecture.md` §8 heading plan updated                                                     |
-| 6   | Two `ProjectsSection` instances                     | One `ProjectCarousel` component, two instances with different data.                                                                                                                                                                                                                                             | `2-architecture.md` §6                                                                          |
-| 7   | Hero `h1`: name, or name + positioning?             | **Name only.** §5.1 assigns elements; `3-style-preference.md` §6.2 described the block, not the heading — a category error, not a contradiction. Stack is `h1`(name) → role framing → value proposition.                                                                                                        | `3-style-preference.md` §6.2 reworded to defer element assignment here; this doc §5.1 item list |
-| 8   | Eyebrow on Current Role                             | **Omitted.** Eyebrows are wayfinding for repeated, scannable sets. `Section`'s optional eyebrow is an opt-in.                                                                                                                                                                                                   | `3-style-preference.md` §6.3; this doc §5.2                                                     |
-| 9   | Motion for elements absent from the §8 inventory    | **Default is animation 2 with no child orchestration.** Adding motion to an unlisted element is a §8 amendment ticket, not an in-epic judgement call. Applied first to the Current Role stack badges.                                                                                                           | This doc §8 preamble, §5.2                                                                      |
-| 10  | Project card link model                             | **Three named buttons, no title link.** Case study → `/projects/:slug`, GitHub, Live — each conditional on its data. The card and its title are never anchors, so nothing nests. The card loses the `-translate-y-0.5` hover, which promised a click target it no longer is.                                    | This doc §6 card behaviour, §9 · `3-style-preference.md` §6.4 · `5-epic-list.md` E10            |
-| 11  | Case study `Links` `h2` with no external links      | **Omitted entirely.** `2-architecture.md` §8 lists the maximum heading set, not a per-project guarantee. Most projects are client work behind a login; a retained heading would resolve to an apology on the majority of pages, and a heading that introduces nothing costs the reader attention for no return. | `3-style-preference.md` §6.10 · `2-architecture.md` §8 · `5-epic-list.md` E10                   |
+| #   | Conflict                                            | Decision                                                                                                                                                                                                                                                                                                                   | Propagated to                                                                                   |
+| --- | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| 1   | Hero portrait forbidden by style doc §6.2           | Both layouts supported, switched by an explicit `layout: 'stacked' \| 'split'` field in `profile.ts` (§5.1). `stacked` ships now; the `split` seam ships with it, its portrait later.                                                                                                                                      | `3-style-preference.md` §6.2 rewritten; `2-architecture.md` §5 notes the field                  |
+| 2   | Responsive range                                    | 320–1920px. No custom breakpoint; container caps at 1280px.                                                                                                                                                                                                                                                                | This doc §2. Style doc §4.2/§12 already said 320–1920 — no change needed                        |
+| 3   | Single `projects.ts`                                | One file, one type, plus a `category` discriminator. One nav link, one section, two subsections.                                                                                                                                                                                                                           | `2-architecture.md` §5 data files + grouping note                                               |
+| 4   | Social rail and carousel absent from component tree | Both confirmed.                                                                                                                                                                                                                                                                                                            | `2-architecture.md` §6 tree, feature modules, and hooks; `3-style-preference.md` §6.4 and §6.11 |
+| 5   | Heading order                                       | Follow `2-architecture.md` §8. One Projects `h2`, two `h3` subsections, project titles at `h4`.                                                                                                                                                                                                                            | `2-architecture.md` §8 heading plan updated                                                     |
+| 6   | Two `ProjectsSection` instances                     | One `ProjectCarousel` component, two instances with different data.                                                                                                                                                                                                                                                        | `2-architecture.md` §6                                                                          |
+| 7   | Hero `h1`: name, or name + positioning?             | **Name only.** §5.1 assigns elements; `3-style-preference.md` §6.2 described the block, not the heading — a category error, not a contradiction. Stack is `h1`(name) → role framing → value proposition.                                                                                                                   | `3-style-preference.md` §6.2 reworded to defer element assignment here; this doc §5.1 item list |
+| 8   | Eyebrow on Current Role                             | **Omitted.** Eyebrows are wayfinding for repeated, scannable sets. `Section`'s optional eyebrow is an opt-in.                                                                                                                                                                                                              | `3-style-preference.md` §6.3; this doc §5.2                                                     |
+| 9   | Motion for elements absent from the §8 inventory    | **Default is animation 2 with no child orchestration.** Adding motion to an unlisted element is a §8 amendment ticket, not an in-epic judgement call. Applied first to the Current Role stack badges.                                                                                                                      | This doc §8 preamble, §5.2                                                                      |
+| 10  | Project card link model                             | **Three named buttons, no title link.** Case study → `/projects/:slug`, GitHub, Live — each conditional on its data. The card and its title are never anchors, so nothing nests. The card loses the `-translate-y-0.5` hover, which promised a click target it no longer is.                                               | This doc §6 card behaviour, §9 · `3-style-preference.md` §6.4 · `5-epic-list.md` E10            |
+| 11  | Case study `Links` `h2` with no external links      | **Omitted entirely.** `2-architecture.md` §8 lists the maximum heading set, not a per-project guarantee. Most projects are client work behind a login; a retained heading would resolve to an apology on the majority of pages, and a heading that introduces nothing costs the reader attention for no return.            | `3-style-preference.md` §6.10 · `2-architecture.md` §8 · `5-epic-list.md` E10                   |
+| 12  | Vertical scroll over a project carousel             | **Redirected to horizontal travel while the pointer is over a track that can still move**, releasing to the page at both ends. §4 banned scroll-jacking outright; this is a documented exception with hard limits — nothing pinned, no scroll lock, pointer as the escape hatch. The pinned-section form stays prohibited. | This doc §4, §6, §9 · `src/hooks/useCarousel.ts`                                                |
 
 Four further inconsistencies were found and fixed while propagating:
 

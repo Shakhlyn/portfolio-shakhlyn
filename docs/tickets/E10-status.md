@@ -1,7 +1,8 @@
 # E10 — Projects · Status
 
-**11 of 12 tickets done.** T01 shipped ahead of the rest, in the decomposition commit
-`88ce89e`. T09 is **implemented but not verifiable** — see the blocked-criterion record.
+**12 of 12 tickets done.** T01 shipped ahead of the rest, in the decomposition commit
+`88ce89e`. T09 was recorded as blocked on first pass and is now **done** — the cause was
+found and fixed; see §3.
 
 Verified in headless Chrome over CDP against `yarn preview`, at 320 / 375 / 768 / 1024 /
 1440 / 1920, in both themes, with and without `prefers-reduced-motion`.
@@ -16,12 +17,12 @@ Verified in headless Chrome over CDP against `yarn preview`, at 320 / 375 / 768 
 | T06    | `ProjectCarousel` scroll track              | `feat(projects): build the scroll-snapped project carousel track` | done                 |
 | T07    | `useCarousel`                               | `feat(hooks): track carousel scroll position and arrow state`     | done                 |
 | T08    | Arrow controls                              | `feat(projects): add carousel arrow controls`                     | done                 |
-| T09    | Staggered per-subsection reveal             | `feat(projects): stagger card reveals per subsection`             | **blocked, see §3**  |
+| T09    | Staggered per-subsection reveal             | `feat(projects): stagger card reveals per subsection`             | done — see §3        |
 | T10    | `/projects/:slug` route + 404               | `feat(projects): resolve project slugs and render the hero`       | done                 |
 | T11    | `ProjectCaseStudy` + `ProjectLinks`         | `feat(projects): build the case study body and links section`     | done                 |
 | T12    | Verification pass + this file               | `docs(tickets): record E10 status`                                | done                 |
 
-**Totals: 63 + 13 + 6 + 4 = 86 browser checks, 85 passing.** The one failure is §3.
+**Totals: 63 + 14 + 6 + 4 + 12 + 9 = 108 browser checks, all passing.**
 
 ---
 
@@ -71,42 +72,96 @@ Three things about how it was found are worth keeping:
 
 ---
 
-## 3. Blocked criterion — T09's reveal cannot be observed
+## 3. Root cause found: one prop had disabled every animation on the site
 
-**Scroll-reveal animations do not run, and this predates E10.**
+**First pass recorded T09 as blocked** — `whileInView` elements never received their
+`initial` variant, so nothing faded in anywhere, and the same was true at `88ce89e`
+before any E10 code existed. That was correct as far as it went, and the wrong place to
+stop. The cause was one prop:
 
-`whileInView` elements never receive their `initial` variant: sampling computed opacity
-every 16ms while scrolling a target into view shows `1.00` for every frame, and the
-element carries no inline style until the observer fires, at which point it is set to the
-final state it already had. No fade occurs.
+```tsx
+<AnimatePresence mode="wait" initial={false}>   // PageTransition
+```
 
-This was confirmed **not** to be an E10 regression by building `HEAD` (`88ce89e`, before
-any E10 code) in a separate worktree and running the same probe against E09's
-`CurrentRoleSection`: identical result — `min opacity = 1`, no `hidden` state, inline
-style appearing only after entry. The mechanism is E06's, the first consumer was E09's,
-and both behave the same way before and after this epic.
+`initial={false}` on `AnimatePresence` does not only suppress that component's own entry
+animation. It sets `PresenceContext.initial = false`, and **every descendant motion
+component then skips its own `initial` prop**, rendering straight at its animate state.
+The whole app is inside `PageTransition`, so this silently disabled animation 1 (hero
+mount) and every scroll reveal on the site — the hero painted at its final state, and
+`whileInView` elements had no `hidden` state to travel from.
 
-What this means per criterion:
+It is invisible in review because the prop is correct-looking, sits in an unrelated
+component, and its stated purpose — "do not fade the whole page in on first load" — is a
+real requirement. The fix keeps that requirement and scopes it to the element that needs
+it: `AnimatePresence` no longer carries `initial`, and the wrapper's own `initial` is
+`false` on first paint only, via a module-level write-once flag. A ref read during render
+and a `setState` in an effect are both rejected by the React Compiler lint rules, which is
+why it is neither.
 
-| T09 criterion                                       | State                                                      |
-| --------------------------------------------------- | ---------------------------------------------------------- |
-| Cards reveal staggered ~60ms apart, ≤300ms total    | **not verifiable** — measured spread 0ms, nothing animates |
-| Personal group stays hidden until it enters view    | **fails** — cards are at opacity 1 while off-screen        |
-| Scrolling away and back does not re-animate         | passes (vacuously — nothing animates in the first place)   |
-| Reduced motion renders final state immediately      | passes                                                     |
-| Only `opacity`/`transform` in the transition list   | passes                                                     |
-| `lib/motion.ts` and `constants/motion.ts` untouched | passes — `git diff` on both is empty                       |
+### How it was isolated
 
-The T09 code is written to the spec — parent `staggerContainer` variants, per-subsection
-`whileInView` with `VIEWPORT_ONCE`, `Math.min(STAGGER_CARDS, STAGGER_MAX_TOTAL / count)`
-so the group total stays inside the 300ms cap, children on the shared `fadeUp`. It is
-correct against `4-interaction-design.md` §8 and will animate the moment the underlying
-issue is fixed. **Fixing it means changing E06's motion foundation, which is outside this
-epic's scope**, so it is recorded here rather than done quietly.
+Four hypotheses were tested and three were killed by measurement, which is the only
+reason the fourth was found:
 
-Not yet determined: whether this is a genuine site-wide defect or an artefact of headless
-Chrome resolving `whileInView` instantly. That distinction needs a headful browser and is
-the first step of whatever ticket picks this up.
+| Hypothesis                                       | Test                                                             | Result                                    |
+| ------------------------------------------------ | ---------------------------------------------------------------- | ----------------------------------------- |
+| `viewport.margin: '-80px'` breaking the observer | Removed it, rebuilt, re-measured                                 | No change — not the cause                 |
+| The app is stuck in reduced-motion mode          | Temporary probe writing `useReducedMotion()` to a data attribute | Returns `false` correctly — not the cause |
+| Headless Chrome resolves animations instantly    | Ran a raw WAAPI animation and a CSS transition in the same page  | Both animate normally — environment fine  |
+| Something suppresses `initial` globally          | Read `PageTransition`, the only `AnimatePresence` in the tree    | **Confirmed**                             |
+
+The third one matters most: the first pass left open whether this was a real defect or a
+headless artefact. It was a real defect, and the site has never once shown a scroll
+reveal to a visitor.
+
+### Verified after the fix — 9 checks
+
+- Hero fades in on mount: opacity `0 → 0.22 → 0.42 → 0.57 → 0.68 …`, min 0.
+- Cards are at opacity 0 while their subsection is off-screen, and 1 after entry.
+- Stagger fires at 32 / 80 / 144 / 216ms — ~60ms apart, 184ms total against the ~300ms
+  cap in §8.
+- The two subsections reveal independently: with the professional group in view and the
+  personal group below the fold, the personal cards are still at 0.
+- Reduced motion still renders final state immediately, hero and cards alike.
+- After a full-page scroll sweep, all 9 reveal targets are at opacity 1 — nothing is left
+  permanently invisible, which is the failure mode that matters most here.
+
+**This fix is E06/E03 territory, not E10's.** It is recorded in `E06-status.md` as well,
+and it retires the `🔍` reduced-motion items that were pending against E06 — those were
+passing for the wrong reason, because nothing animated at all.
+
+---
+
+## 3b. Wheel-driven horizontal scrolling (added after the epic, on request)
+
+A vertical wheel gesture over a carousel now travels it sideways and releases to the page
+at either end — a documented exception to §4's no-scroll-jacking rule, recorded in
+`4-interaction-design.md` §4, §6, §9 and §10 row 12.
+
+**The first implementation did not work, and the first test did not catch it.** The
+handler ran and called `preventDefault`, but `scrollLeft += delta` moved the track zero
+pixels: `scroll-snap-type: x mandatory` re-snapped it to the card it started on, because
+neither a mouse notch (~100px) nor a trackpad delta (~12px) crosses the half-card mark
+that decides which snap point wins. The original check dispatched **one** 200px wheel
+event, which does cross it — so a synthetic gesture no real input device produces was the
+only gesture that worked.
+
+Fixed by stepping one whole card once accumulated intent crosses 40px, landing exactly on
+the next snap point, with a 260ms cooldown so one flick advances one card. Verified with
+input-device-shaped bursts, 10 checks:
+
+| Check                                         | Evidence                                                     |
+| --------------------------------------------- | ------------------------------------------------------------ |
+| 12 mouse notches of 100px                     | `scrollLeft 0 → 360` (the full travel at 1280), no snap-back |
+| 10 trackpad deltas of 12px at 768             | `0 → 322` of max 575, page held at `pageY 1907`              |
+| 25-notch burst overrunning the end            | track `→ 360` of 360, then `pageY 1516 → 3316`               |
+| Line-mode wheel (`deltaMode 1`)               | 3 lines → 359px, not 3px                                     |
+| Listener is non-passive                       | `defaultPrevented=true` mid-track, `false` at the end        |
+| `ArrowDown` with the carousel **not** focused | page scrolls 40px, track unchanged — documented behaviour    |
+
+The lesson is the same shape as §3's: a test that only passes for an input no device
+emits is not evidence. Both defects in this epic were found by making the probe more like
+a real user, not by reading the code again.
 
 ---
 

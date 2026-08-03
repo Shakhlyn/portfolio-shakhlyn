@@ -85,3 +85,31 @@ complementary, not redundant.
 Motion is the bulk of the 443 kB entry chunk (142 kB gzipped). That is inside the
 ~200KB gzipped budget, but it is the single largest dependency in the project and the
 obvious first thing to look at in **E17**.
+
+---
+
+## Defect found later, during E10 (2026-08-03)
+
+**Every animation in this foundation was disabled by one prop, from the day it shipped
+until E10 found it.**
+
+`PageTransition` carried `<AnimatePresence mode="wait" initial={false}>`. That prop sets
+`PresenceContext.initial = false`, which makes **every descendant** motion component skip
+its own `initial` — so the hero (animation 1) painted at its final state and every
+`whileInView` reveal (animations 2–4) had no `hidden` state to travel from. The variants,
+the tokens, and the reduced-motion hook in this epic were all correct; nothing that
+consumed them could ever run.
+
+Fixed by removing `initial` from `AnimatePresence` and scoping first-paint suppression to
+the wrapper's own `initial`, via a module-level write-once flag — a ref read during render
+and a `setState` inside an effect are both rejected by the React Compiler lint rules.
+
+**This invalidates how E06's reduced-motion criteria were checked.** They passed because
+elements rendered in their final state immediately, which is also what reduced motion
+looks like — the check could not distinguish "respects the preference" from "never
+animates". Re-verified after the fix: with `prefers-reduced-motion: no-preference` the
+hero fades `0 → 1` and cards stagger 32/80/144/216ms; with `reduce` both are final at
+first paint. Detail in [E10-status.md](E10-status.md) §3.
+
+The lesson worth keeping: an assertion that a thing is in its final state cannot tell you
+why it is in its final state. Sample the transition, not the endpoint.
