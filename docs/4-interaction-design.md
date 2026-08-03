@@ -440,6 +440,20 @@ right for the large majority and because an incorrect negative is more visible t
 incorrect positive — a visitor who would have seen the document instead gets a panel
 telling them they cannot.
 
+**A missing file is a separate state from an unsupported browser**, with its own message.
+Both produce the same compact panel, and confusing them tells a visitor to blame their
+browser for a deploy defect.
+
+Availability is checked with a same-origin `HEAD` on mount, because `<object>` fires no
+usable `error` event. **A 200 is not proof the file exists**: the SPA rewrite
+(`/* /index.html 200`, `2-architecture.md` §10) answers a missing asset with the HTML shell
+at status 200, so the check requires a content type that is actually a PDF. Where the
+header is absent the answer is optimistic — hiding a working document is worse than showing
+a frame that fails.
+
+While the check is in flight the embed renders, so the common path never shifts. Only a
+confirmed absence collapses the frame.
+
 **The fallback replaces the embed, never the section.** `2-architecture.md` §8 fixes the
 resume page's outline at `h1: Resume` → `h2: View` → `h2: Download`, and the `h2: View`
 heading is present in both states. A heading that introduces nothing is the failure §10

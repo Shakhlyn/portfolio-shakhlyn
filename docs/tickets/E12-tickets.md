@@ -538,6 +538,71 @@ resolve at first paint, so the cap costs no CLS.
 
 ---
 
+### E12-T08 — Give a missing PDF its own state and its own message
+
+**Depends on:** E12-T07
+**Files:**
+
+- Create: `src/hooks/usePdfAvailable.ts`
+- Modify: `src/components/sections/ResumeViewer.tsx` — third state, split copy
+- Modify: `docs/4-interaction-design.md` — §5.6
+
+**Commit:** `fix(resume): distinguish a missing PDF from a browser that cannot embed one`
+
+**Scope**
+
+- In: the availability probe, the compact failure panel, and two distinct messages.
+- Out: the centring and the height cap (E12-T07). Replacing the draft PDF, which is E18's
+  content gate.
+
+**Implementation notes**
+
+`<object>`'s children render for **two** different failures — no viewer, and no file — and
+T04 gave both the capability wording. A missing file is a deploy defect; telling that
+visitor their browser is at fault sends them to check a setting that was never the problem.
+
+`<object>` fires no usable `error` event and a same-origin `iframe` loads the server's 404
+body rather than failing, so availability needs a `HEAD` request. Put it in its own hook:
+"can this browser show a PDF" and "is the file there" are different questions
+(`AGENTS.md` §5).
+
+**A 200 is not proof the file exists.** This is a SPA behind a catch-all rewrite
+(`2-architecture.md` §10), so a missing asset returns **200 with the HTML shell** —
+confirmed against `yarn preview`, and Netlify's rewrite behaves the same. Checking only
+`response.ok` reports every missing PDF as present, which is precisely the failure the hook
+exists to catch. Require a content type that is actually a PDF; where the header is absent,
+answer optimistically, because hiding a working document is worse than showing a frame that
+fails.
+
+The effect **must** return a cleanup that aborts the request — unlike `useCanEmbedPdf`,
+this one genuinely subscribes. Setting state after the `await` is correct and is not a
+repeat of T03's mistake: `react-hooks/set-state-in-effect` targets synchronous `setState`
+in an effect body.
+
+Render the embed while the probe is in flight, so the common path never shifts.
+
+The failure panel is **not** aspect-locked. The lock reserves space for a document that is
+arriving; where none is, holding 1086px around one sentence is the defect.
+
+**Acceptance**
+
+- With the asset resolving to a missing path, the view section renders a `div`, not an
+  `object`, under 200px tall, reporting `aspect-ratio: auto`.
+- That panel's text does **not** contain the word "browser".
+- With `navigator.pdfViewerEnabled` forced false, the panel's text **does** contain
+  "browser", and the two failure messages are not equal.
+- A direct `HEAD` on a nonexistent `.pdf` path against `yarn preview` returns status 200
+  with `content-type: text/html`, demonstrating why `response.ok` alone is insufficient.
+- The `View in browser` link is present exactly once in all three states.
+- The column stays centred in the missing state.
+- `grep -n "AbortController" src/hooks/usePdfAvailable.ts` matches, and the effect returns
+  a cleanup function.
+
+**Traceability:** `4-interaction-design.md` §5.6 · `3-style-preference.md` §6.7, §2.5 ·
+`2-architecture.md` §10 · `AGENTS.md` §5
+
+---
+
 ## Coverage
 
 Every E12 deliverable and acceptance criterion from `docs/5-epic-list.md`, mapped to the

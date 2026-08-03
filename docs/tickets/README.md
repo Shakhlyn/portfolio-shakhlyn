@@ -46,7 +46,7 @@ epic. Point me at those files to pick the work back up.
 | E09 Hero & Current Role | [E09-tickets.md](E09-tickets.md) | [E09-status.md](E09-status.md) | 8   | E07, E08   |
 | E10 Projects            | [E10-tickets.md](E10-tickets.md) | [E10-status.md](E10-status.md) | 12  | E07        |
 | E11 About & Skills      | [E11-tickets.md](E11-tickets.md) | [E11-status.md](E11-status.md) | 7   | E07        |
-| E12 Resume              | [E12-tickets.md](E12-tickets.md) | [E12-status.md](E12-status.md) | 6   | E07, E09   |
+| E12 Resume              | [E12-tickets.md](E12-tickets.md) | [E12-status.md](E12-status.md) | 8   | E07, E09   |
 
 **E09: 8 of 8 done.** E09-T08 (portrait treatment) was unblocked by the supplied
 photograph and shipped the same day — the seam built ahead of it took the image with no
@@ -63,12 +63,19 @@ pre-existing E07 discrepancy — the scroll spy retains the last observed sectio
 `navigation.ts` claims nothing should be highlighted — recorded in
 [E11-status.md](E11-status.md) §3 for an E07 amendment ticket rather than fixed in place.
 
-**E12: 6 of 6 done.** 38 browser checks, no defect of its own — but two in its own ticket
-file, both fixed in the specification rather than absorbed into the code: a fallback panel
-that specified a redundant second control, and a hook specified as `useEffect` + `useState`
-that `react-hooks/set-state-in-effect` correctly rejected. Detail in
-[E12-status.md](E12-status.md) §3. Its one real gap is that iOS Safari — the browser the
-fallback exists for — cannot be verified here, so the design does not depend on the check.
+**E12: 8 of 8 done.** 73 browser checks. Two defects were fixed in the specification before
+any code was written — a fallback panel with a redundant second control, and a hook
+specified as `useEffect` + `useState` that `react-hooks/set-state-in-effect` correctly
+rejected ([E12-status.md](E12-status.md) §3).
+
+**Then two more reached a real viewport that 38 passing checks had not caught** — the
+preview sat flush left, and a missing PDF rendered one sentence inside a 1086px box —
+because those checks asserted the properties the ticket specified rather than where the box
+sat or how tall it got. T07 and T08 fix them, and chasing the second found a third: the SPA
+catch-all rewrite answers a missing asset with **200 and the HTML shell**, so the
+availability probe's original `response.ok` test would have called every missing file
+present. Detail in [E12-status.md](E12-status.md) §8. iOS Safari remains the one gap the
+design deliberately does not depend on.
 
 **36 Phase 1 tickets, 14 in E07, 8 in E08.** E01 → E02 is a hard sequence. E03, E04, E05, and E06 are independent of
 each other once E02 lands and can be built in any order.

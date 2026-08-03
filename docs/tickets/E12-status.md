@@ -157,3 +157,64 @@ replacing the file means updating `RESUME.fileSize`, and **re-checking the slot 
 
 **Carried forward, not E12's:** the pre-existing E07 scroll-spy discrepancy recorded in
 [E11-status.md](E11-status.md) §3 is still open and still awaiting an amendment ticket.
+
+---
+
+## 8. Post-ship rework — E12-T07 and E12-T08 (2026-08-03)
+
+**Two defects reached a real viewport that 38 passing checks did not catch.** Both were
+reported by eye, on `/resume` at a normal laptop width, minutes after the epic was
+committed.
+
+### 8.1 What was wrong
+
+**The preview was flush left.** `SLOT` carried `max-w-content` with no `mx-auto`, so inside
+`Container` the 768px frame sat hard against the left edge with ~288px of dead space beside
+it — more at 1920, where the shell widens to 1280px.
+
+**A missing PDF rendered one sentence inside a screen-high box.** `aspect-[210/297]` at
+768px computes to **1086px**, taller than a laptop viewport. `<object>`'s fallback child
+rendered inside that locked frame. The copy was wrong for the case as well: `<object>`
+children render for a browser with no PDF viewer **and** for a file that will not load, and
+both were given "This browser cannot display the PDF inline."
+
+### 8.2 Why the harness missed them
+
+It asserted the properties the ticket specified — `max-width: 768px`, `aspect-ratio:
+210 / 297` — and never asked **where the box sat** or **how tall it got**. A check written
+from the same sentence as the code cannot contradict the code. The new checks measure
+position and height against the viewport instead: equal left/right gaps at six widths, a
+shared left edge across four elements, and `height <= 0.8 * innerHeight`.
+
+### 8.3 The fix
+
+- One centred `max-w-content mx-auto` column owns the page; heading, preview, and both
+  buttons share its edges.
+- The embed frame keeps the A4 lock and gains a `max-h-[80vh]` ceiling.
+- Both failure states use a compact, **un-locked** panel. The lock reserves space for a
+  document that is arriving; where none is, it is a defect.
+- A missing file became its own state with its own message.
+
+### 8.4 A third defect, found while fixing the second
+
+The availability probe was first written as `response.ok`. Against `yarn preview` a missing
+asset returns **200 with `content-type: text/html`** — the SPA catch-all rewrite
+(`2-architecture.md` §10) answers with the HTML shell, and Netlify behaves identically. So
+`response.ok` is `true` for a file that does not exist, and the probe would have reported
+every missing PDF as present — the exact failure it was added to catch.
+
+Corrected to require a content type that is actually a PDF, with an absent header treated
+optimistically. The harness asserts the underlying server behaviour directly, so the reason
+the check exists cannot be edited away by someone who thinks it is redundant.
+
+### 8.5 Verification
+
+`scratchpad/verify-e12b.mjs`, **35 checks, all passing**, plus the original
+`verify-e12.mjs` updated to the new design (four checks rewritten, not deleted: the
+slot-width check now measures the column, and the two "height stable across states" checks
+now assert the panel is _shorter_ than the embed, which is the point of the change).
+
+Full suite after rework: **219/219**.
+
+Unchanged by this rework: **iOS Safari is still unverified** (§7), and the committed PDF is
+still the marked draft.
