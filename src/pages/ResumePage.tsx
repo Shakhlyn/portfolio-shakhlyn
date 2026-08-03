@@ -21,18 +21,36 @@ import { Container } from '@/components/ui/Container';
  * the precedent and carry no `whileInView` either; adding a scroll reveal to a
  * route whose content is entirely above the fold would fight the transition that
  * just ran.
+ *
+ * **The centred column is this page's layout, and it is one element.** The
+ * heading, the viewer, and the download all share its edges, so the page reads
+ * as a document rather than as three blocks pinned to the left of a 1120px
+ * shell. Copy inside it stays left-aligned — `3-style-preference.md` §3.3 never
+ * centres a paragraph longer than two lines.
+ *
+ * It is an inner wrapper rather than `max-w-content` on `Container`'s
+ * `className`. `Container` carries `2xl:max-w-container-wide`; `tailwind-merge`
+ * would resolve the base `max-w-*` conflict but leave that variant standing, and
+ * the column would jump to 1280px above 1536px.
+ *
+ * Between `sm` and `xl` the column inherits `Container`'s widened left gutter,
+ * which clears the social rail (docs/4-interaction-design.md §7), so it sits
+ * ~16px right of true viewport centre in that range. That asymmetry is accepted
+ * site-wide by §7; opting this route out would let the rail overlap the column.
  */
 export const ResumePage = (): ReactElement => (
-  <Container as="section" className="space-y-12 py-16 md:py-20">
-    <h1
-      tabIndex={-1}
-      className="text-h1 text-fg focus-visible:outline-none md:text-h1-md"
-    >
-      Resume
-    </h1>
+  <Container as="section" className="py-16 md:py-20">
+    <div className="mx-auto max-w-content space-y-12">
+      <h1
+        tabIndex={-1}
+        className="text-h1 text-fg focus-visible:outline-none md:text-h1-md"
+      >
+        Resume
+      </h1>
 
-    <ResumeViewer />
+      <ResumeViewer />
 
-    <ResumeDownloadLink />
+      <ResumeDownloadLink />
+    </div>
   </Container>
 );

@@ -483,6 +483,61 @@ iOS Safari item and the standing E18 gate that the committed PDF is still a draf
 
 ---
 
+### E12-T07 — Centre the resume column and cap the preview height
+
+**Depends on:** E12-T05
+**Files:**
+
+- Modify: `src/pages/ResumePage.tsx` — centred column wrapper
+- Modify: `src/components/sections/ResumeViewer.tsx` — frame classes
+- Modify: `docs/3-style-preference.md` — §6.7
+- Modify: `docs/4-interaction-design.md` — §10 (one new row)
+
+**Commit:** `fix(resume): centre the page column and cap the preview height`
+
+**Scope**
+
+- In: the centred column, the `80vh` ceiling on the embed frame, and the doc rows that
+  record both.
+- Out: the missing-file state and its probe (E12-T08). The social-rail gutter asymmetry,
+  which is `4-interaction-design.md` §7's and applies site-wide.
+
+**Implementation notes**
+
+Two defects T04 shipped, neither caught by its harness — which asserted the properties the
+ticket specified and never asked how the page read.
+
+`SLOT` carried `max-w-content` with no `mx-auto`, so the preview sat flush left inside a
+1120px shell with ~288px of dead space beside it. The fix is a column, not an `mx-auto` on
+the slot: the `h1`, both `h2`s, the preview, and both buttons must share one left edge, or
+a centred box hangs under left-aligned headings.
+
+Wrap the page body in `<div className="mx-auto max-w-content space-y-12">` — an **inner
+wrapper**, not `max-w-content` on `Container`'s `className`. `Container` carries
+`2xl:max-w-container-wide`; `tailwind-merge` resolves the base `max-w-*` conflict but
+leaves that variant standing, and the column would jump to 1280px above 1536px.
+
+The frame drops `max-w-content` (the column owns width now) and gains `max-h-[80vh]`.
+Unbounded, the A4 lock computes to 1086px at 768px wide — taller than a laptop viewport,
+so the visitor scrolls the page to read a document that scrolls itself. Viewport units
+resolve at first paint, so the cap costs no CLS.
+
+**Acceptance**
+
+- At 320, 375, 768, 1024, 1440 and 1920 the column's left and right gaps inside
+  `Container`'s content box are equal within 1px.
+- At 375 and 1440 the `h1`, the `View` heading, the preview frame, and the `Download`
+  heading report an identical `getBoundingClientRect().left`.
+- At every width above, the preview's rendered height is `<= 0.8 * window.innerHeight`.
+- The embed still reports `aspect-ratio: 210 / 297` and a non-`none` `max-height`.
+- The centred column measures exactly 768px at 1024 and above.
+- CLS on `/resume` is still 0; no horizontal page scroll at any of the six widths.
+
+**Traceability:** `3-style-preference.md` §6.7, §3.3, §4.2 · `4-interaction-design.md` §7,
+§10 row 17
+
+---
+
 ## Coverage
 
 Every E12 deliverable and acceptance criterion from `docs/5-epic-list.md`, mapped to the
