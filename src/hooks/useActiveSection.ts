@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { NAV_CLICK_SUPPRESS_MS, SCROLL_SPY_ROOT_MARGIN } from '@/constants/site';
+import {
+  NAV_CLICK_SUPPRESS_MS,
+  SCROLL_BOTTOM_EPSILON,
+  SCROLL_SPY_ROOT_MARGIN,
+} from '@/constants/site';
 
 /**
  * Scroll spy driving the active nav item (docs/4-interaction-design.md §3).
@@ -27,6 +31,7 @@ export const useActiveSection = (
 ): string | null => {
   const [spyId, setSpyId] = useState<string | null>(null);
   const [override, setOverride] = useState<string | null>(null);
+  const [atBottom, setAtBottom] = useState(false);
   const { hash } = useLocation();
 
   useEffect(() => {
@@ -82,7 +87,58 @@ export const useActiveSection = (
     };
   }, [enabled, sectionIds]);
 
+  /**
+   * The last section cannot always reach the band.
+   *
+   * A section lights up while it overlaps the strip between 20% and 30% of the
+   * viewport. At maximum scroll the final section's top sits at
+   * `viewportHeight - footerHeight - sectionHeight`, so it crosses that strip
+   * only if section + footer exceeds 70% of the viewport. On a tall screen it
+   * does not: the page runs out of scroll with the band still over the section
+   * above, and — because nothing observed intersects while #skills passes
+   * through — the item lit before it stays lit indefinitely.
+   *
+   * So the document bottom is its own signal: if the page cannot scroll any
+   * further, the last section is the one being read, whatever the band says.
+   */
+  useEffect(() => {
+    if (!enabled) return;
+
+    let frame = 0;
+
+    const measure = (): void => {
+      frame = 0;
+      const reached =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - SCROLL_BOTTOM_EPSILON;
+      setAtBottom(reached);
+    };
+
+    // rAF-throttled: scroll fires far more often than a frame can paint, and
+    // this reads layout. Same pattern as useCarousel's position tracking.
+    const schedule = (): void => {
+      if (!frame) frame = requestAnimationFrame(measure);
+    };
+
+    measure();
+    window.addEventListener('scroll', schedule, { passive: true });
+    // Resize changes both terms of the comparison, so a rotation or a zoom step
+    // must re-evaluate or the answer is stale.
+    window.addEventListener('resize', schedule);
+
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+    };
+  }, [enabled]);
+
   if (!enabled) return null;
 
-  return override ?? spyId;
+  // Precedence: a nav click wins outright for its suppression window; the
+  // document bottom beats the observer, since at that point the observer is
+  // describing a section the visitor has already scrolled past.
+  const lastSectionId = sectionIds.at(-1) ?? null;
+
+  return override ?? (atBottom ? lastSectionId : spyId);
 };

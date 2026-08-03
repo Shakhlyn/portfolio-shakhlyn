@@ -33,5 +33,16 @@ export const SCROLL_SPY_ROOT_MARGIN = '-20% 0px -70% 0px';
  */
 export const NAV_CLICK_SUPPRESS_MS = 700;
 
+/**
+ * How close to the document bottom counts as "the page cannot scroll further".
+ *
+ * The last section can only reach the activation band if it, plus the footer,
+ * is taller than 70% of the viewport — otherwise the page runs out of scroll
+ * with the band still over the section above, and that one stays lit. Two
+ * pixels of slack absorb sub-pixel rounding at fractional zoom, the same
+ * reasoning as the carousel's end detection.
+ */
+export const SCROLL_BOTTOM_EPSILON = 2;
+
 /** The header gains its border and blur past this scroll offset. */
 export const HEADER_SCROLL_THRESHOLD = 8;

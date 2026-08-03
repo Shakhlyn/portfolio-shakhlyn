@@ -184,6 +184,15 @@ The nav item matching the section in view goes from `fg-muted` to `fg`, gains a 
   scroll do not flicker the indicator.
 - The Projects `h3` subsections do **not** drive scroll spy — only `#projects` does.
   Sub-highlighting a single nav item from two child sections would flicker.
+- **The document bottom overrides the band.** A section lights up while it overlaps
+  the strip between 20% and 30% of the viewport, so the final section reaches it only
+  if that section plus the footer is taller than 70% of the viewport. On a tall screen
+  it is not: the page runs out of scroll with the band still over the section above,
+  and since nothing observed intersects while `#skills` passes through, the previously
+  lit item stays lit forever. At maximum scroll the last anchor section is therefore
+  marked active regardless of the observer — if the page cannot move further, that is
+  the section being read. Tracked with an rAF-throttled `scroll` and `resize` listener,
+  both cleaned up on unmount.
 - Blog and Resume use React Router's route-active state, never section state.
 
 ### Cross-route anchors

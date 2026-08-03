@@ -153,3 +153,30 @@ with one fewer entry when there is nothing to link to. Verified against a tempor
 emptied `PROJECTS`: the desktop nav and the mobile sheet drop to 5 items, the spy never
 reports `projects`, and the 404 link row omits it. Detail in
 [E10-status.md](E10-status.md) §4.
+
+---
+
+## Post-epic fix — the last nav item could never activate
+
+Reported after E13 landed: scrolling to Contact left **About** lit.
+
+Not a bug in About, and not caused by its length. `useActiveSection` lights a section
+while it overlaps the band between 20% and 30% of the viewport
+(`SCROLL_SPY_ROOT_MARGIN`). At maximum scroll the final section's top sits at
+`viewportHeight − footerHeight − sectionHeight`, so it reaches that band only if the
+section plus the footer is taller than **70% of the viewport**. Contact and the footer
+come to roughly 750px, which clears the bar on a 720–1000px viewport and misses it from
+about 1100px up — so the defect appears only on tall screens, which is why it survived
+E07's own verification.
+
+It stayed on About rather than Skills because `#skills` has no nav entry and is not
+observed: while it passes through the band nothing intersects, and the hook deliberately
+holds the previously lit item rather than clearing every one.
+
+**Fix:** the document bottom is treated as its own signal. If the page cannot scroll
+further, the last anchor section is the one being read, whatever the observer says.
+Tracked with an rAF-throttled `scroll` plus `resize` listener — resize because both terms
+of the comparison change with the viewport — and both are removed on unmount alongside a
+cancelled frame. Precedence is nav-click override → document bottom → observer.
+
+`4-interaction-design.md` §3 amended with the rule and the reason.
