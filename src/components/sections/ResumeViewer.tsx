@@ -61,9 +61,15 @@ const NOT_AVAILABLE = 'The resume file could not be loaded right now.';
  * needs an explicit accessible name — an unlabelled embedded region is announced
  * as "embedded object" and nothing more.
  *
- * **The fallback replaces the embed, never the section.** The heading stays in
- * all three states, so the outline `2-architecture.md` §8 fixes does not vary by
- * browser.
+ * **The fallback replaces the embed, never the section.** All three states keep
+ * the same labelled region in the same place, so nothing about the page's shape
+ * depends on the visitor's browser.
+ *
+ * **`aria-label`, not `aria-labelledby`.** This section has no heading — the
+ * preview introduces itself and `2-architecture.md` §8's resume outline is `h1:
+ * Resume` then `h2: Download`. A region still needs a name, and a dangling
+ * `aria-labelledby` is worse than none: it resolves to empty and the section is
+ * announced as an unnamed group.
  *
  * **The action is unconditional and lives beneath the frame.** It is the page's
  * one guarantee — the file is always one click away — so it deliberately depends
@@ -80,11 +86,7 @@ export const ResumeViewer = (): ReactElement => {
   const canEmbed = support !== 'unsupported';
 
   return (
-    <section aria-labelledby="resume-view-heading">
-      <h2 id="resume-view-heading" className="text-h2 text-fg md:text-h2-md">
-        View
-      </h2>
-
+    <section aria-label="Resume preview">
       {isMissing || !canEmbed ? (
         // No `danger` styling in either case — §2.5 reserves it for form feedback.
         <div className={PANEL_FRAME}>

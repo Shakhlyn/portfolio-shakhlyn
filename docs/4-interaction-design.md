@@ -454,11 +454,11 @@ a frame that fails.
 While the check is in flight the embed renders, so the common path never shifts. Only a
 confirmed absence collapses the frame.
 
-**The fallback replaces the embed, never the section.** `2-architecture.md` §8 fixes the
-resume page's outline at `h1: Resume` → `h2: View` → `h2: Download`, and the `h2: View`
-heading is present in both states. A heading that introduces nothing is the failure §10
-row 11 rejected for the case study's `Links`; the panel is what keeps this one honest.
-Appearance is `3-style-preference.md` §6.7.
+**The fallback replaces the embed, never the section.** The preview is a labelled region
+rather than a heading-led subsection (`2-architecture.md` §8), and all three states keep
+that region in the same place with the same name — so nothing about the page's shape
+depends on the visitor's browser, and the action beneath it never moves. Appearance is
+`3-style-preference.md` §6.7.
 
 **The direct link renders in both states.** It is the page's one guarantee, so it is never
 conditional on the capability check. If detection is wrong in either direction the visitor

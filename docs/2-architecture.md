@@ -613,9 +613,15 @@ Resume page:
 
 ```text
 h1: Resume
-h2: View
 h2: Download
 ```
+
+**The preview has no heading, by decision.** It is a labelled region
+(`<section aria-label="Resume preview">`), not a subsection: a heading reading "View" above
+an embedded document introduces nothing the document does not already announce, and it
+bought a second `h2` in an outline two items long. The region keeps an accessible name so
+it is still reachable and announced. Do not re-add the heading without also restoring the
+`aria-labelledby` it labelled.
 
 Writing page:
 

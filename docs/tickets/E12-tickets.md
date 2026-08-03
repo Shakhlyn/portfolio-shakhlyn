@@ -603,6 +603,52 @@ arriving; where none is, holding 1086px around one sentence is the defect.
 
 ---
 
+### E12-T09 — Drop the `View` heading and label the preview region directly
+
+**Depends on:** E12-T08
+**Files:**
+
+- Modify: `src/components/sections/ResumeViewer.tsx`
+- Modify: `docs/2-architecture.md` — §8 resume outline
+- Modify: `docs/3-style-preference.md` — §6.7
+- Modify: `docs/4-interaction-design.md` — §5.6
+
+**Commit:** `fix(resume): label the preview region instead of heading it`
+
+**Scope**
+
+- In: removing the `h2`, giving the section an `aria-label`, and amending the outline the
+  three documents record.
+- Out: the viewer parameters and the wider frame (E12-T10).
+
+**Implementation notes**
+
+The `h2: View` was deleted from the component, leaving
+`aria-labelledby="resume-view-heading"` pointing at an id that no longer exists. That is
+worse than no attribute: it resolves to empty, so the region is announced as an unnamed
+group rather than falling back to anything. Replace it with `aria-label="Resume preview"`.
+
+`2-architecture.md` §8 fixes the resume outline as `h1` → `h2: View` → `h2: Download`, so
+the outline is amended, not just the code — a heading reading "View" above an embedded
+document introduces nothing the document does not announce, and it bought a second `h2` in
+an outline two items long.
+
+**Acceptance**
+
+- `/resume` renders exactly one `h1` ("Resume") and exactly one `h2` ("Download"), read
+  from the DOM in order.
+- The preview section appears in `Accessibility.getFullAXTree` with the name
+  `Resume preview` and is not ignored.
+- **No element on the page has an `aria-labelledby` referencing a missing id** — asserted
+  across the whole document, not just this section.
+- `2-architecture.md` §8's resume block lists two headings, and says why the preview has
+  none.
+
+**Traceability:** `2-architecture.md` §8 · `3-style-preference.md` §6.7 ·
+`4-interaction-design.md` §5.6 · `AGENTS.md` §10
+
+---
+
 ## Coverage
 
 Every E12 deliverable and acceptance criterion from `docs/5-epic-list.md`, mapped to the

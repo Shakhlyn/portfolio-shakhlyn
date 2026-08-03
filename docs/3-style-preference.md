@@ -599,6 +599,11 @@ that always fits the screen. Viewport units resolve at first paint, so the ceili
 CLS. Neither the ratio nor the fraction is expressible as a token, so both are arbitrary
 values carrying comments (§9).
 
+**No heading above it.** The preview is a labelled region — `<section aria-label="Resume
+preview">` — not a subsection. A heading reading "View" above an embedded document
+introduces nothing the document does not announce itself, and it bought a second `h2` in an
+outline two items long (`2-architecture.md` §8).
+
 **The two failure states share a panel and do not share their copy.** Where no document
 will render — the browser has no inline PDF viewer, or the file is unreachable — the frame
 is replaced by a compact panel: the same border and surface, height driven by its one
