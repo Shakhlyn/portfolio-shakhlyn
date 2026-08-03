@@ -44,6 +44,20 @@ reduced motion — not unwritten code.
 | ---------------------------------------- | ---- | ------------------ | ------- | ----------- | ----- |
 | [E09 Hero & Current Role](E09-status.md) | 8    | 0                  | 0       | 0           | 8     |
 | [E10 Projects](E10-status.md)            | 12   | 0                  | 0       | 0           | 12    |
+| [E11 About & Skills](E11-status.md)      | 7    | 0                  | 0       | 0           | 7     |
+
+E11 was verified with **46 automated browser checks, all passing**, including three
+temporary-data edits for criteria that real content makes unobservable. It found no
+defect of its own — the smallest epic since E06, and the first to ship without one.
+
+It did surface a **pre-existing E07 discrepancy**: `navigation.ts` states that nothing
+should be highlighted while a section without a nav entry is in view, and the scroll spy
+instead retains the last observed section. Behaviour is identical on the pre-E11 build, so
+it is not E11's, and it is recorded in [E11-status.md](E11-status.md) §3 for an E07
+amendment ticket rather than fixed inside a feature epic.
+
+E11-T02 reaches into E06's three motion files to add `DURATION_BADGE` and `badgeFadeUp`,
+because animation 4 is 300ms and no token expressed it. Recorded in both status files.
 
 E10 was verified with **86 automated browser checks, 85 passing**. It found one real
 defect of its own: 69px of horizontal **page** scroll at 1440, caused not by the

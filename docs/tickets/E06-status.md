@@ -113,3 +113,24 @@ first paint. Detail in [E10-status.md](E10-status.md) §3.
 
 The lesson worth keeping: an assertion that a thing is in its final state cannot tell you
 why it is in its final state. Sample the transition, not the endpoint.
+
+## Extended by E11-T02 (2026-08-03)
+
+**Three files in this epic gained a token and a variant, deliberately, from outside it.**
+
+Animation 4 (skill badges) is **300ms**, and `DURATION_REVEAL` is 400ms. There was no way
+to build it from inside `components/sections/` without duplicating a duration or restating
+one inline, so E11-T02 added:
+
+```
+src/constants/motion.ts        DURATION_BADGE = 0.3
+src/lib/motion.ts              badgeFadeUp — fadeUp's offset and curve, 300ms
+src/hooks/useMotionVariants.ts badgeFadeUp exposed, reducedFadeUp in its place under reduce
+```
+
+This is **not** a §8 amendment. Animation 4 was already on the closed inventory with its
+duration stated; only the token was missing, because E06 shipped before anything on the
+site staggered badges. The variant mirrors `fadeUp` exactly but for the duration — a
+second easing curve for one badge row would be drift with no reader-visible reason.
+
+Detail and evidence in [E11-status.md](E11-status.md) §2.
