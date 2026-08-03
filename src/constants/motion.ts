@@ -7,6 +7,15 @@
 
 export const DURATION_HOVER = 0.15;
 export const DURATION_REVEAL = 0.4;
+
+/**
+ * Animation 4 — skill badges — is 300ms, not the 400ms of every other reveal
+ * (docs/4-interaction-design.md §8 row 4). A badge travels a shorter visual
+ * distance than a card or a section, and at 400ms a staggered row of them still
+ * reads as moving after the eye has already arrived.
+ */
+export const DURATION_BADGE = 0.3;
+
 export const DURATION_PAGE = 0.2;
 export const DURATION_MENU = 0.2;
 

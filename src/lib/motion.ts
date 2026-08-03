@@ -1,6 +1,7 @@
 import type { Variants } from 'motion/react';
 
 import {
+  DURATION_BADGE,
   DURATION_PAGE,
   DURATION_REVEAL,
   EASE_OUT,
@@ -25,6 +26,20 @@ export const fadeUp: Variants = {
     opacity: 1,
     y: 0,
     transition: { duration: DURATION_REVEAL, ease: EASE_REVEAL },
+  },
+};
+
+/**
+ * Animation 4: an individual skill badge. Identical to `fadeUp` but for its
+ * duration — same offset, same curve. A second easing curve for one badge row
+ * would be drift with no reader-visible justification.
+ */
+export const badgeFadeUp: Variants = {
+  hidden: { opacity: 0, y: REVEAL_OFFSET_Y },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: DURATION_BADGE, ease: EASE_REVEAL },
   },
 };
 

@@ -2,6 +2,7 @@ import type { Variants } from 'motion/react';
 import { useReducedMotion } from 'motion/react';
 
 import {
+  badgeFadeUp,
   fadeUp,
   pageTransition,
   reducedFadeUp,
@@ -11,6 +12,8 @@ import {
 
 interface UseMotionVariantsResult {
   fadeUp: Variants;
+  /** Animation 4's shorter reveal, for badges inside a stagger group. */
+  badgeFadeUp: Variants;
   pageTransition: Variants;
   staggerContainer: (staggerChildren?: number) => Variants;
   /**
@@ -39,6 +42,9 @@ export const useMotionVariants = (): UseMotionVariantsResult => {
   if (prefersReducedMotion) {
     return {
       fadeUp: reducedFadeUp,
+      // The same final-state variants: a badge's reduced path differs from a
+      // section's only in the duration it no longer has.
+      badgeFadeUp: reducedFadeUp,
       pageTransition: reducedPageTransition,
       staggerContainer: () => ({ hidden: {}, visible: {} }),
       reducedMotion: true,
@@ -47,6 +53,7 @@ export const useMotionVariants = (): UseMotionVariantsResult => {
 
   return {
     fadeUp,
+    badgeFadeUp,
     pageTransition,
     staggerContainer,
     reducedMotion: false,
