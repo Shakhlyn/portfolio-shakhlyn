@@ -5,22 +5,22 @@ Tickets: [E07-tickets.md](E07-tickets.md) · Overview: [STATUS.md](STATUS.md)
 **14 / 14 done.** Verified in a real browser, not by inspection.
 Legend in [STATUS.md](STATUS.md).
 
-| Ticket  | Title                             | Status | Notes                                    |
-| ------- | --------------------------------- | ------ | ---------------------------------------- |
-| E07-T01 | `useScrolledPast` hook            | ✅     |                                          |
-| E07-T02 | `Header` shell, wordmark, border  | ✅     | Added `wordmark` to `ProfileType`        |
-| E07-T03 | Home page section anchor scaffold | ✅     | **Temporary** — E09–E13 replace it       |
-| E07-T04 | `focusSection` helper             | ✅     |                                          |
-| E07-T05 | Desktop `Navigation`              | ✅     |                                          |
-| E07-T06 | `useActiveSection` scroll spy     | ✅     |                                          |
-| E07-T07 | `useHashScroll`                   | ✅     | Uncovered two latent defects — see below |
-| E07-T08 | `useMediaQuery` hook              | ✅     |                                          |
-| E07-T09 | `useFocusTrap` hook               | ✅     |                                          |
-| E07-T10 | `useScrollLock` hook              | ✅     |                                          |
-| E07-T11 | `SocialLinks` component           | ✅     | Moved from E08                           |
-| E07-T12 | `MobileNavigation` sheet          | ✅     | All five close paths verified            |
-| E07-T13 | `Footer`                          | ✅     |                                          |
-| E07-T14 | Integration verification pass     | ✅     | 27 automated browser checks              |
+| Ticket  | Title                             | Status | Notes                                       |
+| ------- | --------------------------------- | ------ | ------------------------------------------- |
+| E07-T01 | `useScrolledPast` hook            | ✅     |                                             |
+| E07-T02 | `Header` shell, wordmark, border  | ✅     | Added `wordmark` to `ProfileType`           |
+| E07-T03 | Home page section anchor scaffold | ✅     | **Discharged** — E13 removed the last of it |
+| E07-T04 | `focusSection` helper             | ✅     |                                             |
+| E07-T05 | Desktop `Navigation`              | ✅     |                                             |
+| E07-T06 | `useActiveSection` scroll spy     | ✅     |                                             |
+| E07-T07 | `useHashScroll`                   | ✅     | Uncovered two latent defects — see below    |
+| E07-T08 | `useMediaQuery` hook              | ✅     |                                             |
+| E07-T09 | `useFocusTrap` hook               | ✅     |                                             |
+| E07-T10 | `useScrollLock` hook              | ✅     |                                             |
+| E07-T11 | `SocialLinks` component           | ✅     | Moved from E08                              |
+| E07-T12 | `MobileNavigation` sheet          | ✅     | All five close paths verified               |
+| E07-T13 | `Footer`                          | ✅     |                                             |
+| E07-T14 | Integration verification pass     | ✅     | 27 automated browser checks                 |
 
 ## How this was verified
 
@@ -54,7 +54,10 @@ exists to catch. But the T03 scaffold sections contain no focusable children,
 so "inside" is not yet literally testable. Tab currently continues to the footer
 links, which is correct behaviour for an empty section.
 
-**Re-test this once E10–E13 put real content in the sections.**
+**Re-tested: E13 replaced the last scaffold section, so every anchor now targets real
+content. The keyboard pass over the assembled page is listed in
+[E13-status.md](E13-status.md) §5 and is outstanding — no browser tooling was available in
+the session that finished E13.**
 
 ## Three defects found and fixed
 

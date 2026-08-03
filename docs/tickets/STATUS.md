@@ -46,6 +46,7 @@ reduced motion — not unwritten code.
 | [E10 Projects](E10-status.md)            | 12   | 0                  | 0       | 0           | 12    |
 | [E11 About & Skills](E11-status.md)      | 7    | 0                  | 0       | 0           | 7     |
 | [E12 Resume](E12-status.md)              | 11   | 0                  | 0       | 0           | 11    |
+| [E13 Contact](E13-status.md)             | 7    | 0                  | 0       | 0           | 7     |
 
 E12 was verified with **38 automated browser checks, all passing**, and found no defect in
 the code. It found two in **its own ticket file**, both corrected in the source documents

@@ -114,3 +114,19 @@ host does not set. The case is checked **before** `external` in the render body,
 a download is same-origin and must not open a new tab.
 
 All four pre-existing call-site shapes still type-check unchanged.
+
+---
+
+## Cross-epic touch from E13 — `ref` on `TextInput` and `TextArea`
+
+Both components gained an optional `ref` prop so `ContactForm` can move focus to the first
+invalid field after a failed submit (`4-interaction-design.md` §5.7).
+
+Necessary rather than convenient: the field elements are owned by these two components, and
+`InputHTMLAttributes` / `TextareaHTMLAttributes` do not carry `ref`. React 19 passes `ref`
+through props for function components, so no `forwardRef` was needed — only the type had to
+say so. The alternative was querying the DOM for an id that `useId` generates inside a
+component which never exposes it.
+
+Neither component's rendering, styling, or ARIA changed. Detail in
+[E13-status.md](E13-status.md) §6.
