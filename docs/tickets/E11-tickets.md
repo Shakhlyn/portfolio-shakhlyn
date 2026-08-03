@@ -58,8 +58,10 @@ regression this pattern exists to avoid. It is not redundant markup.
 ## E11-T01 — Amend the About closing line, the About portrait, and the skills labelling in the docs
 
 **Depends on:** none
+
 **Files:** modified — `docs/3-style-preference.md`, `docs/2-architecture.md`,
 `docs/4-interaction-design.md`, `docs/5-epic-list.md`, `docs/tickets/README.md`
+
 **Commit:** `docs: fix the about closing line, drop the about portrait, specify skill group labelling`
 
 **Scope**
@@ -109,8 +111,10 @@ regression this pattern exists to avoid. It is not redundant markup.
 ## E11-T02 — Add the 300ms badge reveal duration to the motion vocabulary
 
 **Depends on:** none
+
 **Files:** modified — `src/constants/motion.ts`, `src/lib/motion.ts`,
 `src/hooks/useMotionVariants.ts`
+
 **Commit:** `feat(motion): add the badge reveal duration for staggered badge groups`
 
 **Scope**
@@ -158,8 +162,10 @@ before anything staggered badges.
 ## E11-T03 — Build `AboutSection`, replacing the `#about` scaffold
 
 **Depends on:** T01
+
 **Files:** created — `src/components/sections/AboutSection.tsx`; modified —
 `src/pages/HomePage.tsx`
+
 **Commit:** `feat(about): build the about section from the bio data`
 
 **Scope**
@@ -213,7 +219,9 @@ before anything staggered badges.
 ## E11-T04 — Build `SkillGroup` as a labelled list
 
 **Depends on:** T01
+
 **Files:** created — `src/components/sections/SkillGroup.tsx`
+
 **Commit:** `feat(skills): build the skill group as an accessibly labelled list`
 
 **Scope**
@@ -264,8 +272,10 @@ before anything staggered badges.
 ## E11-T05 — Build `SkillsSection`, replacing the `#skills` scaffold
 
 **Depends on:** T04
+
 **Files:** created — `src/components/sections/SkillsSection.tsx`; modified —
 `src/pages/HomePage.tsx`
+
 **Commit:** `feat(skills): build the skills section from the skill group data`
 
 **Scope**
@@ -315,8 +325,10 @@ before anything staggered badges.
 ## E11-T06 — Stagger the skill badges on section reveal
 
 **Depends on:** T02, T05
+
 **Files:** modified — `src/components/sections/SkillGroup.tsx`,
 `src/components/sections/SkillsSection.tsx`
+
 **Commit:** `feat(skills): stagger the skill badge reveal within each group`
 
 **Scope**
@@ -378,8 +390,10 @@ communicate nothing.
 ## E11-T07 — Verification pass and `E11-status.md`
 
 **Depends on:** T01–T06
+
 **Files:** created — `docs/tickets/E11-status.md`; modified —
 `docs/tickets/STATUS.md`, `docs/tickets/README.md`
+
 **Commit:** `docs(tickets): record E11 status`
 
 **Scope**

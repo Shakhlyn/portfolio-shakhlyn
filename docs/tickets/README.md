@@ -47,6 +47,7 @@ epic. Point me at those files to pick the work back up.
 | E10 Projects            | [E10-tickets.md](E10-tickets.md) | [E10-status.md](E10-status.md) | 12  | E07        |
 | E11 About & Skills      | [E11-tickets.md](E11-tickets.md) | [E11-status.md](E11-status.md) | 7   | E07        |
 | E12 Resume              | [E12-tickets.md](E12-tickets.md) | [E12-status.md](E12-status.md) | 11  | E07, E09   |
+| E13 Contact             | [E13-tickets.md](E13-tickets.md) | — not started                  | 7   | E04–E07    |
 
 **E09: 8 of 8 done.** E09-T08 (portrait treatment) was unblocked by the supplied
 photograph and shipped the same day — the seam built ahead of it took the image with no

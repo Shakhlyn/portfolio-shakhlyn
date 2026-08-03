@@ -47,8 +47,10 @@ the ticket that creates the risk — not deferred to the verification pass.
 ## E10-T01 — Amend the card link model and the conditional Links heading in the docs
 
 **Depends on:** none
+
 **Files:** modified — `docs/2-architecture.md`, `docs/3-style-preference.md`,
 `docs/4-interaction-design.md`, `docs/5-epic-list.md`, `docs/tickets/README.md`
+
 **Commit:** `docs(e10): fix the card link model and make the links heading conditional`
 
 **Scope**
@@ -101,7 +103,9 @@ the ticket that creates the risk — not deferred to the verification pass.
 ## E10-T02 — Add placeholder projects and screenshots, gated for E18
 
 **Depends on:** none
+
 **Files:** modified — `src/data/projects.ts`; created — `src/assets/projects/*.webp`
+
 **Commit:** `feat(data): add placeholder projects and screenshots for carousel verification`
 
 **Scope**
@@ -155,8 +159,10 @@ the ticket that creates the risk — not deferred to the verification pass.
 ## E10-T03 — Build `ProjectCard` and mount a minimal `ProjectsSection`
 
 **Depends on:** T02
+
 **Files:** created — `src/components/sections/ProjectCard.tsx`,
 `src/components/sections/ProjectsSection.tsx`; modified — `src/pages/HomePage.tsx`
+
 **Commit:** `feat(projects): build the project card`
 
 **Scope**
@@ -217,7 +223,9 @@ the ticket that creates the risk — not deferred to the verification pass.
 ## E10-T04 — Group projects into the Professional and Personal `h3` subsections
 
 **Depends on:** T03
+
 **Files:** modified — `src/components/sections/ProjectsSection.tsx`
+
 **Commit:** `feat(projects): group projects into professional and personal subsections`
 
 **Scope**
@@ -265,9 +273,11 @@ the ticket that creates the risk — not deferred to the verification pass.
 ## E10-T05 — Derive the Projects nav item from project data
 
 **Depends on:** T04
+
 **Files:** modified — `src/data/navigation.ts`; verified — `src/components/layout/Navigation.tsx`,
 `src/components/layout/MobileNavigation.tsx`, `src/hooks/useActiveSection.ts`,
 `src/pages/NotFoundPage.tsx`
+
 **Commit:** `feat(nav): omit the projects nav item when no projects exist`
 
 **Scope**
@@ -320,8 +330,10 @@ so the next reader finds it from either end.
 ## E10-T06 — Convert each subsection into a snap-scrolling `ProjectCarousel` track
 
 **Depends on:** T04
+
 **Files:** created — `src/components/sections/ProjectCarousel.tsx`; modified —
 `src/components/sections/ProjectsSection.tsx`, `src/styles/index.css`
+
 **Commit:** `feat(projects): build the scroll-snapped project carousel track`
 
 **Scope**
@@ -392,7 +404,9 @@ xl:pl-8` to clear the fixed social rail — so a symmetric negative margin anywh
 ## E10-T07 — Build the `useCarousel` hook
 
 **Depends on:** none
+
 **Files:** created — `src/hooks/useCarousel.ts`
+
 **Commit:** `feat(hooks): track carousel scroll position and arrow state`
 
 **Scope**
@@ -454,7 +468,9 @@ xl:pl-8` to clear the fixed social rail — so a symmetric negative margin anywh
 ## E10-T08 — Add the carousel arrow controls
 
 **Depends on:** T06, T07
+
 **Files:** modified — `src/components/sections/ProjectCarousel.tsx`
+
 **Commit:** `feat(projects): add carousel arrow controls`
 
 **Scope**
@@ -510,7 +526,9 @@ xl:pl-8` to clear the fixed social rail — so a symmetric negative margin anywh
 ## E10-T09 — Reveal the two subsections independently with staggered cards
 
 **Depends on:** T06
+
 **Files:** modified — `src/components/sections/ProjectCarousel.tsx`
+
 **Commit:** `feat(projects): stagger card reveals per subsection`
 
 **Scope**
@@ -558,8 +576,10 @@ closing rules · `AGENTS.md` §7
 ## E10-T10 — Build the `/projects/:slug` route: lookup, project hero, unknown-slug 404
 
 **Depends on:** none
+
 **Files:** modified — `src/pages/ProjectPage.tsx`; created —
 `src/components/sections/ProjectHero.tsx`
+
 **Commit:** `feat(projects): resolve project slugs and render the case study hero`
 
 **Scope**
@@ -616,8 +636,10 @@ error UI, which is the failure mode `5-epic-list.md` calls out for this epic.
 ## E10-T11 — Build `ProjectCaseStudy` and `ProjectLinks`
 
 **Depends on:** T10
+
 **Files:** created — `src/components/sections/ProjectCaseStudy.tsx`,
 `src/components/sections/ProjectLinks.tsx`; modified — `src/pages/ProjectPage.tsx`
+
 **Commit:** `feat(projects): build the case study body and links section`
 
 **Scope**
@@ -667,8 +689,10 @@ error UI, which is the failure mode `5-epic-list.md` calls out for this epic.
 ## E10-T12 — Verification pass and `E10-status.md`
 
 **Depends on:** T01–T11
+
 **Files:** created — `docs/tickets/E10-status.md`; modified —
 `docs/tickets/STATUS.md`, `docs/tickets/README.md`, `docs/tickets/E07-status.md`
+
 **Commit:** `docs(tickets): record E10 status`
 
 **Scope**

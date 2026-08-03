@@ -43,6 +43,7 @@ check off the critical path.
 ### E12-T01 — Specify the resume viewer slot and its fallback in the source docs
 
 **Depends on:** none
+
 **Files:**
 
 - Modify: `docs/3-style-preference.md` — §6.7
@@ -112,6 +113,7 @@ transition it just ran.
 ### E12-T02 — Build `ResumeDownloadLink`, exposing file type and size before the download
 
 **Depends on:** E12-T01
+
 **Files:**
 
 - Create: `src/components/sections/ResumeDownloadLink.tsx`
@@ -196,6 +198,7 @@ stay separately readable. Place it **beside or beneath the button, not inside it
 ### E12-T03 — Add `useCanEmbedPdf` for inline-PDF capability detection
 
 **Depends on:** none
+
 **Files:**
 
 - Create: `src/hooks/useCanEmbedPdf.ts`
@@ -279,6 +282,7 @@ it is closed.
 ### E12-T04 — Build `ResumeViewer` with an always-visible direct link
 
 **Depends on:** E12-T01, E12-T03
+
 **Files:**
 
 - Create: `src/components/sections/ResumeViewer.tsx`
@@ -365,6 +369,7 @@ path.
 ### E12-T05 — Compose `ResumePage` from the View / Download heading plan
 
 **Depends on:** E12-T02, E12-T04
+
 **Files:**
 
 - Modify: `src/pages/ResumePage.tsx` — replace the stub body
@@ -421,6 +426,7 @@ No motion. See E12-T01's note: the page arrives with the route transition, and
 ### E12-T06 — Verify E12 end to end and record `E12-status.md`
 
 **Depends on:** E12-T01, E12-T02, E12-T03, E12-T04, E12-T05
+
 **Files:**
 
 - Create: `docs/tickets/E12-status.md`
@@ -486,6 +492,7 @@ iOS Safari item and the standing E18 gate that the committed PDF is still a draf
 ### E12-T07 — Centre the resume column and cap the preview height
 
 **Depends on:** E12-T05
+
 **Files:**
 
 - Modify: `src/pages/ResumePage.tsx` — centred column wrapper
@@ -541,6 +548,7 @@ resolve at first paint, so the cap costs no CLS.
 ### E12-T08 — Give a missing PDF its own state and its own message
 
 **Depends on:** E12-T07
+
 **Files:**
 
 - Create: `src/hooks/usePdfAvailable.ts`
@@ -606,6 +614,7 @@ arriving; where none is, holding 1086px around one sentence is the defect.
 ### E12-T09 — Drop the `View` heading and label the preview region directly
 
 **Depends on:** E12-T08
+
 **Files:**
 
 - Modify: `src/components/sections/ResumeViewer.tsx`
@@ -652,6 +661,7 @@ an outline two items long.
 ### E12-T10 — Hide the thumbnail sidebar and give the preview room to read
 
 **Depends on:** E12-T09
+
 **Files:**
 
 - Modify: `src/components/sections/ResumeViewer.tsx`
@@ -723,6 +733,7 @@ checked in this environment at all.
 ### E12-T11 — Give every element on the route one shared width
 
 **Depends on:** E12-T10
+
 **Files:**
 
 - Modify: `src/pages/ResumePage.tsx`

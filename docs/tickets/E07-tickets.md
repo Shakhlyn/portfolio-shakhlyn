@@ -31,7 +31,9 @@ repeated.
 ## E07-T01 — Add `useScrolledPast` hook
 
 **Depends on:** none
+
 **Files:** created — `src/hooks/useScrolledPast.ts`
+
 **Commit:** `feat(nav): add useScrolledPast hook`
 
 **Scope**
@@ -70,9 +72,11 @@ repeated.
 ## E07-T02 — Build `Header` shell with wordmark and scrolled border
 
 **Depends on:** E07-T01
+
 **Files:** created — `src/components/layout/Header.tsx`; modified —
 `src/components/layout/RootLayout.tsx`, `src/data/profile.ts`,
 `src/types/profile.types.ts`, `docs/4-interaction-design.md`
+
 **Commit:** `feat(nav): add Header with wordmark and scrolled border`
 
 **Scope**
@@ -119,7 +123,9 @@ repeated.
 ## E07-T03 — Add home page section anchor scaffold
 
 **Depends on:** E07-T02
+
 **Files:** modified — `src/pages/HomePage.tsx`
+
 **Commit:** `feat(nav): add home page section anchors`
 
 **Scope**
@@ -158,7 +164,9 @@ repeated.
 ## E07-T04 — Add `focusSection` scroll-and-focus helper
 
 **Depends on:** E07-T03
+
 **Files:** created — `src/lib/focusSection.ts`
+
 **Commit:** `feat(nav): add focusSection scroll-and-focus helper`
 
 **Scope**
@@ -196,8 +204,10 @@ repeated.
 ## E07-T05 — Build desktop `Navigation` with anchor and route items
 
 **Depends on:** E07-T04
+
 **Files:** created — `src/components/layout/Navigation.tsx`; modified —
 `src/components/layout/Header.tsx`
+
 **Commit:** `feat(nav): add desktop navigation`
 
 **Scope**
@@ -243,8 +253,10 @@ repeated.
 ## E07-T06 — Add `useActiveSection` scroll spy and wire active state
 
 **Depends on:** E07-T05
+
 **Files:** created — `src/hooks/useActiveSection.ts`; modified —
 `src/components/layout/Navigation.tsx`
+
 **Commit:** `feat(nav): add scroll spy for active nav item`
 
 **⚠️ High risk.** Three failure modes that only appear in combination: flicker while a
@@ -295,8 +307,10 @@ sections, and two items reading as active at once.
 ## E07-T07 — Add `useHashScroll` for cross-route and cold-load anchors
 
 **Depends on:** E07-T04
+
 **Files:** created — `src/hooks/useHashScroll.ts`; modified —
 `src/components/layout/RootLayout.tsx`
+
 **Commit:** `feat(nav): resolve hash anchors after paint`
 
 **⚠️ High risk.** "The case that breaks naively-built hybrid sites" (§3). It also races
@@ -337,7 +351,9 @@ sections, and two items reading as active at once.
 ## E07-T08 — Add `useMediaQuery` hook
 
 **Depends on:** none
+
 **Files:** created — `src/hooks/useMediaQuery.ts`
+
 **Commit:** `feat(nav): add useMediaQuery hook`
 
 **Scope**
@@ -368,7 +384,9 @@ sections, and two items reading as active at once.
 ## E07-T09 — Add `useFocusTrap` hook
 
 **Depends on:** none
+
 **Files:** created — `src/hooks/useFocusTrap.ts`
+
 **Commit:** `feat(nav): add useFocusTrap hook`
 
 **Scope**
@@ -402,7 +420,9 @@ sections, and two items reading as active at once.
 ## E07-T10 — Add `useScrollLock` hook
 
 **Depends on:** none
+
 **Files:** created — `src/hooks/useScrollLock.ts`
+
 **Commit:** `feat(nav): add useScrollLock hook`
 
 **Scope**
@@ -435,8 +455,10 @@ sections, and two items reading as active at once.
 ## E07-T11 — Add `SocialLinks` component
 
 **Depends on:** none
+
 **Files:** created — `src/components/layout/SocialLinks.tsx`; modified —
 `docs/5-epic-list.md`
+
 **Commit:** `feat(nav): add SocialLinks component`
 
 **Scope**
@@ -474,8 +496,10 @@ sections, and two items reading as active at once.
 ## E07-T12 — Build `MobileNavigation` sheet
 
 **Depends on:** E07-T05, E07-T08, E07-T09, E07-T10, E07-T11
+
 **Files:** created — `src/components/layout/MobileNavigation.tsx`; modified —
 `src/components/layout/Header.tsx`
+
 **Commit:** `feat(nav): add mobile navigation sheet`
 
 **⚠️ High risk.** Five close paths, a focus trap, a scroll lock, and an animation all
@@ -528,8 +552,10 @@ trap or restoring scroll, leaving the page unusable.
 ## E07-T13 — Build `Footer`
 
 **Depends on:** E07-T11
+
 **Files:** created — `src/components/layout/Footer.tsx`; modified —
 `src/components/layout/RootLayout.tsx`
+
 **Commit:** `feat(nav): add Footer`
 
 **Scope**
@@ -561,7 +587,9 @@ trap or restoring scroll, leaving the page unusable.
 ## E07-T14 — Integration verification pass
 
 **Depends on:** E07-T01 … E07-T13
+
 **Files:** none expected; fixes only
+
 **Commit:** none unless a fix is needed → `fix(nav): <specific defect>`
 
 **⚠️ High risk by definition.** This ticket exists because several E07 acceptance

@@ -35,7 +35,9 @@ conflict resolved only in code is one the next person re-litigates. See
 ## E09-T01 — Replace the portrait-presence hero switch with an explicit `layout` field
 
 **Depends on:** none
+
 **Files:** modified — `src/types/profile.types.ts`, `src/data/profile.ts`
+
 **Commit:** `feat(data): select the hero layout with an explicit discriminator`
 
 **Scope**
@@ -74,8 +76,10 @@ conflict resolved only in code is one the next person re-litigates. See
 ## E09-T02 — Build `HeroSection` in the `stacked` layout, replacing the `#home` scaffold
 
 **Depends on:** none (T01 is independent; the branch arrives in T05)
+
 **Files:** created — `src/components/sections/HeroSection.tsx`; modified —
 `src/pages/HomePage.tsx`
+
 **Commit:** `feat(hero): build the stacked hero section`
 
 **Scope**
@@ -128,7 +132,9 @@ conflict resolved only in code is one the next person re-litigates. See
 ## E09-T03 — Add the hero mount reveal without gating hero text on JS state
 
 **Depends on:** E09-T02
+
 **Files:** modified — `src/components/sections/HeroSection.tsx`
+
 **Commit:** `feat(hero): animate the hero on mount`
 
 **Scope**
@@ -170,7 +176,9 @@ conflict resolved only in code is one the next person re-litigates. See
 ## E09-T04 — Render the hero `SocialLinks` row below `sm` only
 
 **Depends on:** E09-T02
+
 **Files:** modified — `src/components/sections/HeroSection.tsx`
+
 **Commit:** `feat(hero): show social links below the rail breakpoint`
 
 **Scope**
@@ -206,7 +214,9 @@ conflict resolved only in code is one the next person re-litigates. See
 ## E09-T05 — Add the `split` layout seam with an aspect-ratio-locked portrait slot
 
 **Depends on:** E09-T01, E09-T02
+
 **Files:** modified — `src/components/sections/HeroSection.tsx`
+
 **Commit:** `feat(hero): add the split layout seam`
 
 **Scope**
@@ -251,8 +261,10 @@ conflict resolved only in code is one the next person re-litigates. See
 ## E09-T06 — Build `CurrentRoleSection`, replacing the `#current-role` scaffold
 
 **Depends on:** none
+
 **Files:** created — `src/components/sections/CurrentRoleSection.tsx`; modified —
 `src/pages/HomePage.tsx`
+
 **Commit:** `feat(current-role): build the current role section`
 
 **Scope**
@@ -302,8 +314,10 @@ row 2 · `2-architecture.md` §8
 ## E09-T07 — Integration verification pass
 
 **Depends on:** E09-T01 … E09-T06
+
 **Files:** created — `docs/tickets/E09-status.md`; modified —
 `docs/tickets/STATUS.md`, `docs/tickets/README.md`
+
 **Commit:** `docs(tickets): record E09 status`
 
 **Scope**
@@ -354,8 +368,10 @@ row 2 · `2-architecture.md` §8
 ## E09-T08 — Portrait treatment ⛔ BLOCKED on the asset
 
 **Depends on:** E09-T05, **and a real portrait photograph**
+
 **Files:** modified — `src/data/profile.ts`, `src/components/sections/HeroSection.tsx`;
 created — `src/assets/portrait.webp` (or `.avif`)
+
 **Commit:** `feat(hero): add the portrait to the split layout`
 
 **Scope**

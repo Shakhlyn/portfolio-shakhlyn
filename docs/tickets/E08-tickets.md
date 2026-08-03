@@ -29,8 +29,10 @@ repeated.
 ## E08-T01 — Amend the design docs for the four E08 decisions
 
 **Depends on:** none
+
 **Files:** modified — `docs/4-interaction-design.md`, `docs/3-style-preference.md`,
 `docs/5-epic-list.md`
+
 **Commit:** `docs(design): move the social rail to sm and shorten its expansion`
 
 **Scope**
@@ -81,8 +83,10 @@ repeated.
 ## E08-T02 — Extract shared social channel definitions
 
 **Depends on:** none
+
 **Files:** created — `src/constants/social.ts`, `src/types/social.types.ts`; modified —
 `src/components/layout/SocialLinks.tsx`
+
 **Commit:** `refactor(social): extract shared social channel definitions`
 
 **Scope**
@@ -125,7 +129,9 @@ repeated.
 ## E08-T03 — Add `SocialRailTile` collapsed state and link semantics
 
 **Depends on:** E08-T02
+
 **Files:** created — `src/components/layout/SocialRailTile.tsx`
+
 **Commit:** `feat(social): add SocialRailTile collapsed state`
 
 **Scope**
@@ -171,7 +177,9 @@ repeated.
 ## E08-T04 — Add hover and focus expansion to `SocialRailTile`
 
 **Depends on:** E08-T03
+
 **Files:** modified — `src/components/layout/SocialRailTile.tsx`
+
 **Commit:** `feat(social): expand rail tiles on hover and focus`
 
 **⚠️ High risk.** Focus parity is the criterion most often shipped broken — hover works,
@@ -230,7 +238,9 @@ rewritten.
 ## E08-T05 — Add `SocialRail` container with fixed positioning and `sm` gating
 
 **Depends on:** E08-T01, E08-T02, E08-T04
+
 **Files:** created — `src/components/layout/SocialRail.tsx`
+
 **Commit:** `feat(social): add SocialRail container`
 
 **Scope**
@@ -274,7 +284,9 @@ rewritten.
 ## E08-T06 — Mount `SocialRail` after `<main>` and verify tab order
 
 **Depends on:** E08-T05
+
 **Files:** modified — `src/components/layout/RootLayout.tsx`
+
 **Commit:** `feat(social): mount SocialRail after main`
 
 **Scope**
@@ -311,7 +323,9 @@ rewritten.
 ## E08-T07 — Profile the `width` animation; confirm or fall back to `scaleX`
 
 **Depends on:** E08-T06
+
 **Files:** none expected — fixes only, and only if profiling fails
+
 **Commit:** none unless the fallback is needed →
 `perf(social): use scaleX for rail expansion`
 
@@ -358,7 +372,9 @@ _proved_ rather than assumed. A failure here rewrites T04.
 ## E08-T08 — Integration verification pass
 
 **Depends on:** E08-T01 … E08-T07
+
 **Files:** none expected; fixes only
+
 **Commit:** none unless a fix is needed → `fix(social): <specific defect>`
 
 **⚠️ High risk by definition.** One of E08's acceptance criteria cannot be fully
