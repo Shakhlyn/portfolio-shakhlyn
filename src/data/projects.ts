@@ -1,7 +1,11 @@
+import placeholderRecipeApi from '@/assets/projects/placeholder-recipe-api.webp';
+import placeholderReportingDashboard from '@/assets/projects/placeholder-reporting-dashboard.webp';
+import placeholderTaskRunner from '@/assets/projects/placeholder-task-runner.webp';
 import type { ProjectCategory, ProjectType } from '@/types/project.types';
 
 /**
- * Sourced from the CV. Five projects: three professional, two personal.
+ * Five real projects from the CV — three professional, two personal — plus three
+ * placeholder entries added in E10-T02 and marked below.
  *
  * Ordered by relevance to full-stack roles — array order is render order, there
  * is no sort at render time.
@@ -9,12 +13,14 @@ import type { ProjectCategory, ProjectType } from '@/types/project.types';
  * Link policy: only links that genuinely exist are present. Client work has no
  * public repository or demo, so `githubUrl` and `liveUrl` are omitted rather
  * than pointed at a placeholder — an empty or dead link is worse than no button
- * (docs/2-architecture.md §11). Every project carries a `caseStudySlug`, so
- * each card always has one real destination.
+ * (docs/2-architecture.md §11). Every real project carries a `caseStudySlug`, so
+ * each of their cards has one real destination; the placeholders deliberately
+ * vary, including one with no links at all, so the card's no-button-row path is
+ * exercised.
  *
- * TODO(content): screenshots. `image` is omitted everywhere, so cards render
- * without an image frame — no grey placeholder box ships
- * (docs/3-style-preference.md §6.4).
+ * TODO(content): real screenshots. `image` is present only on the placeholder
+ * entries, so the real projects' cards render with no image frame at all — no
+ * grey placeholder box ships (docs/3-style-preference.md §6.4).
  *
  * **Outcome figures marked `TODO(content): INVENTED FIGURE` are development
  * placeholders**, added so the cards read at their intended density. They are
@@ -22,7 +28,17 @@ import type { ProjectCategory, ProjectType } from '@/types/project.types';
  * Deal Summary & Comparison are the exception — those are from the CV and are
  * real, which is why they carry no marker.
  *
- *     grep -rn "INVENTED FIGURE" src/
+ * **Entries marked `TODO(content): PLACEHOLDER PROJECT` are not real projects.**
+ * They exist so each category overflows a 3-up track at `xl`, without which the
+ * carousel's arrow states and its hidden-when-nothing-overflows behaviour are
+ * indistinguishable from a broken build (E10-T02). Their titles are prefixed
+ * "Placeholder —" so they cannot be mistaken for a claim while on screen, and
+ * they carry the only screenshots in the file: attaching a generated image to a
+ * real client project would assert a UI that is not that product's.
+ *
+ *     grep -rnE "INVENTED FIGURE|PLACEHOLDER PROJECT|PLACEHOLDER SCREENSHOT" src/
+ *
+ * All three markers are a hard deploy gate in `5-epic-list.md` E18.
  */
 export const PROJECTS: readonly ProjectType[] = [
   {
@@ -83,6 +99,51 @@ export const PROJECTS: readonly ProjectType[] = [
     tags: ['Python', 'FastAPI', 'PostgreSQL', 'Keycloak'],
     caseStudySlug: 'bhoganti-web-app',
   },
+  // TODO(content): PLACEHOLDER PROJECT — not real work. Replace or delete
+  // before launch; gated in 5-epic-list.md E18.
+  {
+    id: 'placeholder-reporting-dashboard',
+    slug: 'placeholder-reporting-dashboard',
+    title: 'Placeholder — Reporting Dashboard',
+    summary:
+      'Placeholder entry used to exercise the carousel. Replace this with a real project before launch.',
+    category: 'professional',
+    problem:
+      'Placeholder copy. This entry exists so the professional carousel overflows a three-card track and its arrow states can be verified.',
+    role: 'Placeholder.',
+    approach:
+      'Placeholder copy. Nothing here describes real work, and no figure in this entry is a claim.',
+    stack: [
+      'TypeScript',
+      'React',
+      'Node.js',
+      'PostgreSQL',
+      'Docker',
+      'Redis',
+      'Playwright',
+    ],
+    outcome: 'Placeholder copy. No outcome is claimed.',
+    // Seven tags, deliberately: the card shows five plus a `+N` badge.
+    tags: [
+      'TypeScript',
+      'React',
+      'Node.js',
+      'PostgreSQL',
+      'Docker',
+      'Redis',
+      'Playwright',
+    ],
+    githubUrl: 'https://github.com/Shakhlyn',
+    liveUrl: 'https://example.com',
+    caseStudySlug: 'placeholder-reporting-dashboard',
+    // TODO(content): PLACEHOLDER SCREENSHOT — generated, not a product shot.
+    image: {
+      src: placeholderReportingDashboard,
+      width: 1280,
+      height: 720,
+      alt: 'Placeholder screenshot for the reporting dashboard entry',
+    },
+  },
   {
     id: 'meal-management-system',
     slug: 'meal-management-system',
@@ -134,6 +195,56 @@ export const PROJECTS: readonly ProjectType[] = [
     tags: ['Bash', 'Python', 'Linux'],
     githubUrl: 'https://github.com/Shakhlyn/linux-setup-script',
     caseStudySlug: 'linux-setup-tooling',
+  },
+  // TODO(content): PLACEHOLDER PROJECT — not real work. Replace or delete
+  // before launch; gated in 5-epic-list.md E18.
+  {
+    id: 'placeholder-task-runner',
+    slug: 'placeholder-task-runner',
+    title: 'Placeholder — CLI Task Runner',
+    summary:
+      'Placeholder entry used to exercise the carousel. Replace this with a real project before launch.',
+    category: 'personal',
+    problem:
+      'Placeholder copy. This entry exists so the personal carousel overflows a three-card track.',
+    role: 'Placeholder.',
+    approach: 'Placeholder copy. Nothing here describes real work.',
+    stack: ['Go', 'Cobra', 'Linux'],
+    outcome: 'Placeholder copy. No outcome is claimed.',
+    tags: ['Go', 'Linux'],
+    // No caseStudySlug: exercises the card rendering a repository button alone.
+    githubUrl: 'https://github.com/Shakhlyn',
+    // TODO(content): PLACEHOLDER SCREENSHOT — generated, not a product shot.
+    image: {
+      src: placeholderTaskRunner,
+      width: 1280,
+      height: 720,
+      alt: 'Placeholder screenshot for the CLI task runner entry',
+    },
+  },
+  // TODO(content): PLACEHOLDER PROJECT — not real work. Replace or delete
+  // before launch; gated in 5-epic-list.md E18.
+  {
+    id: 'placeholder-recipe-api',
+    slug: 'placeholder-recipe-api',
+    title: 'Placeholder — Recipe API',
+    summary:
+      'Placeholder entry with no links at all, so the card can be verified rendering no button row.',
+    category: 'personal',
+    problem:
+      'Placeholder copy. This entry has no case study, no repository, and no demo.',
+    role: 'Placeholder.',
+    approach: 'Placeholder copy. Nothing here describes real work.',
+    stack: ['Python', 'FastAPI', 'SQLite'],
+    outcome: 'Placeholder copy. No outcome is claimed.',
+    tags: ['Python', 'FastAPI'],
+    // TODO(content): PLACEHOLDER SCREENSHOT — generated, not a product shot.
+    image: {
+      src: placeholderRecipeApi,
+      width: 1280,
+      height: 720,
+      alt: 'Placeholder screenshot for the recipe API entry',
+    },
   },
 ];
 
