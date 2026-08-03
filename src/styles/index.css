@@ -210,6 +210,24 @@
   }
 
   /*
+   * Tailwind v4's Preflight sets `cursor: default` on buttons, reverting v3's
+   * `cursor: pointer`. Restored here rather than in `Button`, because the cause
+   * is a framework default rather than a component decision: ThemeToggle and the
+   * mobile nav trigger are raw <button>s and would otherwise each need their own
+   * copy, as would the next one anybody adds.
+   *
+   * A control that does not change the cursor reads as decoration, which is how
+   * the contact form's submit button was first reported.
+   *
+   * `:not(:disabled)` so a disabled control keeps the default arrow and never
+   * invites a click it will not accept.
+   */
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+
+  /*
    * A full-page smooth scroll is one of the strongest vestibular triggers there
    * is, and the animation most often missed in a reduced-motion pass.
    */
