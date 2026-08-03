@@ -45,6 +45,23 @@ reduced motion — not unwritten code.
 | [E09 Hero & Current Role](E09-status.md) | 8    | 0                  | 0       | 0           | 8     |
 | [E10 Projects](E10-status.md)            | 12   | 0                  | 0       | 0           | 12    |
 | [E11 About & Skills](E11-status.md)      | 7    | 0                  | 0       | 0           | 7     |
+| [E12 Resume](E12-status.md)              | 6    | 0                  | 0       | 0           | 6     |
+
+E12 was verified with **38 automated browser checks, all passing**, and found no defect in
+the code. It found two in **its own ticket file**, both corrected in the source documents
+rather than absorbed: the fallback panel had been specified with a redundant second control
+pointing at the same file, and the capability hook had been specified as `useEffect` +
+`useState`, which `react-hooks/set-state-in-effect` rejects as an error. The hook is now
+`useSyncExternalStore` and settles on the first render.
+
+**E12's one real gap is iOS Safari** — the browser the fallback exists for, and the one
+that cannot be tested here, since headless Chrome on Linux has no WebKit PDF pipeline. The
+mitigation is architectural rather than a test: the `View in browser` action renders in
+both branches and the Download section is unconditional, so a wrong detection degrades to a
+blank frame above two working links. Detail in [E12-status.md](E12-status.md) §7.
+
+E12-T02 reaches into E05's `Button` to add a `download` case, because a router `Link` to a
+static asset resolves to the catch-all 404. Recorded in both status files.
 
 E11 was verified with **46 automated browser checks, all passing**, including three
 temporary-data edits for criteria that real content makes unobservable. It found no
