@@ -576,21 +576,33 @@ On the `/resume` page itself: a `primary` "Download PDF" carrying the file type 
 in the label or adjacent `fg-subtle` text, and the in-browser viewer. Both paths point at
 the single stable asset path from `src/data/resume.ts`.
 
-**The page is one centred column.** `max-w-content`, `mx-auto`. The `h1`, both `h2`s, the
-viewer, and both buttons share its edges, so the route reads as a document rather than as
-three blocks pinned to the left of a 1120px shell. Copy inside stays left-aligned — §3.3
-never centres a paragraph longer than two lines. Between `sm` and `xl` the column inherits
+**Everything is centred on one axis.** The `h1`, the `h2`, the preview, and both buttons
+share a vertical centreline, so the route reads as a document rather than as blocks pinned
+to the left of a 1120px shell. Copy stays left-aligned within its measure — §3.3 never
+centres a paragraph longer than two lines. Between `sm` and `xl` the page inherits
 `Container`'s widened left gutter, which clears the social rail
-(`4-interaction-design.md` §7), so it sits ~16px right of true viewport centre in that
-range; that asymmetry is accepted site-wide and is not corrected here.
+(`4-interaction-design.md` §7), so the centreline sits ~16px right of true viewport centre
+in that range; that asymmetry is accepted site-wide and is not corrected here.
+
+**Text holds the 768px measure; the preview is the one element allowed to outgrow it.**
+The heading, the failure panel, and both action rows stay at `max-w-content`. From `lg` the
+embed fills the container's content box instead — roughly 936px at 1024, 1056px at 1440,
+1216px at 1920. A resume is a document, not prose: the wider it renders, the less the
+visitor has to zoom, which is the whole reason the preview exists. It uses `max-w-none`
+rather than a larger fixed width so it can never overflow the shell, whatever the shell
+later becomes.
 
 **The viewer slot.** `rounded-lg`, `border border-border`, `bg-surface` — elevation level 1
-(§4.4), the same treatment as a card, filling the column's width. It is
-**aspect-ratio-locked to the PDF's own page ratio** so it reserves its exact height before
-the document paints, contributing zero CLS. This is the hero portrait slot's technique
-(§6.2) applied to a second asset that arrives after first paint, and it is the reason the
-ratio is a value in the markup rather than a height guess: the committed file is A4, so
-the lock is 210/297.
+(§4.4), the same treatment as a card. It is **aspect-ratio-locked to the PDF's own page
+ratio** so it reserves its exact height before the document paints, contributing zero CLS.
+This is the hero portrait slot's technique (§6.2) applied to a second asset that arrives
+after first paint, and it is the reason the ratio is a value in the markup rather than a
+height guess: the committed file is A4, so the lock is 210/297.
+
+**No heading above it.** The preview is a labelled region — `<section aria-label="Resume
+preview">` — not a subsection. A heading reading "View" above an embedded document
+introduces nothing the document does not announce itself, and it bought a second `h2` in an
+outline two items long (`2-architecture.md` §8).
 
 **It is also capped at `80vh`.** Unbounded, the A4 lock makes the frame 1086px tall at the
 column's full width — taller than a laptop viewport, so the visitor scrolls the page to
@@ -598,11 +610,6 @@ read a document that scrolls itself. Capped, the PDF's own viewer scrolls inside
 that always fits the screen. Viewport units resolve at first paint, so the ceiling costs no
 CLS. Neither the ratio nor the fraction is expressible as a token, so both are arbitrary
 values carrying comments (§9).
-
-**No heading above it.** The preview is a labelled region — `<section aria-label="Resume
-preview">` — not a subsection. A heading reading "View" above an embedded document
-introduces nothing the document does not announce itself, and it bought a second `h2` in an
-outline two items long (`2-architecture.md` §8).
 
 **The two failure states share a panel and do not share their copy.** Where no document
 will render — the browser has no inline PDF viewer, or the file is unreachable — the frame

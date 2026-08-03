@@ -1,8 +1,16 @@
 # E12 — Resume — Status
 
-**6 of 6 tickets done.** 38 automated browser checks, all passing. No defect of its own;
-two defects in its **own ticket file**, both found while building and corrected in the
-docs rather than worked around in code.
+**10 of 10 tickets done, across three passes.** 89 automated browser checks, all passing.
+
+T01–T06 shipped the route. T07–T08 fixed two defects that reached a real viewport (§8).
+T09–T10 fixed two more (§9): Chromium's thumbnail sidebar was eating ~200px of the frame,
+and the preview was capped at the 768px prose measure. Two further defects were caught in
+the ticket file before any code was written (§3), and one in the availability probe itself
+(§8.4).
+
+The recurring lesson is in §8.2: checks written from the same sentence as the code cannot
+contradict the code. Every defect that escaped was a property no check thought to ask
+about — where the box sat, how tall it got, how wide the document rendered.
 
 Last updated: **2026-08-03**
 
@@ -218,3 +226,84 @@ Full suite after rework: **219/219**.
 
 Unchanged by this rework: **iOS Safari is still unverified** (§7), and the committed PDF is
 still the marked draft.
+
+---
+
+## 9. Third pass — E12-T09 and E12-T10 (2026-08-03)
+
+**The preview still read too small to use**, reported from a real browser after §8 shipped.
+
+### 9.1 Chromium's thumbnail sidebar
+
+Chrome's built-in PDF viewer draws a vertical strip of page thumbnails down the left of the
+embed. It consumed roughly 200px of a 768px frame, leaving the document to render in what
+was left — small enough that the visitor had to zoom manually to read a resume.
+
+Fixed with **PDF Open Parameters** on the embed URL, the only control available over the
+browser's own viewer short of a PDF library, which `2-architecture.md` §7 rules out for a
+single embed:
+
+```
+#navpanes=0&pagemode=none&view=FitH
+```
+
+`navpanes=0` is Chromium's key for the sidebar; `pagemode=none` is pdf.js's; each viewer
+ignores the other's. `view=FitH` fits the page to the frame width, which is the direct
+answer to "the user needs to manually zoom". **The toolbar is deliberately kept** — it
+carries zoom, rotate, print and download, and is worth its ~40px.
+
+The fragment is on the `<object>` **only**. The "View in browser" link and the download
+keep the bare path: a standalone tab is where someone wants the full viewer.
+
+### 9.2 The frame was capped at the prose measure
+
+768px is the right measure for prose and a tight one for an A4 page. The 768px cap moved
+off the page wrapper and onto the elements that actually want a prose measure — the `h1`,
+the download section, the failure panel, the action row — leaving the embed free to take
+`max-w-content lg:max-w-none` and fill the container's content box from `lg` up.
+
+Measured: **936px at 1024, 1056px at 1440, 1216px at 1920**, against 768px before. With the
+sidebar gone as well, the document has roughly 1056px where it had ~570px.
+
+`max-w-none` rather than a larger fixed width, so it cannot overflow the shell whatever the
+shell later becomes. The embed stays centred on the same axis as the text — a wide block
+hanging off one side of a centred column would have undone T07.
+
+### 9.3 The `View` heading, removed properly
+
+The `h2` had been deleted from the component, which left
+`aria-labelledby="resume-view-heading"` pointing at an id that no longer existed. That is
+worse than no attribute: it resolves to empty, so the region was announced as an unnamed
+group rather than falling back to anything.
+
+Now `aria-label="Resume preview"`, with `2-architecture.md` §8's resume outline amended to
+`h1: Resume` → `h2: Download`. The harness asserts the region's name from the AX tree and
+sweeps the **whole document** for any `aria-labelledby` pointing at a missing id, so the
+class of bug cannot recur silently elsewhere.
+
+### 9.4 A stale selector in the older harness
+
+Removing the `h2` shifted the preview frame from `children[1]` to `children[0]`, and
+`verify-e12.mjs` read `children[1]` — which was now the action row, a `<div>` holding the
+button. Three checks failed reporting "a panel with one interactive element". The selector
+was wrong, not the code: `verify-e12b.mjs` confirmed correct behaviour independently with
+its own selector before the older file was touched.
+
+### 9.5 Verification
+
+`verify-e12b.mjs` rewritten: **51 checks**, covering the viewer parameters, the bare paths
+on both links, embed width against the content box at six widths, both centrings, the
+accessible name, the dangling-reference sweep, and every §8 invariant.
+`verify-e12.mjs` at 38. Full suite **235/235**.
+
+### 9.6 What this pass could not verify
+
+**Whether the sidebar is visually gone.** Chrome renders the PDF in an out-of-process
+plugin, so no script in the page can see inside the embed. The harness asserts the
+parameter is on the URL and the frame is the right size; the visual result was confirmed by
+eye, not by a check, and that distinction is why it is written here rather than implied by a
+green run.
+
+**Firefox and Safari** honour these parameters differently and cannot be exercised in this
+environment — the same category as the standing iOS Safari gap in §7. All three degrade to a
+working embed with default chrome, which is what the page did before this pass.

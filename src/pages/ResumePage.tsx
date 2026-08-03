@@ -39,18 +39,16 @@ import { Container } from '@/components/ui/Container';
  * site-wide by §7; opting this route out would let the rail overlap the column.
  */
 export const ResumePage = (): ReactElement => (
-  <Container as="section" className="py-16 md:py-20">
-    <div className="mx-auto max-w-content space-y-12">
-      <h1
-        tabIndex={-1}
-        className="text-h1 text-fg focus-visible:outline-none md:text-h1-md"
-      >
-        Resume
-      </h1>
+  <Container as="section" className="space-y-12 py-16 md:py-20">
+    <h1
+      tabIndex={-1}
+      className="mx-auto w-full max-w-content text-h1 text-fg focus-visible:outline-none md:text-h1-md"
+    >
+      Resume
+    </h1>
 
-      <ResumeViewer />
+    <ResumeViewer />
 
-      <ResumeDownloadLink />
-    </div>
+    <ResumeDownloadLink />
   </Container>
 );

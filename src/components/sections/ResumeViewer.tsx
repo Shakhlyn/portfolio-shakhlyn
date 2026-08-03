@@ -25,7 +25,31 @@ import { usePdfAvailable } from '@/hooks/usePdfAvailable';
  * Width comes from the centred column in `ResumePage`, not from here.
  */
 const EMBED_FRAME =
-  'mt-4 aspect-[210/297] max-h-[80vh] w-full overflow-hidden rounded-lg border border-border bg-surface';
+  'mx-auto aspect-[210/297] max-h-[80vh] w-full max-w-content overflow-hidden rounded-lg border border-border bg-surface lg:max-w-none';
+
+/**
+ * PDF Open Parameters, read by the browser's own viewer. The only lever we have
+ * over how it renders — a PDF library would do more, and `2-architecture.md` §7
+ * rules one out for a single embed.
+ *
+ * - `navpanes=0` hides Chromium's thumbnail sidebar, a vertical strip of page
+ *   previews that was eating ~200px of the frame and leaving the document to
+ *   render in what was left. This is the reason the parameters exist.
+ * - `pagemode=none` is Firefox pdf.js's equivalent key. Chromium ignores it, and
+ *   pdf.js ignores `navpanes`, so both are carried.
+ * - `view=FitH` fits the page to the frame's width, so text is legible on
+ *   arrival and the visitor scrolls inside the frame instead of zooming.
+ *
+ * No `toolbar=0`: the top bar carries zoom, rotate, print and download, and is
+ * worth its ~40px.
+ *
+ * Applied **only** here. The standalone tab is exactly where someone wants the
+ * full viewer, and a download does not care about a fragment.
+ */
+const VIEWER_PARAMS = '#navpanes=0&pagemode=none&view=FitH';
+
+/** The prose measure. The embed is the one element allowed to outgrow it. */
+const TEXT_COLUMN = 'mx-auto w-full max-w-content';
 
 /**
  * The frame for both non-embed states. **Deliberately not aspect-locked.** The
@@ -34,7 +58,7 @@ const EMBED_FRAME =
  * reservation.
  */
 const PANEL_FRAME =
-  'mt-4 w-full rounded-lg border border-border bg-surface p-6 text-center';
+  'mx-auto w-full max-w-content rounded-lg border border-border bg-surface p-6 text-center';
 
 /** The browser has no inline PDF viewer. Not a fault — a capability difference. */
 const CANNOT_EMBED = 'This browser cannot display the PDF inline.';
@@ -96,7 +120,7 @@ export const ResumeViewer = (): ReactElement => {
         </div>
       ) : (
         <object
-          data={RESUME.filePath}
+          data={`${RESUME.filePath}${VIEWER_PARAMS}`}
           type="application/pdf"
           aria-label={`Resume, ${RESUME.fileType}`}
           className={EMBED_FRAME}
@@ -107,7 +131,8 @@ export const ResumeViewer = (): ReactElement => {
         </object>
       )}
 
-      <div className="mt-4">
+      {/* Bare path, no viewer parameters — see `VIEWER_PARAMS`. */}
+      <div className={`${TEXT_COLUMN} mt-4`}>
         <Button href={RESUME.filePath} external variant="secondary">
           {RESUME.viewLabel}
         </Button>

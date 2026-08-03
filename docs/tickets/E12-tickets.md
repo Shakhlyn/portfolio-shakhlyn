@@ -649,6 +649,77 @@ an outline two items long.
 
 ---
 
+### E12-T10 — Hide the thumbnail sidebar and give the preview room to read
+
+**Depends on:** E12-T09
+**Files:**
+
+- Modify: `src/components/sections/ResumeViewer.tsx`
+- Modify: `src/components/sections/ResumeDownloadLink.tsx`
+- Modify: `src/pages/ResumePage.tsx`
+- Modify: `docs/3-style-preference.md` — §6.7
+- Modify: `docs/4-interaction-design.md` — §5.6, §10 (one new row)
+
+**Commit:** `fix(resume): hide the pdf thumbnail pane and widen the preview`
+
+**Scope**
+
+- In: the PDF Open Parameters, and moving the 768px measure off the page wrapper so the
+  embed alone can outgrow it.
+- Out: the fragment on any link other than the embed. Replacing the draft PDF, still E18's
+  gate.
+
+**Implementation notes**
+
+Chromium's PDF viewer draws a thumbnail sidebar down the left of the embed, consuming
+~200px of a 768px frame and leaving the document to render in what remains — small enough
+that the visitor has to zoom. PDF Open Parameters are the only lever short of a PDF
+library, which `2-architecture.md` §7 rules out for one embed:
+
+```
+#navpanes=0&pagemode=none&view=FitH
+```
+
+`navpanes=0` is Chromium's key, `pagemode=none` is pdf.js's, and each viewer ignores the
+other's. `view=FitH` fits the page to the frame width. **No `toolbar=0`** — the top bar
+carries zoom, rotate, print and download and is worth its ~40px.
+
+The fragment goes on the `<object data>` only. The "View in browser" link and the download
+keep the bare `RESUME.filePath`.
+
+For width, move `max-w-content` off the page wrapper and onto the elements that want a
+prose measure — the `h1`, the download section, the failure panel, the action row — so the
+embed can take `max-w-content lg:max-w-none` and fill the container's content box from `lg`
+up. `max-w-none` rather than a larger fixed width: it cannot overflow the shell whatever
+the shell becomes.
+
+**The embed stays centred on the same axis as the text**, just wider. A wide block hanging
+off one side of a centred column would undo E12-T07.
+
+**Acceptance**
+
+- `object[data]` equals `RESUME.filePath` + `#navpanes=0&pagemode=none&view=FitH`, and
+  contains no `toolbar=0`.
+- The "View in browser" anchor and the download anchor both carry `RESUME.filePath` with no
+  fragment.
+- Embed width equals the text column at 320, 375 and 768; equals the container's content
+  box at 1024, 1440 and 1920 (~936 / ~1056 / ~1216px).
+- Embed left and right gaps inside the content box are equal within 1px at all six widths,
+  as are the text column's.
+- The failure panel stays at 768px — it holds one sentence, not a document.
+- Unchanged: CLS 0, preview height `<= 0.8 * innerHeight`, no horizontal page scroll at any
+  of the six widths.
+
+**Not verifiable here, and recorded as such:** Chrome renders the PDF out-of-process, so no
+script in the page can confirm the sidebar is visually gone. The harness asserts the
+parameter is on the URL; the visual result needs a human, and Firefox and Safari cannot be
+checked in this environment at all.
+
+**Traceability:** `3-style-preference.md` §6.7 · `4-interaction-design.md` §5.6, §10 row 18
+· `2-architecture.md` §7
+
+---
+
 ## Coverage
 
 Every E12 deliverable and acceptance criterion from `docs/5-epic-list.md`, mapped to the
