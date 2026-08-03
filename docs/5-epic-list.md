@@ -445,7 +445,9 @@ unwieldy.
 
 **Deliverables**
 
-- `AboutSection` — `max-w-content` prose. No accordion, no "read more".
+- `AboutSection` — `max-w-content` prose. No accordion, no "read more". No portrait.
+- The optional `lookingFor` sentence as a visually distinct closing line, rendered only
+  when the field is present (`3-style-preference.md` §6.5).
 - `SkillsSection` + `SkillGroup` — grouped by capability per `1-prd.md` §3 (Frontend,
   Backend, AI/LLM, Data, Infrastructure, Practices).
 
@@ -454,8 +456,13 @@ unwieldy.
 - No proficiency bars, percentages, or star ratings — unverifiable and read as filler.
 - Skill groups render from data; an empty group does not render.
 - Prose respects the ~68-character measure.
+- Each group is a `<ul role="list" aria-labelledby>` labelled by its capability name, not
+  an `h3` — the group name and item count are both announced
+  (`3-style-preference.md` §6.6, `2-architecture.md` §8).
+- Neither section adds a tab stop; tabbing from Projects reaches Contact directly.
 
-**Traceability:** `1-prd.md` §3 About, Skills · `3-style-preference.md` §6.5–6.6
+**Traceability:** `1-prd.md` §3 About, Skills · `3-style-preference.md` §6.5–6.6 ·
+`2-architecture.md` §8 · `4-interaction-design.md` §5.4–5.5, §10 rows 13–15
 
 ---
 

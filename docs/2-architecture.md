@@ -579,6 +579,13 @@ Projects is a single `h2` with two `h3` subsections. Professional and personal w
 are one topic viewed two ways, not two separate topics, and one `h2` keeps the
 document outline honest while still labelling each group for screen reader users.
 
+**Skills has no `h3` level, by decision.** Its six capability groups are labelled lists —
+`<ul role="list" aria-labelledby>` — not subsections
+(`docs/3-style-preference.md` §6.6). Six more headings would enter the outline that a
+screen reader user pages through on the way to Contact, and a heading cannot carry the
+group's item count the way a labelled list does. The absence above is deliberate, not an
+oversight: do not add them.
+
 There is no `Writing` heading on the home page. Blog is a route (`/writing`), not a
 home section, so its heading lives on that page.
 

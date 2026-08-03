@@ -532,14 +532,39 @@ ships to production.
 ### 6.5 About
 
 `max-w-content` prose, two or three paragraphs in `body`, `fg-muted`, headings in
-`fg`. Optional small portrait (`rounded-lg`, 96–128px) floated right at `md:` and up;
-if it exists it needs real `alt` text, otherwise it is omitted.
+`fg`.
+
+**No portrait.** An optional 96–128px portrait floated right was specified here and is
+withdrawn: the hero already carries the only photograph on the page (§6.2), and a second
+one 800px further down adds nothing the first has not already established.
+
+**The closing line.** `about.ts` carries an optional `lookingFor` — the one sentence
+naming the roles being targeted. It renders after the last paragraph as a visually
+distinct line, not a fourth paragraph: `fg` rather than the prose's `fg-muted`, set off
+by a `border-l-2 border-accent` rule with `pl-4`, `mt-6` above it, `body`/`body-md` type.
+It is the only sentence in the section a reader can act on, and prose colour would bury
+it. The field is optional, so **the line and its rule render only when it is present** —
+an accent rule left standing beside nothing is worse than no rule.
 
 ### 6.6 Skills
 
 Grouped by capability, one group per row: mono `eyebrow` group label, then a
 `flex-wrap gap-2` row of `Badge`s. No proficiency bars, no percentages, no star
 ratings — they are unverifiable and read as filler.
+
+**The group label is a label, not a heading.** Each group renders as
+`<ul role="list" aria-labelledby="…">` whose label is a `<p>` carrying the referenced id.
+It is styled exactly like `Section`'s eyebrow (§4.2) but is not a heading element:
+`2-architecture.md` §8 fixes the home page outline with no `h3` level under `h2: Skills`,
+and six more headings would sit in the outline a screen reader user pages through to
+reach Contact while still not saying how large each group is. The labelled list announces
+both the group name and its length — "Frontend, list, 9 items" — which is exactly the
+fact a scanner wants.
+
+`role="list"` is written explicitly and is **not** redundant. The Tailwind reset removes
+`list-style`, and Safari with VoiceOver drops list semantics from any `ul` whose
+`list-style` is `none` — without the attribute the group announces neither its name nor
+its count, which is the entire benefit of the pattern.
 
 ### 6.7 Resume
 
