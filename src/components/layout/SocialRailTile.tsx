@@ -42,6 +42,11 @@ export const SocialRailTile = ({ channel }: SocialRailTileProps): ReactElement =
       {...(isMailto ? {} : { target: '_blank', rel: 'noreferrer' })}
       className={cn(
         'group relative flex h-12 items-center overflow-hidden',
+        // Paints above its neighbours while open. The tiles overlap by 1px so
+        // the seam stays a hairline, which means the tile below would otherwise
+        // cover the accent bottom border of the tile being hovered — a grey
+        // line across an accent-filled tile, which reads as a rendering fault.
+        'hover:z-10 focus-visible:z-10',
         // No left border and left corners square: the tile is flush with x=0.
         'rounded-l-none rounded-r-md border-y border-r border-l-0',
         'border-border bg-surface text-fg-muted shadow-sm',

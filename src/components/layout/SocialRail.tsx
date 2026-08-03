@@ -42,8 +42,14 @@ export const SocialRail = (): ReactElement | null => {
         widest item, so expanding one tile widens all of them and the collapsed
         tiles render at expanded width with no label. §6.11 requires one tile at
         a time.
+
+        The tiles are contiguous, as §6.11's diagram draws them — the `├────┤`
+        between rows is a shared edge, not a gap. `-space-y-px` pulls each tile
+        up over its neighbour's border so the seam stays a single hairline;
+        without it the two adjacent `border-y` edges stack into a 2px line that
+        reads heavier than the rail's outer border.
       */}
-      <ul className="flex flex-col items-start gap-2">
+      <ul className="flex flex-col items-start -space-y-px">
         {channels.map((channel) => (
           <li key={channel.key}>
             <SocialRailTile channel={channel} />
