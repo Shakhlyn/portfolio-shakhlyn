@@ -172,6 +172,20 @@
     0 4px 6px -4px rgb(0 0 0 / var(--shadow-alpha-3));
 }
 
+/*
+ * The project carousel's scrollbar is hidden visually; scrolling itself is never
+ * disabled (docs/4-interaction-design.md §6). A visible horizontal scrollbar
+ * under a row of cards reads as an overflow bug rather than as an invitation —
+ * the partially visible next card is the affordance that replaces it.
+ */
+@utility scrollbar-none {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @layer base {
   body {
     background-color: var(--color-bg);
