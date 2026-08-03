@@ -6,6 +6,14 @@ import { useCanEmbedPdf } from '@/hooks/useCanEmbedPdf';
 import { usePdfAvailable } from '@/hooks/usePdfAvailable';
 
 /**
+ * The filename the visitor saves, derived from the asset path rather than
+ * written twice. A second literal here is how the saved file keeps the old name
+ * after the path changes.
+ */
+const downloadFileName = (filePath: string): string =>
+  filePath.slice(filePath.lastIndexOf('/') + 1);
+
+/**
  * The embed frame. A4 — the committed file's page size,
  * `/MediaBox [0 0 594.96 841.92]` — so the slot reserves the document's exact
  * shape before it paints and contributes zero CLS.
@@ -93,10 +101,17 @@ const NOT_AVAILABLE = 'The resume file could not be loaded right now.';
  * `aria-labelledby` is worse than none: it resolves to empty and the section is
  * announced as an unnamed group.
  *
- * **The action is unconditional and lives beneath the frame.** It is the page's
- * one guarantee — the file is always one click away — so it deliberately depends
- * on neither hook. `secondary`, not `primary`: Download is this view's single
- * `primary` (`3-style-preference.md` §5.1).
+ * **The actions are unconditional and live beneath the frame.** They are the
+ * page's one guarantee — the file is always one click away — so they
+ * deliberately depend on neither hook. They share a row: View sits at the frame's
+ * left edge, Download at its right, both flush with the document they act on.
+ * Download is the row's single `primary` (`3-style-preference.md` §5.1); View is
+ * `secondary`.
+ *
+ * **The download carries no type or size line.** The preview above it already
+ * shows the visitor exactly what they are committing to, which is what
+ * `1-prd.md` §3 asks for; repeating "PDF · 76 KB" beside a rendered PDF is
+ * metadata for a document that is on screen.
  */
 export const ResumeViewer = (): ReactElement => {
   const support = useCanEmbedPdf();
@@ -129,10 +144,14 @@ export const ResumeViewer = (): ReactElement => {
         </object>
       )}
 
-      {/* Bare path, no viewer parameters — see `VIEWER_PARAMS`. */}
-      <div className="mt-4">
+      {/* Bare paths, no viewer parameters — see `VIEWER_PARAMS`. */}
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
         <Button href={RESUME.filePath} external variant="secondary">
           {RESUME.viewLabel}
+        </Button>
+
+        <Button href={RESUME.filePath} download={downloadFileName(RESUME.filePath)}>
+          {RESUME.downloadLabel}
         </Button>
       </div>
     </section>

@@ -1,16 +1,16 @@
 import type { ReactElement } from 'react';
 
-import { ResumeDownloadLink } from '@/components/sections/ResumeDownloadLink';
 import { ResumeViewer } from '@/components/sections/ResumeViewer';
 import { Container } from '@/components/ui/Container';
 
 /**
  * The resume route (docs/2-architecture.md §3, §8).
  *
- * Heading order is `h1: Resume` → `h2: View` → `h2: Download`, fixed by §8's
- * resume page plan. View precedes Download even though Download is the smaller
- * commitment: a visitor who can see the document decides whether they want the
- * file.
+ * The page is one `h1: Resume` over one region. §8's outline gave View and
+ * Download their own `h2`s; with both actions sharing a single row beneath the
+ * preview there is no second block of content for a heading to introduce, and a
+ * heading over one button is an outline entry for nothing. The preview names
+ * itself via `aria-label` (see `ResumeViewer`).
  *
  * `tabIndex={-1}` on the `h1` is what `useRouteFocus` moves focus to on route
  * change (E03) — it is load-bearing, not decoration.
@@ -54,8 +54,6 @@ export const ResumePage = (): ReactElement => (
       </h1>
 
       <ResumeViewer />
-
-      <ResumeDownloadLink />
     </div>
   </Container>
 );
