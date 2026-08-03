@@ -106,7 +106,7 @@ The dark theme is **dark navy** — not neutral zinc, and not pure black.
 | `fg`                | `#e3e8f2` | Headings, primary body text                    |
 | `fg-muted`          | `#a4aec4` | Secondary body copy, descriptions              |
 | `fg-subtle`         | `#8c96ad` | Metadata, captions, timestamps                 |
-| `accent`            | `#a78bfa` | Links, focus ring, primary button fill         |
+| `accent`            | `#a78bfa` | Links, focus ring, eyebrows — never under text |
 | `accent-strong`     | `#c4b5fd` | Accent hover / pressed                         |
 | `accent-fill`       | `#a78bfa` | Fill behind `on-accent` text (primary button)  |
 | `accent-fill-hover` | `#c4b5fd` | That fill, hovered / pressed                   |
