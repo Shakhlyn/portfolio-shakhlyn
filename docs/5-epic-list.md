@@ -499,8 +499,10 @@ unwieldy.
 **Deliverables**
 
 - `ContactSection` — form left (60%), direct links right (40%) at `lg`; stacked below.
-- `ContactForm` — Netlify Forms: static markup, hidden `form-name`, honeypot, client
-  validation.
+- `ContactForm` — FormSubmit: `fetch` to the token AJAX endpoint, `_honey` honeypot,
+  client validation.
+- `contact.service.ts` — the transport in one module, so changing provider touches one
+  file and no component.
 - State machine: idle → submitting → success | error.
 - Validation timing: none while typing, on blur once touched, all fields on submit with
   focus moved to the first invalid field.
@@ -514,8 +516,10 @@ unwieldy.
 - No silent failures.
 - Errors are announced, associated via `aria-describedby`, and carry `aria-invalid`.
 - Required fields are marked in the label text, not by colour alone.
-- The honeypot is visually hidden but present for Netlify detection.
-- A real submission arrives in the Netlify dashboard (verified in E18).
+- The honeypot is visually hidden but present in the submitted body, and a submission
+  carrying it is dropped.
+- A real submission arrives in the inbox — verified here, not deferred, because a
+  provider endpoint answers from `yarn dev`.
 
 **Traceability:** `1-prd.md` §3 Contact, §5 Reliability · `2-architecture.md` §9, §11 ·
 `3-style-preference.md` §5.6–5.7, §6.8 · `4-interaction-design.md` §5.7
@@ -635,14 +639,12 @@ verifies the assembled whole, where most real failures live.
 - Netlify site connected, production deploys from `main`.
 - Deploy previews enabled for pull requests.
 - SPA fallback redirect: `/* /index.html 200`.
-- Netlify Forms verified end to end with a real submission.
 - Custom domain and HTTPS if applicable.
 
 **Acceptance**
 
 - A deep link to `/projects/some-slug` resolves on a hard refresh — this is what the SPA
   fallback exists for and it is the classic post-deploy failure.
-- A contact form submission arrives in the Netlify dashboard.
 - Lighthouse targets confirmed **against the deployed site**, not just locally.
 - No broken internal or external links in production.
 - Yarn is the only package manager used in the build (`packageManager` field honoured).

@@ -6,7 +6,7 @@
 
 The v1 portfolio will use the locked repository stack: Vite, React 18+, TypeScript, React Router data router, Tailwind CSS, and Motion from `motion/react`.
 
-The site will be a static SPA deployed to Netlify. It will have no backend application server. Contact submission will use Netlify Forms, with direct email, LinkedIn, GitHub, and Twitter/X links available as alternate contact paths.
+The site will be a static SPA deployed to Netlify. It will have no backend application server. Contact submission will POST to FormSubmit (§9), with direct email, LinkedIn, GitHub, and Twitter/X links available as alternate contact paths.
 
 ### Deployment Shape
 
@@ -14,7 +14,7 @@ The site will be a static SPA deployed to Netlify. It will have no backend appli
 - Hosted on Netlify.
 - Netlify preview deployments enabled for pull requests.
 - Netlify SPA fallback configured so client routes resolve correctly.
-- Netlify Forms used for the contact form submission endpoint.
+- FormSubmit used for the contact form submission endpoint, so the form does not depend on the host (§9).
 - No analytics in v1.
 - No GitHub Actions CI in v1.
 - Writing routes included in v1 with placeholder-safe content when no posts exist.
@@ -23,7 +23,7 @@ The site will be a static SPA deployed to Netlify. It will have no backend appli
 
 - The SPA decision follows the explicit project stack in `AGENTS.md` and the user's rendering answer.
 - The no-backend shape traces to PRD Out of Scope: "Backend application server" and "Complex contact form backend unless explicitly approved."
-- Netlify Forms traces to PRD Contact module: optional form only if reliable loading, success, and error states are implemented.
+- FormSubmit traces to PRD Contact module: optional form only if reliable loading, success, and error states are implemented.
 - Netlify deployment and PR previews support PRD Non-Functional Requirements: Reliability and Performance.
 - No analytics traces to the user's discovery answer and PRD Out of Scope: "Analytics dashboard."
 - Writing in v1 traces to the user's updated product decision; placeholder-only writing routes must use `noindex` to preserve the PRD SEO requirement against indexing empty placeholder pages.
@@ -653,18 +653,43 @@ h1: Page Not Found
 
 ## 9. Third-Party Integrations
 
-### Contact Form: Netlify Forms
+### Contact Form: FormSubmit
 
-The v1 contact form will use Netlify Forms.
+The v1 contact form will POST to FormSubmit's AJAX endpoint
+(`https://formsubmit.co/ajax/{token}`).
+
+**This supersedes Netlify Forms**, which was specified here while Netlify was the settled
+host. Netlify Forms is not an endpoint that can be called from anywhere: it is a
+build-time scan of the deployed HTML plus an intercept of the POST at Netlify's edge.
+Hosted on Vercel or Render, neither step happens and the POST resolves against the SPA
+fallback — returning `200` and the HTML shell, which a `fetch` cannot distinguish from a
+successful submission. The visitor would see a confirmation for a message that was never
+delivered, the silent failure §11 forbids. A provider-hosted endpoint keeps the form
+working on any host, and keeps it verifiable before deploy rather than after.
 
 Implementation requirements:
 
-- Static form markup compatible with Netlify detection.
-- Hidden `form-name` field.
-- Honeypot field for spam reduction.
+- POST to the **token** endpoint, never the plain-address one, so the contact address is
+  not shipped in the JS bundle as a URL.
+- `_honey` honeypot field for spam reduction.
+- `_captcha: 'false'`, since the AJAX endpoint is consumed by the page rather than
+  redirected to.
+- `_replyto` set from the sender's address, so a reply reaches the sender.
 - Client-side validation for required fields.
 - Explicit submission states: idle, submitting, success, error.
 - Graceful fallback text that provides direct email contact if submission fails.
+- The transport isolated in a single service module, so changing provider touches one
+  file and no component.
+
+Three fields: **Name (optional), Email (required), Message (required)**, submitted by a
+button labelled "Send message".
+
+The endpoint token is not a secret. It reaches the bundle on any static host, so it lives
+in `src/constants/` as a plain constant rather than an environment variable — a `VITE_`
+var would keep it out of git history and not out of the deployed JavaScript.
+
+Hosting and form transport are now independent decisions. §10's Netlify deployment
+recommendation is unaffected by this change.
 
 Direct contact links must also be present:
 
@@ -679,7 +704,7 @@ No analytics script or page-view tracking will be included in v1.
 
 ### Requirements Traceability
 
-- Netlify Forms traces to user discovery answer and PRD Contact module.
+- FormSubmit traces to PRD Contact module and to the host being unsettled: the form must work on Netlify, Vercel, or Render without being rebuilt.
 - Submission states trace to PRD Reliability: contact form must have loading, success, and error states.
 - Direct links trace to PRD Recruiter and Peer Engineer journeys: fast contact and social inspection.
 - No analytics traces to user discovery answer and supports PRD Performance.
@@ -716,7 +741,7 @@ Deploy through Netlify:
 - Production deploy from the main branch.
 - Preview deployments for pull requests.
 - SPA fallback configured through Netlify redirect rules.
-- Netlify Forms enabled for contact submissions.
+- No Netlify-side form configuration: contact submissions go to FormSubmit (§9), which is why the deploy target and the form are now independent.
 
 Recommended Netlify redirect:
 

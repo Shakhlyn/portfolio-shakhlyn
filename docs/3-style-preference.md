@@ -645,11 +645,22 @@ It is `secondary`, not `primary`, because Download is this view's single `primar
 
 Two-column at `lg:` (form 60% / direct links 40%), stacked below.
 
-- Left: `ContactForm` — Name, Email, Message, honeypot (visually hidden, never
-  `display:none`… it must remain in the accessibility tree as hidden but present per
-  Netlify's detection), `FormStatus`, then a full-width-on-mobile `primary` submit.
+- Left: `ContactForm` — Name, Email, Message, a `_honey` honeypot, `FormStatus`, then a
+  full-width-on-mobile `primary` submit labelled **"Send message"**.
 - Right: `SocialLinks` plus the email address rendered as real, selectable text — a
   recruiter must be able to copy it without JavaScript.
+
+**Required-ness is part of the spec, because the label carries it.** Name is **optional**;
+Email and Message are **required** and marked with `*` in the label text per §5.6, never by
+colour. A field's asterisk and its validator must not be able to disagree, which they can
+the moment either is decided in a component.
+
+**The honeypot's accessibility treatment is an open decision** and is deliberately not
+recorded here yet. The clause this replaced required the field to "remain in the
+accessibility tree as hidden but present per Netlify's detection" — self-contradictory,
+and its justification is void now that the provider reads `_honey` from the request body
+and never inspects the page. What replaces it is a live question (E13 Open Question 1),
+and a spec that guessed would be worse than one that is visibly waiting.
 
 ### 6.9 Writing
 
