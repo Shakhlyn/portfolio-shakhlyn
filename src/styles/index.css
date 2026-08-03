@@ -24,12 +24,24 @@
   /*
    * The fill behind on-accent text, kept separate from --accent because the two
    * roles need different luminance in this theme. White on --accent is 5.70:1 —
-   * AA, but thin for a 15px label on a saturated field. The fill goes one step
-   * darker for 7.10:1 (AAA) while --accent stays put for links, rings, and
-   * eyebrows, where it sits on the page background rather than under text.
+   * AA, but thin for a 15px label on a saturated field, while --accent stays put
+   * for links, rings, and eyebrows, where it sits on the page background rather
+   * than under text.
+   *
+   * The fill is a lighter, more vivid violet chosen by eye: white on it is
+   * 5.06:1. It is the closest passing shade to a requested rgb(148 94 233),
+   * which measures 4.17:1 and fails AA — same hue and saturation, four points
+   * of lightness darker.
+   *
+   * **Changing this value is a contrast change.** The label is body/500 at
+   * 16-17px, which is normal text under WCAG and needs 4.5; the 3.0 large-text
+   * allowance does not apply at that size, whatever the button's dimensions are.
+   *
+   * Hover keeps the hue and saturation and drops 5% lightness, so pressing
+   * darkens rather than shifting colour.
    */
-  --accent-fill: 109 40 217; /* #6d28d9 */
-  --accent-fill-hover: 91 33 182; /* #5b21b6 */
+  --accent-fill: 135 74 230; /* #874ae6 — white text 5.06:1 */
+  --accent-fill-hover: 120 52 227; /* #7834e3 — white text 6.18:1 */
   --accent-soft: 245 243 255;
   --on-accent: 255 255 255;
   --danger: 185 28 28;

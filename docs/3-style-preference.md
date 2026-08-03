@@ -83,10 +83,10 @@ property values and every component follows automatically.
 | `fg`                | `#18181b` | Headings, primary body text                      |
 | `fg-muted`          | `#52525b` | Secondary body copy, descriptions                |
 | `fg-subtle`         | `#71717a` | Metadata, captions, timestamps                   |
-| `accent`            | `#7c3aed` | Links, focus ring, primary button fill           |
+| `accent`            | `#7c3aed` | Links, focus ring, eyebrows — never under text   |
 | `accent-strong`     | `#6d28d9` | Accent hover / pressed, accent text on tinted bg |
-| `accent-fill`       | `#6d28d9` | Fill behind `on-accent` text (primary button)    |
-| `accent-fill-hover` | `#5b21b6` | That fill, hovered / pressed                     |
+| `accent-fill`       | `#874ae6` | Fill behind `on-accent` text (primary button)    |
+| `accent-fill-hover` | `#7834e3` | That fill, hovered / pressed                     |
 | `accent-soft`       | `#f5f3ff` | Badge and eyebrow background tint                |
 | `on-accent`         | `#ffffff` | Text/icons on an accent fill                     |
 | `danger`            | `#b91c1c` | Form validation errors                           |
@@ -144,8 +144,8 @@ target the 3:1 non-text requirement.
 | `fg-muted` on `surface`                   | 7.41  | 8.03  | 4.5         | AAA    |
 | `fg-subtle` on `bg`                       | 4.83  | 6.49  | 4.5         | AA     |
 | `accent` on `bg`                          | 5.70  | 7.08  | 4.5         | AA     |
-| `on-accent` on `accent-fill`              | 7.10  | 7.08  | 4.5         | AAA    |
-| `on-accent` on `accent-fill-hover`        | 8.98  | 10.43 | 4.5         | AAA    |
+| `on-accent` on `accent-fill`              | 5.06  | 7.08  | 4.5         | AA     |
+| `on-accent` on `accent-fill-hover`        | 6.18  | 10.43 | 4.5         | AA     |
 | `accent-strong` on `accent-soft`          | 6.48  | 9.00  | 4.5         | AA     |
 | `danger` on `bg`                          | 6.47  | 6.96  | 4.5         | AA     |
 | `success` on `bg`                         | 5.02  | 11.05 | 4.5         | AA     |
@@ -161,9 +161,15 @@ and the one that had the least headroom before.
 sits _on_ the page background as link text, focus rings, and eyebrows, where 5.70:1
 is comfortable. The primary button puts white text _on top of_ that same hue, and
 5.70:1 there reads thin at a 15px label — legal, but not what a hiring manager should
-have to squint at. The fill is one step darker (7.10:1, AAA) and the hue is unchanged.
-Dark mode needed no correction and the two tokens alias its existing values, so a
-single Button rule serves both themes.
+have to squint at. The light fill is a lighter, more vivid
+violet chosen by eye — `#874ae6`, white on it 5.06:1. It was selected as the closest
+passing shade to a requested `rgb(148 94 233)`, which measures **4.17:1 and fails AA**;
+same hue and saturation, four points of lightness darker. Dark mode needed no correction
+and the two tokens alias its existing values, so a single Button rule serves both themes.
+
+**Any future change to this fill is a contrast change.** The label is `body`/500 at
+16–17px, which is normal text under WCAG and needs 4.5 — the large-text allowance of 3.0
+does not apply at that size and weight, whatever the button's own dimensions are.
 
 **Disabled is not the same as busy.** `disabled:opacity-50` is the correct affordance
 for a control that is unavailable, and WCAG exempts inactive controls from contrast —
