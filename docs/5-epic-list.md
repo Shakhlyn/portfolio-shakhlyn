@@ -568,14 +568,17 @@ These epics are not polish. Each maps to a numeric target the site is expected t
 - Static title, meta description, Open Graph and Twitter card metadata in `index.html`.
 - A small internal metadata utility for route-level title/description updates — **no
   heavy dependency**.
-- Optimised OG image committed at `public/og/portfolio-og.png`.
+- Optimised all the images that are used in this project.
 - Human-readable project slugs, validated against stable project IDs.
 - `noindex` where `2-architecture.md` §8 requires it.
 
 **Acceptance**
 
 - Lighthouse SEO 95+.
-- Link preview renders correctly when pasted into LinkedIn and Slack.
+- Link preview renders correctly when pasted into LinkedIn and Slack. **Verified in E18,
+  not here** — an unfurler needs a public URL, and `SITE_URL` is an unregistered
+  placeholder until deploy. E15 ships the markup and proves it is present and absolute in
+  `dist/index.html`; E18 pastes the live link.
 - One `h1` per page; heading levels never skip.
 - No empty placeholder page is indexable.
 
@@ -640,12 +643,19 @@ verifies the assembled whole, where most real failures live.
 - Deploy previews enabled for pull requests.
 - SPA fallback redirect: `/* /index.html 200`.
 - Custom domain and HTTPS if applicable.
+- `SITE_URL` in `src/constants/site.ts` set to the real domain. Every absolute URL in
+  `dist/` — `og:url`, `og:image`, the canonical, `sitemap.xml` — derives from it, so this
+  is one line and nothing else changes.
 
 **Acceptance**
 
 - A deep link to `/projects/some-slug` resolves on a hard refresh — this is what the SPA
   fallback exists for and it is the classic post-deploy failure.
 - Lighthouse targets confirmed **against the deployed site**, not just locally.
+- **The production URL pasted into LinkedIn and into Slack renders a large-image card**
+  with the title, description, and 1200×630 image — E15's criterion 2, handed off here.
+  Re-fetch through LinkedIn's Post Inspector after any change to the OG image, since both
+  services cache aggressively.
 - No broken internal or external links in production.
 - Yarn is the only package manager used in the build (`packageManager` field honoured).
 - **`grep -rnE "INVENTED FIGURE|PLACEHOLDER PROJECT|PLACEHOLDER SCREENSHOT" src/` returns

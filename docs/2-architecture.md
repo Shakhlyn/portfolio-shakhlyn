@@ -247,6 +247,21 @@ public/og/portfolio-og.png
 
 The asset should be optimized before commit and referenced from `index.html` metadata. A placeholder OG image is acceptable during development, but not as a launch placeholder.
 
+**The OG asset stays PNG or JPEG — never WebP.** LinkedIn's and Slack's unfurlers do not reliably decode WebP, and those two crawlers are the entire reason the asset exists. It is re-encoded in place by the pipeline below (`compressionLevel: 9`, `palette: true`), which is lossless for flat token colour.
+
+### Image Pipeline
+
+Every committed image is optimised by one repeatable command rather than by hand:
+
+```text
+scripts/optimize-images.mjs   # walks src/assets/** and public/og/**
+yarn images                   # runs it
+```
+
+`sharp` is a **devDependency** — it never enters the bundle, so the ~200 KB budget in §7 is untouched. The script re-encodes WebP at quality 82, keeps PNG and JPEG in their own format, **never changes dimensions**, and writes a file back only when the result is smaller.
+
+It is not wired into `yarn build`: the outputs are committed, and a build step that rewrites tracked files makes every CI run dirty. `scripts/image-manifest.json` records the hash of each optimised output so a second run is a no-op — WebP and JPEG are lossy, and re-encoding an already-encoded file otherwise degrades it a little on every pass.
+
 ### Project Images
 
 Project images should be stored as static assets, preferably optimized WebP or AVIF with explicit dimensions recorded in project data.
@@ -546,7 +561,11 @@ The implementation will target:
 - Include Open Graph and Twitter card metadata in `index.html`.
 - Use route-level metadata updates for project and resume pages through a small internal metadata utility rather than adding a heavy dependency.
 - Keep project summaries, skills, about copy, and contact links rendered as real text.
-- Use human-readable project URLs with stable slugs.
+- Use human-readable project URLs with stable slugs. Slugs are lowercase-kebab and are **validated, never derived at runtime**: `assertValidProjectSlugs()` throws on a duplicate id, a duplicate slug, or a malformed slug. A bad slug otherwise produces a `/projects/:slug` that silently renders the 404.
+- Set a **canonical link per route**, written by the same metadata utility. An SPA answers every path with the same shell, so a canonical is the only signal that `/projects/x` and `/projects/x?utm_source=…` are one page. A single static canonical in `index.html` would claim every route is the home page, so there is none.
+- Ship `public/robots.txt` and `public/sitemap.xml` as **static files**. Lighthouse audits `robots.txt` validity directly. The sitemap is hand-maintained — a generator for seven URLs is infrastructure the PRD's non-goals rule out.
+- Set `noindex` on the **404 page**. Under the SPA fallback every unknown path answers `200` with the shell, so a crawler following a stale link would otherwise index "Page Not Found" as a live page; `meta[name=robots]` is the only status signal available without a server.
+- Use the **`summary_large_image`** Twitter card. `summary` crops a 1200×630 asset to a square thumbnail, and the OG image is authored at that ratio.
 - Include `/writing` and `/writing/:slug` in v1.
 - Set `noindex` on placeholder-only writing pages and any writing route without real post content.
 - Allow indexing for writing posts only after real manually maintained content exists.
@@ -558,6 +577,7 @@ Home page:
 ```text
 h1: Candidate name
 h2: Current Role
+  h3: Role title · Employer
 h2: Projects
   h3: Professional
     h4: Project titles
@@ -566,7 +586,15 @@ h2: Projects
 h2: About
 h2: Skills
 h2: Contact
+  h3: Direct-contact heading
 ```
+
+The two `h3`s under Current Role and Contact were **added to this plan by the E15-T10
+audit**, which found them already rendering (`CurrentRoleSection.tsx`,
+`ContactSection.tsx`) and shipped by E09 and E13. They are recorded rather than deleted:
+each labels a real subsection — the role card's title, and the direct-links block beside
+the form — so removing them would strip two accessible names to satisfy an outline written
+before either section existed. Neither introduces a level skip.
 
 The home `h1` is the **candidate name only**. The role positioning sits immediately
 beneath it as body copy (`docs/4-interaction-design.md` §5.1 items 2–3), so the block
@@ -613,8 +641,13 @@ Resume page:
 
 ```text
 h1: Resume
-h2: Download
 ```
+
+**`h2: Download` was dropped by E12 and this outline is corrected to match** (found by the
+E15-T10 audit — the page renders one `h1` and nothing else). Both actions share a single
+row beneath the preview, so there is no second block of content for a heading to
+introduce, and a heading over one button is an outline entry for nothing. The reasoning is
+recorded at the top of `ResumePage.tsx`.
 
 **The preview has no heading, by decision.** It is a labelled region
 (`<section aria-label="Resume preview">`), not a subsection: a heading reading "View" above
