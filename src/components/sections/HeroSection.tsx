@@ -74,7 +74,7 @@ export const HeroSection = (): ReactElement => {
       </p>
 
       {/* Wraps rather than shrinking: both stay ≥44px tall at 320px (§11). */}
-      <div className="mt-8 flex flex-wrap items-center gap-3">
+      <div className="mt-32 flex flex-wrap items-center gap-3">
         <Button href={RESUME_ROUTE} size="lg">
           {PROFILE.heroCtas.resume}
         </Button>
