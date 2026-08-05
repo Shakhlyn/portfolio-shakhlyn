@@ -64,9 +64,70 @@ const siteMetadata = (): Plugin => ({
   },
 });
 
+/**
+ * Inlines the built stylesheet into `index.html` and drops its `<link>`.
+ *
+ * The stylesheet was the page's only render-blocking resource, and it cost
+ * ~730ms of First Contentful Paint on a throttled mobile profile — almost all
+ * of it the extra round trip, not the parse. At 34 KB raw (7 KB gzipped over
+ * the wire) it is small enough that a request of its own costs more than the
+ * bytes do.
+ *
+ * The trade is caching: an inlined stylesheet is re-sent with every HTML
+ * response instead of being cached separately. That is the right trade *here*
+ * and only here — this is a single-page app, so a visitor fetches the HTML once
+ * and then navigates entirely client-side. It would be the wrong trade for a
+ * multi-page site.
+ *
+ * `enforce: 'post'` so it runs after Vite has emitted the bundle and rewritten
+ * the HTML; `apply: 'build'` because the dev server has no built stylesheet and
+ * must keep its own HMR-injected styles.
+ */
+const inlineStylesheet = (): Plugin => ({
+  name: 'portfolio-inline-stylesheet',
+  enforce: 'post',
+  apply: 'build',
+  generateBundle: (_options, bundle) => {
+    const html = Object.values(bundle).find(
+      (asset) => asset.type === 'asset' && asset.fileName.endsWith('.html'),
+    );
+    const css = Object.values(bundle).find(
+      (asset) => asset.type === 'asset' && asset.fileName.endsWith('.css'),
+    );
+
+    if (html?.type !== 'asset' || css?.type !== 'asset') return;
+
+    const link = new RegExp(
+      `<link[^>]+href="[^"]*${css.fileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"[^>]*>`,
+    );
+    const source = String(html.source);
+    if (!link.test(source)) return;
+
+    html.source = source.replace(link, `<style>${String(css.source)}</style>`);
+    delete bundle[css.fileName];
+  },
+});
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), siteMetadata()],
+  plugins: [react(), tailwindcss(), siteMetadata(), inlineStylesheet()],
+  build: {
+    /*
+     * Never inline an asset as a base64 data URI. The default 4 KB threshold
+     * caught the narrow `srcset` variants, which are 3–4 KB each, and inlining
+     * them was strictly worse in three ways: base64 costs ~33% over the binary,
+     * the bytes land in the entry chunk instead of a cacheable file, and an
+     * image embedded in JavaScript cannot be lazy-loaded at all — the whole
+     * point of `loading="lazy"` on the below-fold cards. Measured: +12 KB gzip
+     * on the entry bundle before this was set.
+     */
+    assetsInlineLimit: 0,
+    /*
+     * One stylesheet, inlined into `index.html` by `inlineStylesheet` below.
+     * `cssCodeSplit: false` guarantees there is exactly one to inline.
+     */
+    cssCodeSplit: false,
+  },
   resolve: {
     alias: {
       // Must stay in sync with compilerOptions.paths in tsconfig.app.json.
