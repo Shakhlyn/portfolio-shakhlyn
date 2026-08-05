@@ -1,6 +1,7 @@
 import placeholderRecipeApi from '@/assets/projects/placeholder-recipe-api.webp';
 import placeholderReportingDashboard from '@/assets/projects/placeholder-reporting-dashboard.webp';
 import placeholderTaskRunner from '@/assets/projects/placeholder-task-runner.webp';
+import { assertValidProjectSlugs } from '@/lib/validateProjects';
 import type { ProjectCategory, ProjectType } from '@/types/project.types';
 
 /**
@@ -247,6 +248,20 @@ export const PROJECTS: readonly ProjectType[] = [
     },
   },
 ];
+
+/*
+ * Development-time only. This data is hand-edited, and a duplicate or malformed
+ * slug shows up as a case study that quietly renders the 404 — the dev server is
+ * where you are standing when you introduce it.
+ *
+ * It is *not* also enforced at build. The specified call site, the Vite plugin's
+ * `buildStart`, cannot work: `vite.config.ts` is bundled by esbuild, which has
+ * no loader for the `.webp` imports above, so importing this module fails the
+ * config load outright. Recorded in E15-tickets.md T07 and E15-status.md §3.
+ */
+if (import.meta.env.DEV) {
+  assertValidProjectSlugs(PROJECTS);
+}
 
 export const getProjectsByCategory = (category: ProjectCategory): ProjectType[] =>
   PROJECTS.filter((project) => project.category === category);
