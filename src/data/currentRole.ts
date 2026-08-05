@@ -21,19 +21,11 @@ export const CURRENT_ROLE: CurrentRoleType = {
   role: 'Software Engineer',
   company: 'Penta Global Limited',
   client: 'Yaana Solutions',
-  dateRange: 'Mar 2024 — Present',
+  companyDateRange: 'Mar 2024 — Present',
+  clientDateRange: 'Oct 2024 — Present',
   summary:
     "Embedded with Yaana Solutions' telecom product team, collaborating with engineers, technical leads, BAs, product managers, UX designers, and QA across Asia, Europe, and North America. I built two large modules and still own both — shipping customer-requested features and improvements to them — while fixing bugs across modules I inherited from others.",
-  stack: [
-    'TypeScript',
-    'React',
-    'Python',
-    'FastAPI',
-    'Django',
-    'PostgreSQL',
-    'Keycloak',
-    'SCSS',
-  ],
+  stack: ['TypeScript', 'React', 'jQuery', 'Python', 'Django', 'Jinja', 'SCSS'],
   availability:
     'I am looking for full-stack engineering roles where I can own features end to end and work close to the people deciding what gets built.',
   /**

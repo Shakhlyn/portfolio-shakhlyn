@@ -23,7 +23,7 @@ export const PROFILE: ProfileType = {
   name: 'Shaokh Al Mahmud Shakhlyn',
   wordmark: 'Shakhlyn',
   // Technologies are CV-true; only the framing is broadened from the bare title.
-  roleFraming: 'Full-stack Engineer — TypeScript, React, Python',
+  roleFraming: 'Full-stack Engineer — TypeScript, React, Python, FastAPI, PostgreSQL, MongoDB',
   eyebrow: 'Dhaka, Bangladesh',
   /*
    * One sentence, and deliberately about *how* rather than *where*: the
@@ -32,11 +32,11 @@ export const PROFILE: ProfileType = {
    * once on this page, and it is not here.
    *
    * **No year count.** The previous copy claimed "2.5 years of experience" and
-   * "nearly 2 years" at the current employer; `CURRENT_ROLE.dateRange` starts
-   * Mar 2024, so the current role alone has since outgrown both. They were true
-   * when written and went stale in place. A replacement is the author's to
+   * "nearly 2 years" at the current employer; `CURRENT_ROLE.companyDateRange`
+   * starts Mar 2024, so the current role alone has since outgrown both. They were
+   * true when written and went stale in place. A replacement is the author's to
    * supply — inventing one is exactly what AGENTS.md §13 forbids, and the panel's
-   * date range is a real tenure signal in the meantime.
+   * date ranges are a real tenure signal in the meantime.
    */
   valueProposition:
     'I own features end to end — from clarifying what a requirement actually asks for, through shipping it, to supporting it in production.',

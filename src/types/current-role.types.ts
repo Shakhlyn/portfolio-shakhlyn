@@ -9,8 +9,16 @@ export interface CurrentRoleType {
   company: string;
   /** The current **placement** — the client team the author is embedded with. */
   client: string;
-  /** Human-readable range, e.g. "Jan 2024 — Present". */
-  dateRange: string;
+  /**
+   * Human-readable range at the **employer**, e.g. "Jan 2024 — Present".
+   *
+   * Separate from `clientDateRange` because the two genuinely differ: employment
+   * starts before the placement does, and rendering one range against both
+   * organisations either backdates the placement or truncates the tenure.
+   */
+  companyDateRange: string;
+  /** Human-readable range at the **placement**. Starts on or after `companyDateRange`. */
+  clientDateRange: string;
   /**
    * One present-tense sentence of what the role currently involves
    * (docs/3-style-preference.md §6.3).

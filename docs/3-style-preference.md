@@ -472,6 +472,13 @@ Left-aligned, `max-w-content`. Stack:
    (→ `#contact`).
 6. `SocialLinks` row — below `sm` only, where the floating rail is hidden.
 
+Items 1–4 sit in the copy block's own rhythm (`mt-3`, `mt-3`, `mt-4`). **The button row
+takes `mt-32` (128px)** — deliberately far outside that rhythm, because it is a different
+kind of thing: items 1–4 are read, item 5 is acted on, and a gap inside the copy rhythm
+makes the CTAs read as the paragraph's last line. The value was `mt-8` when it spaced
+against a four-line stack; RV-T02 removed one of those lines and RV-T06 re-set it against
+the stack that actually ships. It is not a stray value to be tidied back to `mt-8`.
+
 **The `h1` uses `display-name`, not `display`** (RV-T03). It is fluid —
 `clamp(1.125rem, 5.6vw, 2.4rem)` — and carries no `md:` step, because its job is a
 constraint rather than a size: the full name stays on one line from 320px to 1920px. Its
@@ -537,9 +544,18 @@ detail, and a claim repeated across three sections reads worse than one made onc
 
 A single level-1 card, in this order:
 
-1. Role title and employer as `h3` — employer in `fg-muted` after a `·`.
-2. Placement and date range on one `fg-subtle` mono line. The employer and the client
-   are two facts and are never collapsed into one.
+1. Role title, employer, and the **employer's** date range as `h3` — employer in
+   `fg-muted` after a `·`, then the range after a second `·` as a `fg-subtle` mono
+   `body-sm` span. The range is inside the heading but not at heading size, so it wraps
+   under the employer at 320px rather than making the `h3` three lines tall.
+2. The placement and the **placement's** date range on one `fg-subtle` mono line.
+
+   Each range sits beside its own organisation. The employer and the client are two
+   facts and are never collapsed into one — and neither are their tenures. Employment
+   starts before the placement does, so a single shared range would either backdate the
+   placement or truncate the tenure, and a range rendered beside the wrong organisation
+   states a date that is simply false.
+
 3. **One** present-tense sentence of current scope in `fg-muted`, at `max-w-content`.
    Not a bullet list.
 4. A `Badge` row of the stack in active use.

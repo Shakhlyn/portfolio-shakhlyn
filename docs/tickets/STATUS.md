@@ -175,12 +175,36 @@ if smaller" feeds that loop rather than stopping it. Fixed with a committed hash
 
 | Group                     | Done | Needs manual check | Blocked | Not started | Written |
 | ------------------------- | ---- | ------------------ | ------- | ----------- | ------- |
-| [RV Revamp](RV-status.md) | 0    | 2                  | 0       | 0           | 2       |
+| [RV Revamp](RV-status.md) | 0    | 5                  | 0       | 0           | 6       |
+
+RV-T03 is the sixth and is neither done nor pending: it shipped, wrapped in the wild, and
+is **superseded** by RV-T04. It stays in the table rather than being deleted — a revamp
+group whose failures are edited out stops being a record.
 
 Not a phase and not an epic — revisions to shipped sections, decided after seeing the
 built page. The group stays open for the life of the project, so the last column is
 "written so far", not a planned total. Conventions in
 [README.md](README.md) § "Revamp — not a phase".
+
+**RV-T06 opens the gap above the hero CTAs to 128px.** `mt-8` had been tuned against a
+four-line hero stack; RV-T02 deleted one of those lines and left the value spacing against
+three. It carries a known, unverified risk — at 320px the gap may push the primary CTA
+below the fold — and no responsive step was added pre-emptively, because the author
+requested the value having seen the built page. It is also the group's one ticket written
+_after_ its commit landed.
+
+**RV-T05 fixed a factual error in the panel: the placement was backdated by seven
+months.** RV-T01 correctly split employer from client and then left one `dateRange`
+covering both, so `Embedded with Yaana Solutions` rendered the Penta start date. Employer
+and placement now carry their own ranges, each beside its own organisation. The field was
+renamed rather than supplemented so the fix is compile-checked.
+
+**RV-T03 failed and RV-T04 replaces it.** RV-T03 sized the hero `h1` to keep the full name
+on one line, was marked done without the browser check its own acceptance list required,
+and wrapped at 1024px. RV-T04 retunes it from the author's report — which bounds the real
+name width from below — and the desktop name is now 38.4px against 56px originally. That
+cost is unresolved and is the author's call; the ticket lists three ways to buy it back,
+and accepting two lines as the design is the one worth considering first.
 
 **RV-T02 slims the hero to positioning only.** RV-T01 gave the panel below the hero a
 role line, a placement, and dates, which made the hero's current-position line and two
@@ -189,7 +213,8 @@ exactly once on the home page. It also took `src/`'s invented-figure count from 
 two of the three were a docstring that quoted the marker while explaining it, and so had
 been reporting its own file to the E18 gate since E04.
 
-**RV-T01 has landed; five acceptance criteria still need a browser.** No harness is
+**No browser harness exists in this repo, and RV-T03 is what that costs.** RV-T01, T04,
+and T05 all carry open responsive criteria for the same reason. No harness is
 installed in this repo, so responsive behaviour at 320–1920, both themes, focus order, and
 reduced motion are unconfirmed rather than passing — detail in
 [RV-status.md](RV-status.md) §3.

@@ -2,15 +2,19 @@
 
 Tickets: [RV-tickets.md](RV-tickets.md) · Overview: [STATUS.md](STATUS.md)
 
-**0 done, 2 need manual browser verification.** Legend in [STATUS.md](STATUS.md).
+**0 done, 5 need manual browser verification, 1 superseded (RV-T03).** Legend in
+[STATUS.md](STATUS.md).
 
 This group has no completion state — it stays open for the life of the project. The
 count is "written so far", not "of a planned total".
 
-| Ticket | Title                                                | Status | Notes                                                             |
-| ------ | ---------------------------------------------------- | ------ | ----------------------------------------------------------------- |
-| RV-T01 | Rebuild Current Role as a present-tense status panel | 🔍     | Code + docs landed, gates pass; 5 criteria need a browser         |
-| RV-T02 | Slim the hero to positioning only                    | 🔍     | Code + docs landed, gates pass; layout unchanged, needs a browser |
+| Ticket | Title                                                | Status | Notes                                                              |
+| ------ | ---------------------------------------------------- | ------ | ------------------------------------------------------------------ |
+| RV-T01 | Rebuild Current Role as a present-tense status panel | 🔍     | Code + docs landed, gates pass; 5 criteria need a browser          |
+| RV-T02 | Slim the hero to positioning only                    | 🔍     | Code + docs landed, gates pass; layout unchanged, needs a browser  |
+| RV-T03 | Size the hero `h1` to hold the full name on one line | ❌     | Shipped unverified and **wrapped at 1024px**; superseded by RV-T04 |
+| RV-T04 | Retune the hero `h1` against a measured wrap         | 🔍     | Gates pass; the same browser check RV-T03 skipped is still open    |
+| RV-T05 | Separate employer and placement date ranges          | 🔍     | Gates pass; a factual error is fixed, one width needs a browser    |
 
 ## Files
 
@@ -27,6 +31,8 @@ docs/2-architecture.md                       §8 heading plan — h2 text, id ra
 docs/5-epic-list.md                          E09 superseded, E11 deliverable withdrawn
 docs/tickets/README.md                       Revamp track, decision row 21
 ```
+
+The per-ticket file lists for RV-T02 onward are in each ticket's section below.
 
 `src/data/navigation.ts` is **not** in the diff, as the ticket required.
 
@@ -153,7 +159,7 @@ name the marker in prose only.
 ### The years figure is an open content question
 
 The removed copy claimed **"2.5 years of experience"** and **"For nearly 2 years"** at the
-current employer. `CURRENT_ROLE.dateRange` starts Mar 2024, so as of Aug 2026 the current
+current employer. `CURRENT_ROLE.companyDateRange` starts Mar 2024, so as of Aug 2026 the current
 role alone is about 2 years 5 months — the two claims no longer reconcile, and the second
 understates the author's own tenure.
 
@@ -173,6 +179,199 @@ so the risk is narrow but not zero:
   slot — the two columns are `lg:items-center`, so this changes where the photo sits
   relative to the text.
 - The employer rendering exactly once on the page.
+
+## RV-T03 — failed, and the failure is the useful part
+
+**Status: ❌ superseded by RV-T04.** It shipped a fluid `--text-display-name` token sized
+from an estimate that the name is ~12.6em wide. The author found it wrapped at 1024px.
+
+The estimate was not merely imprecise — it was made against the wrong font. `--font-sans`
+is a `system-ui` stack that resolves per platform, and the ticket listed that as a "known
+risk" without acting on it. On Linux it resolves to DejaVu Sans or Cantarell, both
+materially wider than the macOS and Windows faces the 12.6em figure came from.
+
+**The lesson is procedural, not typographic:** the ticket's own acceptance list said
+"verified in a browser", and it was marked done without that step. Every criterion RV-T03
+could check without a browser passed. The one it skipped was the one that mattered.
+
+### Files (as shipped)
+
+```
+src/styles/index.css                        + --text-display-name (superseded value)
+src/components/sections/HeroSection.tsx     h1 uses it; md: step dropped
+docs/3-style-preference.md                  §3.2 token, §6.2 note
+```
+
+## RV-T04
+
+### The bug report was the measurement
+
+The author's report — "for 1024, the name gets into two lines" — is not just a defect
+notice. The `lg` text column is 624px and RV-T03's cap was 46px, so the name is **wider
+than 13.6em**: the original figure was low by at least 8%, and the report bounds the real
+value from below without anyone measuring a glyph.
+
+### The retune
+
+`clamp(1.125rem, 5.6vw, 2.4rem)`, sized for a **15em** name against the widest face in
+the stack rather than the average one. A visitor on a narrow face gets a name slightly
+smaller than it needs to be; a visitor on a wide face gets a wrapped `h1`. Only one of
+those is a defect. Margins are 4–8% at every tight stop, against RV-T03's 1–3%.
+
+### Files
+
+```
+src/styles/index.css                        --text-display-name retuned
+docs/3-style-preference.md                  §3.2, §6.2 clamp values
+docs/tickets/RV-tickets.md                  + RV-T04
+```
+
+### Gates
+
+```
+yarn typecheck      OK
+yarn lint           OK
+yarn format:check   OK
+yarn build          OK — clamp(1.125rem,5.6vw,2.4rem) present in dist/index.html
+```
+
+`grep -c "6.9vw\|2.875rem"` returns 0 in both `src/styles/index.css` and
+`docs/3-style-preference.md` — no reference to the superseded value survives.
+
+### The cost is unresolved, and it is the author's call
+
+The hero name now renders at **38.4px** desktop, against 56px before RV-T03. One line at
+every width is expensive for a 25-character name, and the expense is imposed by the
+`split` layout: the portrait takes 280px of a 936px container at `lg`, so the `h1` is
+narrowest exactly where a fixed scale would go largest.
+
+Three ways to buy it back are listed in the ticket; none is taken, because each changes a
+decision the author owns. **Accepting two lines as the design is the one worth considering
+first** — a deliberate two-line name at 56px usually reads better than a cramped one-line
+name at 38px.
+
+### Not verified — needs a real browser
+
+The full name on one line at 320 / 375 / 640 / 768 / 1024 / 1280 / 1920 in both layouts,
+and no horizontal scroll at any of them. **This is the criterion RV-T03 skipped**, and it
+is the reason RV-T03 failed. It remains open here.
+
+## RV-T05
+
+### This fixed a factual error, not a formatting one
+
+RV-T01 split `company` (employer) from `client` (placement) precisely because collapsing
+them drops the client or implies the client employs the author. It then left a single
+`dateRange` covering both — the same conflation one level down.
+
+The panel rendered `Embedded with Yaana Solutions · Mar 2024 — Present`. The placement
+began **Oct 2024**; the employment began Mar 2024. The section whose entire job is stating
+current state accurately was **backdating the placement by seven months**.
+
+The shape of the bug is worth recording alongside RV-T01 §4 and RV-T02's marker defect:
+**a field named for what it renders next to rather than what it describes.** `dateRange`
+sat beside `client` in the markup, so every reader — including the one who wrote it — read
+it as the client's range while it held the employer's.
+
+### Why a rename, not an addition
+
+`clientDateRange` could have been added beside a kept `dateRange`. Renaming to
+`companyDateRange` instead makes the change compile-checked: both fields are required, so
+`yarn typecheck` forces every reader to be visited, and the ambiguous name that caused the
+bug does not survive the commit.
+
+### Layout: each range beside its own organisation
+
+The first attempt put the employer's range on a mono line of its own above the placement
+line. The author corrected it: a range on a line with no organisation on it is read
+against whatever is nearest — which is exactly how the original bug read as correct.
+
+Final form, with the employer's range as a `fg-subtle` mono `body-sm` span **inside** the
+`h3` — in the heading, but not at heading size, which would push the `h3` to three lines
+at 320px:
+
+```
+Software Engineer · Penta Global Limited · Mar 2024 — Present
+Embedded with Yaana Solutions · Oct 2024 — Present
+```
+
+Side effect worth knowing: the `h3`'s accessible name now includes the date range. Longer,
+but true, and this heading is not a nav or skip target.
+
+### Files
+
+```
+src/types/current-role.types.ts                  dateRange → companyDateRange + clientDateRange
+src/data/currentRole.ts                          Mar 2024 / Oct 2024
+src/components/sections/CurrentRoleSection.tsx   ranges beside their organisations
+src/data/profile.ts                              comment named the removed field
+docs/3-style-preference.md                       §6.3 rows 1–2
+docs/tickets/RV-tickets.md                       + RV-T05
+```
+
+### Gates
+
+```
+yarn typecheck      OK
+yarn lint           OK
+yarn format:check   OK
+yarn build          OK
+```
+
+`grep -rn "dateRange" src` returns nothing — no bare field name survives the rename.
+
+### Not verified — needs a real browser
+
+The `h3` at 320px, where it now carries three `·`-separated parts and must wrap the range
+under the employer name rather than overrunning the card.
+
+## RV-T06
+
+### The ticket followed the commit
+
+`40dd8e4` was committed on the author's instruction before this ticket existed, inverting
+the group's normal order. Recorded rather than backdated. The rule the order exists to
+serve — source documents win, and are amended in the same commit — is satisfied by the
+§6.2 amendment, which did land with the ticket.
+
+### Why the old value was wrong rather than merely small
+
+`mt-8` was tuned against a four-line hero stack. RV-T02 deleted the current position line
+and left the value spacing against three, which is how a deliberate number quietly becomes
+an inherited one. At 32px the CTAs also sat inside the copy block's own rhythm — the value
+proposition is `mt-4` below the role framing — so they read as the paragraph's last line
+rather than as something to act on.
+
+`mt-32` is in §4.1's subset, so it needs no arbitrary-value justification in the JSX. §6.2
+now states the gap and why it is outside the copy rhythm, so the next reader does not tidy
+it back.
+
+### Files
+
+```
+src/components/sections/HeroSection.tsx     mt-8 → mt-32 on the CTA row
+docs/3-style-preference.md                  §6.2 — the hero's internal spacing is specified
+docs/tickets/RV-tickets.md                  + RV-T06
+```
+
+### Gates
+
+```
+yarn typecheck      OK
+yarn lint           OK
+yarn format:check   OK
+yarn build          OK
+```
+
+### Not verified — needs a real browser, and this one has a known risk
+
+128px is larger than the hero's own `pt-24` (96px) top padding and equal to `pt-32` at
+desktop. At 320–375px it is the largest vertical space on the screen and **may push the
+primary CTA below the fold**, which is the opposite of a hero CTA's job.
+
+No responsive step was pre-emptively added: the author asked for 4× having seen the built
+page, and second-guessing that with an unmeasured assumption is worse than checking. If
+the check fails, `mt-12 sm:mt-32` is the fix and it is a follow-up ticket.
 
 ## Origin of RV-T01
 

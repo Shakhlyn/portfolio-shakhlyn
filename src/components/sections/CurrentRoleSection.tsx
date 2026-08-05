@@ -64,15 +64,25 @@ export const CurrentRoleSection = (): ReactElement => {
         <Card>
           {/* h3 because Section renders the h2. Levels are never chosen for
               visual size (docs/3-style-preference.md §3.3). */}
+          {/* Each date range sits beside the organisation it belongs to, so the
+              two are read as a pair rather than as one range covering both. The
+              employer's range rides in the h3 alongside the employer; the
+              placement's rides on the line below alongside the placement.
+
+              The range is a mono `body-sm` span inside the heading, not heading
+              text at heading size: it wraps under the name at 320px instead of
+              pushing the h3 to three lines, and it keeps the dates visually
+              identical across the two lines. */}
           <h3 className="text-h3 text-fg md:text-h3-md">
             {CURRENT_ROLE.role} ·{' '}
-            <span className="font-normal text-fg-muted">{CURRENT_ROLE.company}</span>
+            <span className="font-normal text-fg-muted">{CURRENT_ROLE.company}</span>{' '}
+            <span className="font-mono text-body-sm font-normal text-fg-subtle">
+              · {CURRENT_ROLE.companyDateRange}
+            </span>
           </h3>
 
-          {/* Employer above, placement here. Two facts: Penta employs, Yaana is
-              the team the current work happens with. */}
           <p className="mt-1 font-mono text-body-sm text-fg-subtle">
-            Embedded with {CURRENT_ROLE.client} · {CURRENT_ROLE.dateRange}
+            Embedded with {CURRENT_ROLE.client} · {CURRENT_ROLE.clientDateRange}
           </p>
 
           <p className="mt-4 max-w-content text-body text-fg-muted md:text-body-md">

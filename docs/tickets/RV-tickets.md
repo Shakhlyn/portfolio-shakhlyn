@@ -537,3 +537,176 @@ the author owns:
 - [ ] Four gates pass.
 
 **Traceability:** `3-style-preference.md` §3.2, §6.2 · RV-T03
+
+---
+
+## RV-T05 — Give the employer and the placement their own date ranges
+
+**Depends on:** RV-T01 (which introduced `client`)
+
+**Overturns:** RV-T01's single `dateRange` field, and `3-style-preference.md` §6.3 row 2,
+which put "placement and date range on one mono line"
+
+**Files:**
+
+```
+modified  src/types/current-role.types.ts                 dateRange → companyDateRange + clientDateRange
+modified  src/data/currentRole.ts                          Mar 2024 / Oct 2024
+modified  src/components/sections/CurrentRoleSection.tsx   two mono lines
+modified  src/data/profile.ts                              stale field name in a comment
+modified  docs/3-style-preference.md                       §6.3 row 2
+```
+
+**Commit:** `fix(current-role): give the employer and the placement separate date ranges`
+
+### The problem
+
+RV-T01 correctly split `company` (employer) from `client` (placement) because collapsing
+them either drops the client or implies the client employs the author. It then left a
+single `dateRange` covering both — which is the same mistake one level down.
+
+The dates genuinely differ. Employment at Penta Global Limited began **Mar 2024**; the
+Yaana Solutions placement began **Oct 2024**, seven months later. The panel rendered
+`Embedded with Yaana Solutions · Mar 2024 — Present`, which **backdates the placement by
+seven months** — a factual error on the one section whose entire job is stating current
+state accurately.
+
+The shape of the bug is worth naming: a field named for the thing it is rendered _next
+to_ rather than the thing it _describes_. `dateRange` sat beside `client` in the markup,
+so it read as the client's range while holding the employer's.
+
+### The decision
+
+**Two fields, named after their organisations** — `companyDateRange` and
+`clientDateRange` — mirroring the `company` / `client` pair exactly, so the two can no
+longer drift or be silently reused for each other.
+
+**Each range renders beside its own organisation**, not on a line of its own. A range on
+an unlabelled line is read against whatever is nearest, which is how the original bug
+read as correct; and a single combined line
+(`Penta Global Limited · Mar 2024 — Present · Embedded with Yaana Solutions · Oct 2024 —
+Present`) runs ~95 characters and overruns the card at 320px.
+
+```
+Software Engineer · Penta Global Limited · Mar 2024 — Present     h3 (range: mono body-sm)
+Embedded with Yaana Solutions · Oct 2024 — Present                mono, fg-subtle
+```
+
+The employer's range rides inside the `h3` as a `fg-subtle` mono `body-sm` span — in the
+heading, but not at heading size. At heading size it would push the `h3` to three lines at
+320px; at `body-sm` it wraps under the employer name and matches the placement's range
+exactly, so the two read as a pair.
+
+**Scope**
+
+- In: the two date fields, the panel's mono lines, and §6.3 row 2.
+- Out: `summary`, `availability`, `stack`, `projectSlugs`, the divider, and the link row.
+  No copy is rewritten and no element moves.
+- Out: the résumé page and `experience.ts`, which carry their own dates from their own
+  data and are not read by this panel.
+
+**Implementation notes**
+
+- Renaming rather than adding `clientDateRange` alongside a kept `dateRange` is
+  deliberate: both fields are required, so the rename is compile-checked — every reader
+  must be visited. Keeping the old name would leave the ambiguity that caused the bug.
+- `profile.ts` names `CURRENT_ROLE.dateRange` in the comment explaining the removed year
+  count; the reference is updated in the same commit. A comment naming a field that no
+  longer exists is how the next reader concludes the panel lost its dates.
+
+**Acceptance**
+
+- [ ] `grep -rn "dateRange" src/` shows only `companyDateRange` and `clientDateRange` —
+      no bare `dateRange` on `CurrentRoleType` or in `CURRENT_ROLE`.
+- [ ] The panel renders `Mar 2024 — Present` beside the employer in the `h3` and
+      `Oct 2024 — Present` beside the placement on the line below. Neither range is shown
+      against the other organisation, and neither sits on a line with no organisation on
+      it.
+- [ ] Both lines fit without horizontal scroll at 320px.
+- [ ] Four gates pass.
+
+**Traceability:** `3-style-preference.md` §6.3 · `4-interaction-design.md` §5.2 · RV-T01
+
+---
+
+## RV-T06 — Open the gap between the hero copy and its CTAs
+
+**Depends on:** RV-T02 (which removed the line the old gap was spacing against)
+
+**Overturns:** nothing documented. `3-style-preference.md` §6.2 lists the hero stack in
+order but has never specified the space between its items — this ticket adds that spec
+rather than changing one.
+
+**Files:**
+
+```
+modified  src/components/sections/HeroSection.tsx  mt-8 → mt-32 on the CTA row
+modified  docs/3-style-preference.md               §6.2 — the gap is now specified
+```
+
+**Commit:** `style(hero): widen the gap above the hero CTAs to 128px` — **already landed
+as `40dd8e4`**, ahead of this ticket. Recorded here rather than backdated; see below.
+
+### The problem
+
+RV-T02 deleted the hero's current position line. The `mt-8` (32px) above the button row
+had been tuned against a stack of four text lines and was left spacing against three —
+the same value doing a different job, which is how spacing quietly stops being deliberate.
+
+At 32px the CTAs also sit inside the copy block's own rhythm: the value proposition is
+`mt-4` below the role framing, so 32px reads as "slightly more of the same" rather than
+as a break between reading and acting.
+
+### The decision
+
+**`mt-32` — 128px, 4× the previous value**, requested by the author after seeing the
+built page.
+
+The number is inside §4.1's spacing subset, so it needs no justification as an arbitrary
+value. What it buys is separation of kind: the eyebrow, `h1`, role framing, and value
+proposition are one block to read; the buttons are a different thing to do. 128px is the
+first step on the scale large enough that the CTAs read as their own zone rather than as
+the last line of the paragraph.
+
+### The known cost, unverified
+
+128px is larger than the hero's own top padding (`pt-24`, 96px) and equal to it at
+desktop (`pt-32`). At 320px this is the largest vertical space on the screen, and on a
+short phone it can push the primary CTA below the fold — the opposite of what a hero CTA
+is for.
+
+**This ticket does not pre-empt that with a responsive step.** The author asked for 4×
+having seen the page, and a smaller mobile value would be second-guessing a specific
+instruction with an unmeasured assumption. If the browser check shows the CTA falling
+below the fold at 320–375px, the fix is a `sm:` step — `mt-12 sm:mt-32` or similar — and
+it is a follow-up ticket, not a silent edit here.
+
+### On the commit landing before the ticket
+
+`40dd8e4` was committed on the author's instruction before this ticket existed, which
+inverts the group's normal order. It is recorded as-is rather than rewritten: the
+revamp group's rule is that source documents win over tickets and must be amended in the
+same commit, and the §6.2 amendment below is what actually satisfies that rule. A ticket
+written afterwards to describe a landed change is a weaker artefact than one written
+before, and saying so is more useful than hiding it.
+
+**Scope**
+
+- In: the CTA row's top margin, and the §6.2 line that now specifies it.
+- Out: the gaps between the eyebrow, `h1`, role framing, and value proposition; the
+  `gap-3` between the two buttons; `SocialLinks`' own `mt-8`; and both hero layouts. No
+  element moves, is added, or is removed.
+
+**Acceptance**
+
+- [x] The CTA row is `mt-32`; no other hero spacing value changes.
+- [x] `mt-32` is in `3-style-preference.md` §4.1's subset, so no justification comment is
+      required in the JSX.
+- [x] §6.2 states the gap and why it is large, so the next reader does not "correct" it
+      back to the surrounding rhythm.
+- [x] Four gates pass.
+- [ ] **Browser check at 320px and 375px in both layouts**: the primary CTA is reachable
+      without the gap pushing it out of the first screen. If it is not, a `sm:` step is a
+      follow-up ticket.
+
+**Traceability:** `3-style-preference.md` §4.1, §6.2 · RV-T02
