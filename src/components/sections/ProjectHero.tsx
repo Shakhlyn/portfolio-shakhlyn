@@ -43,6 +43,11 @@ export const ProjectHero = ({ project }: ProjectHeroProps): ReactElement => (
       <div className="mt-8 overflow-hidden rounded-lg bg-surface-hover">
         <img
           src={project.image.src}
+          srcSet={project.image.srcSet}
+          /* Full container width here, unlike the card — this is the case
+             study's lead image, not a thumbnail. A phone still takes the 640w
+             candidate; only a wide viewport earns the 1280w one. */
+          sizes="(min-width: 1152px) 1120px, 92vw"
           alt={project.image.alt}
           width={project.image.width}
           height={project.image.height}

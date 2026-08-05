@@ -54,6 +54,15 @@ export const ProjectCard = ({ project }: ProjectCardProps): ReactElement => {
         <div className="mb-4 overflow-hidden rounded-lg bg-surface-hover">
           <img
             src={project.image.src}
+            srcSet={project.image.srcSet}
+            /* Mirrors CARD_WIDTH_CLASSES in ProjectCarousel, but written from
+               boxes measured in a browser rather than read off the calc(): the
+               card is a fraction of the *container*, not of the viewport, and
+               the container's gutters widen between `sm` and `xl` to clear the
+               social rail. Measured across the range — 241px at 768, 408px at
+               1152, then 286px at 1280 where the third card appears, 339px at
+               1920. Each value below is the tightest that never undershoots. */
+            sizes="(min-width: 1280px) 340px, (min-width: 768px) 36vw, 64vw"
             alt={project.image.alt}
             width={project.image.width}
             height={project.image.height}

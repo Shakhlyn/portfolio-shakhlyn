@@ -5,6 +5,15 @@ export interface ProjectImageType {
   width: number;
   height: number;
   alt: string;
+  /**
+   * Candidate set for `srcset`, widest last, each entry a `<url> <width>w` pair.
+   * Optional: a project with one committed size renders `src` alone rather than
+   * a one-entry `srcset`, which tells the browser nothing it did not know.
+   *
+   * `src` stays the widest candidate, so a browser without `srcset` support
+   * still gets a correct — merely larger — image.
+   */
+  srcSet?: string;
 }
 
 export interface ProjectType {

@@ -1,4 +1,5 @@
 import portraitSrc from '@/assets/portrait.webp';
+import portraitSrc400 from '@/assets/portrait-400.webp';
 import type { ProfileType } from '@/types/profile.types';
 
 /**
@@ -49,6 +50,12 @@ export const PROFILE: ProfileType = {
    */
   portrait: {
     src: portraitSrc,
+    /*
+     * The slot is 200px wide below `lg` and 320px at `xl`, so a phone at 2× DPR
+     * needs 400px and never 720. The narrow variant is 11 KB against 32 KB, and
+     * it is the one a phone actually downloads.
+     */
+    srcSet: `${portraitSrc400} 400w, ${portraitSrc} 720w`,
     width: 720,
     height: 960,
     alt: 'Shaokh Al Mahmud Shakhlyn',

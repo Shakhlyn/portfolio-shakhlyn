@@ -4,6 +4,12 @@ export interface PortraitType {
   height: number;
   /** Real alt text — the person's name. Never empty for the hero portrait. */
   alt: string;
+  /**
+   * Candidate set for `srcset`, widest last, each entry a `<url> <width>w` pair.
+   * `src` stays the widest candidate so a browser without `srcset` support gets
+   * a correct image rather than none.
+   */
+  srcSet?: string;
 }
 
 export interface SocialLinksType {

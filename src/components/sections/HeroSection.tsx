@@ -98,6 +98,13 @@ export const HeroSection = (): ReactElement => {
                 {PROFILE.portrait ? (
                   <img
                     src={PROFILE.portrait.src}
+                    srcSet={PROFILE.portrait.srcSet}
+                    /* Mirrors PORTRAIT_SLOT_CLASSES above, largest query first —
+                       `sizes` is read before layout, so it cannot be derived and
+                       must be kept in step with the slot by hand. Without it the
+                       browser assumes 100vw and picks the widest candidate on
+                       every screen, which is the bug `srcset` alone creates. */
+                    sizes="(min-width: 1280px) 320px, (min-width: 1024px) 280px, 200px"
                     alt={PROFILE.portrait.alt}
                     width={PROFILE.portrait.width}
                     height={PROFILE.portrait.height}

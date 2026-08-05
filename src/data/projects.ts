@@ -1,6 +1,9 @@
 import placeholderRecipeApi from '@/assets/projects/placeholder-recipe-api.webp';
+import placeholderRecipeApi640 from '@/assets/projects/placeholder-recipe-api-640.webp';
 import placeholderReportingDashboard from '@/assets/projects/placeholder-reporting-dashboard.webp';
+import placeholderReportingDashboard640 from '@/assets/projects/placeholder-reporting-dashboard-640.webp';
 import placeholderTaskRunner from '@/assets/projects/placeholder-task-runner.webp';
+import placeholderTaskRunner640 from '@/assets/projects/placeholder-task-runner-640.webp';
 import { assertValidProjectSlugs } from '@/lib/validateProjects';
 import type { ProjectCategory, ProjectType } from '@/types/project.types';
 
@@ -140,6 +143,7 @@ export const PROJECTS: readonly ProjectType[] = [
     // TODO(content): PLACEHOLDER SCREENSHOT — generated, not a product shot.
     image: {
       src: placeholderReportingDashboard,
+      srcSet: `${placeholderReportingDashboard640} 640w, ${placeholderReportingDashboard} 1280w`,
       width: 1280,
       height: 720,
       alt: 'Placeholder screenshot for the reporting dashboard entry',
@@ -218,6 +222,7 @@ export const PROJECTS: readonly ProjectType[] = [
     // TODO(content): PLACEHOLDER SCREENSHOT — generated, not a product shot.
     image: {
       src: placeholderTaskRunner,
+      srcSet: `${placeholderTaskRunner640} 640w, ${placeholderTaskRunner} 1280w`,
       width: 1280,
       height: 720,
       alt: 'Placeholder screenshot for the CLI task runner entry',
@@ -242,6 +247,7 @@ export const PROJECTS: readonly ProjectType[] = [
     // TODO(content): PLACEHOLDER SCREENSHOT — generated, not a product shot.
     image: {
       src: placeholderRecipeApi,
+      srcSet: `${placeholderRecipeApi640} 640w, ${placeholderRecipeApi} 1280w`,
       width: 1280,
       height: 720,
       alt: 'Placeholder screenshot for the recipe API entry',

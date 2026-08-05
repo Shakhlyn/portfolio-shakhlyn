@@ -31,7 +31,29 @@ const TARGETS = ['src/assets', 'public/og'];
 const EXTENSIONS = new Set(['.webp', '.png', '.jpg', '.jpeg']);
 const MANIFEST = fileURLToPath(new URL('./image-manifest.json', import.meta.url));
 
+/**
+ * Narrow variants emitted beside each source, for `srcset`. The suffix is the
+ * intrinsic width, so `portrait-400.webp` is self-describing in a diff.
+ *
+ * Widths are chosen from the rendered CSS box at 2× DPR, not from round
+ * numbers: the portrait slot is `w-50 lg:w-70 xl:w-80` (200/280/320 px), and a
+ * project card is ~305–500 px across the carousel's three breakpoints. A
+ * variant wider than 2× the largest box would never be selected.
+ *
+ * A variant is only written when it is **smaller** than the source; upscaling
+ * is never attempted, and a source narrower than the variant width is skipped.
+ */
+const VARIANT_WIDTHS = {
+  'src/assets/portrait.webp': [400],
+  'src/assets/projects': [640],
+};
+
 const digest = (buffer) => createHash('sha256').update(buffer).digest('hex');
+
+const variantWidthsFor = (name) =>
+  VARIANT_WIDTHS[name] ??
+  Object.entries(VARIANT_WIDTHS).find(([key]) => name.startsWith(`${key}/`))?.[1] ??
+  [];
 
 const readManifest = async () => {
   const raw = await readFile(MANIFEST, 'utf8').catch(() => null);
@@ -71,7 +93,10 @@ const main = async () => {
     if (await stat(path).catch(() => null)) dirs.push(path);
   }
 
-  const files = (await Promise.all(dirs.map(walk))).flat().sort();
+  const all = (await Promise.all(dirs.map(walk))).flat().sort();
+  // Variants are outputs, not sources — re-encoding them as if they were
+  // inputs would generate variants of variants.
+  const files = all.filter((file) => !/-\d+\.(webp|png|jpe?g)$/i.test(file));
   const manifest = await readManifest();
   const next = {};
   const rows = [];
@@ -106,6 +131,46 @@ const main = async () => {
       action: smaller ? 'rewritten' : 'kept',
     });
   }
+
+  for (const file of files) {
+    const name = relative(ROOT, file);
+    const ext = extname(file).toLowerCase();
+    const source = await readFile(file);
+    const { width } = await sharp(source).metadata();
+
+    for (const target of variantWidthsFor(name)) {
+      if (target >= width) continue;
+
+      const variantName = name.replace(new RegExp(`${ext}$`), `-${target}${ext}`);
+      const variantPath = join(ROOT, variantName);
+      const resized = await encode(sharp(source).resize({ width: target }), ext);
+      const existing = await readFile(variantPath).catch(() => null);
+
+      if (existing && digest(existing) === manifest[variantName]) {
+        next[variantName] = manifest[variantName];
+        rows.push({
+          file: variantName,
+          size: `${target}w`,
+          before: existing.length,
+          after: existing.length,
+          action: 'optimised',
+        });
+        continue;
+      }
+
+      await writeFile(variantPath, resized);
+      next[variantName] = digest(resized);
+      rows.push({
+        file: variantName,
+        size: `${target}w`,
+        before: existing?.length ?? 0,
+        after: resized.length,
+        action: existing ? 'rewritten' : 'created',
+      });
+    }
+  }
+
+  rows.sort((a, b) => a.file.localeCompare(b.file));
 
   await writeFile(MANIFEST, `${JSON.stringify(next, null, 2)}\n`);
 

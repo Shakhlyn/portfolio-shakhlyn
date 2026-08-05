@@ -3,5 +3,9 @@
   "src/assets/portrait.webp": "13840f361f65446e4fd235f91a77da6dc9222bbeb8173041c2ecfd9b5bd1e74b",
   "src/assets/projects/placeholder-recipe-api.webp": "a4e41fbd65012e6af5ecb776272c481256ae7437ff3be3f05ba6a311b0c33430",
   "src/assets/projects/placeholder-reporting-dashboard.webp": "036b80be9a7a4d38dadbc6908915320c1e08904790fbd6a823f43d893f00ed0f",
-  "src/assets/projects/placeholder-task-runner.webp": "bf27d2abf58a3508651ecec8607cdf0b63f330245fb8ed2f07e246815d9acfb7"
+  "src/assets/projects/placeholder-task-runner.webp": "bf27d2abf58a3508651ecec8607cdf0b63f330245fb8ed2f07e246815d9acfb7",
+  "src/assets/portrait-400.webp": "2004ca4f1f57b7c6b9de48786cae1676646de4b7f698a9fe2a0372125015e7ef",
+  "src/assets/projects/placeholder-recipe-api-640.webp": "ff7a1319c23c1a38de44f43ac751ed661760bf28c337c158fc9be4d788337857",
+  "src/assets/projects/placeholder-reporting-dashboard-640.webp": "39ecc7f756cd6b1dee242eb4fd8a099bc95a8a08a8523d7a4723045a8fe52a71",
+  "src/assets/projects/placeholder-task-runner-640.webp": "22debb235139732cba685cfdf98bfea06530ac8d7c0802529dea39a5d6e16ed8"
 }
