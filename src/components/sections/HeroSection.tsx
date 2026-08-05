@@ -49,10 +49,15 @@ export const HeroSection = (): ReactElement => {
       <p className="font-mono text-eyebrow text-accent uppercase">{PROFILE.eyebrow}</p>
 
       {/* The h1 is the name alone. The positioning below it is a sibling, and the
-          keyword work belongs in <title> / meta (docs/2-architecture.md §8). */}
+          keyword work belongs in <title> / meta (docs/2-architecture.md §8).
+
+          `text-display-name` is fluid and has no md: step — it is sized to keep
+          the full name on one line at every width, which a two-step scale cannot
+          do (RV-T03). Its binding case is the split layout's text column at lg,
+          not the smallest phone. */}
       <h1
         tabIndex={-1}
-        className="mt-3 text-display text-fg focus-visible:outline-none md:text-display-md"
+        className="mt-3 text-display-name text-fg focus-visible:outline-none"
       >
         {PROFILE.name}
       </h1>

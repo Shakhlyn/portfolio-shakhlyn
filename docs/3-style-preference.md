@@ -235,6 +235,12 @@ Mobile-first. The second value applies from the `md:` breakpoint up.
 **Weights in use: 400, 500, 600 only.** No 700+ — system-stack bold at large sizes
 reads heavy and undermines the restrained tone. No italics except in blockquotes.
 
+**`display-name`** is a fourth display size, used by the hero `h1` alone:
+`clamp(1.35rem, 6.9vw, 2.875rem)`, line-height 1.05, tracking -0.02em, weight 600. It is
+the one fluid token in the scale, and the one with no `md:` step — it exists to keep a
+25-character name on a single line at every width, which a two-step scale cannot express
+(RV-T03). `display` and `display-md` are unchanged and remain the 404 glyph's size.
+
 ### 3.3 Typographic Rules
 
 - Exactly one `h1` per page (PRD §Accessibility). Heading levels never skip.
@@ -465,6 +471,13 @@ Left-aligned, `max-w-content`. Stack:
 5. Button row: `primary` "View Resume" (→ `/resume`) + `secondary` "Contact"
    (→ `#contact`).
 6. `SocialLinks` row — below `sm` only, where the floating rail is hidden.
+
+**The `h1` uses `display-name`, not `display`** (RV-T03). It is fluid —
+`clamp(1.35rem, 6.9vw, 2.875rem)` — and carries no `md:` step, because its job is a
+constraint rather than a size: the full name stays on one line from 320px to 1920px. Its
+binding case is the `split` layout's text column at `lg`, where the portrait leaves 624px,
+not the smallest phone. That ceiling is below `display-md`, so the name is smaller on
+desktop than a fixed scale would make it — the requirement's cost, taken deliberately.
 
 **No current position line, and the hero does not name the employer** (RV-T02). §6.3's
 panel one screen below renders the same role and company as its `h3`, with a placement

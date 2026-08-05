@@ -366,3 +366,94 @@ currently shipping is correct as written — it is merely less specific than it 
 
 **Traceability:** `1-prd.md` §3 · `3-style-preference.md` §6.2 ·
 `4-interaction-design.md` §5.1, §10 · `5-epic-list.md` E09 · RV-T01
+
+---
+
+## RV-T03 — Size the hero `h1` to hold the full name on one line
+
+**Depends on:** RV-T02 (same element, same commit series)
+
+**Overturns:** the two-step `display` → `display-md` scale on the hero `h1`, from
+`3-style-preference.md` §3.2 and §6.2
+
+**Files:**
+
+```
+modified  src/styles/index.css                     + --text-display-name
+modified  src/components/sections/HeroSection.tsx  h1 uses it; md: step dropped
+modified  docs/3-style-preference.md               §3.2 token, §6.2 note
+```
+
+**Commit:** `fix(hero): size the h1 to keep the full name on one line at every width`
+
+### The problem
+
+`Shaokh Al Mahmud Shakhlyn` is 25 characters — roughly **12.6em** wide at weight 600 with
+-0.02em tracking. The `h1` shipped at `display` (2.25rem) with `md:display-md` (3.5rem),
+and 3.5rem × 12.6 ≈ 706px. That does not fit anywhere it is used:
+
+| Width           | Box the `h1` sits in                       | Available | Max size that fits |
+| --------------- | ------------------------------------------ | --------- | ------------------ |
+| 320px           | container, `px-5`                          | 280px     | ~22px              |
+| 640px (`sm`)    | container, `pl-14` + `px-6`                | 560px     | ~44px              |
+| 768px (`md`)    | container                                  | 688px     | ~55px              |
+| **1024 (`lg`)** | **split text column** — 936 − 280 − 32 gap | **624px** | **~49px**          |
+| 1280px (`xl`)   | split text column — 1056 − 320 − 32        | 704px     | ~56px              |
+
+**The binding case is `lg`, not the smallest phone.** The `split` layout puts a 280px
+portrait beside the text, so the column _narrows_ exactly as the viewport crosses 1024px
+and the two-step scale has already jumped to its largest size. The name wrapped at `md`
+and `lg` on the shipped build.
+
+A two-step scale cannot express this: the constraint is not "bigger on bigger screens",
+it is "as large as the current box allows".
+
+### The decision
+
+**A new `--text-display-name` token, fluid, used by the hero `h1` alone.**
+
+```
+clamp(1.35rem, 6.9vw, 2.875rem)
+```
+
+- **6.9vw** tracks the container's growth from 320 to 768, where padding is a
+  near-constant 40–80px.
+- **2.875rem (46px) ceiling** is set by the `lg` dip above, not by the largest screen —
+  which is why it is below `display-md`'s 3.5rem. The name is visibly smaller on desktop
+  than it was. That is the cost of the requirement, and it is stated rather than hidden.
+- **1.35rem floor** holds 320px.
+
+`--text-display` is **unchanged**. `NotFoundPage` renders the 404 glyph at that size and
+has no such constraint; making the shared token fluid would shrink a two-character glyph
+to solve a 25-character problem. A separate token also states the intent — this size
+exists to satisfy a length constraint, and that is the fact a future editor needs.
+
+**No `white-space: nowrap`.** With nowrap, an em-width estimate that is 5% low overflows
+the viewport and breaks the no-horizontal-scroll requirement. Without it, the same error
+merely wraps the line. The failure mode is chosen deliberately: ugly, not broken.
+
+**Scope**
+
+- In: the one token, the `h1`'s classes, and the two `3-style-preference.md` sections.
+- Out: `display`, `display-md`, every other type token, the 404, and the layout itself.
+  No spacing, element, or structural change.
+
+**Acceptance**
+
+- [ ] The full name renders on **one line** at 320 / 375 / 640 / 768 / 1024 / 1280 / 1920,
+      in both `stacked` and `split`.
+- [ ] No horizontal scroll at any of those widths.
+- [ ] The `h1` carries no `md:` type step.
+- [ ] `--text-display` and `--text-display-md` are byte-identical to before; the 404
+      glyph is unchanged.
+- [ ] `clamp(1.35rem,6.9vw,2.875rem)` is present in the built CSS.
+- [ ] Four gates pass.
+
+**Known risk.** The 12.6em figure is **computed from typical system-ui metrics, not
+measured in a browser** — and `--font-sans` resolves to a different face per platform
+(Segoe UI on Windows, Roboto on Android, -apple-system on macOS/iOS), so the true width
+varies by visitor. The bounds are tight at 320px and 640px. If the name wraps on a real
+device, retune the `6.9vw` term or the floor; the token comment says which number and why.
+
+**Traceability:** `3-style-preference.md` §3.2, §6.2 · `4-interaction-design.md` §5.1 ·
+RV-T02

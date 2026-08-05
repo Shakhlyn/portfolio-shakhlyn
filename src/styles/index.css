@@ -134,6 +134,31 @@
   --text-display-md--letter-spacing: -0.02em;
   --text-display-md--font-weight: 600;
 
+  /*
+   * The hero h1 only (RV-T03). Fluid rather than a two-step scale, because its
+   * job is a constraint, not a size: keep a 25-character name on one line from
+   * 320px to 1920px. `display` stays fixed for the 404 glyph, which has no such
+   * constraint.
+   *
+   * The name measures ~12.6em wide at weight 600 with -0.02em tracking. The
+   * narrowest box it must fit is **not** the smallest viewport — it is the
+   * `split` layout's text column at `lg`, where a 280px portrait and a 32px gap
+   * leave 624px of a 936px container (≈49px max). That dip is why the ceiling is
+   * 2.875rem and not `display-md`'s 3.5rem, and why the ceiling is reached well
+   * before the largest screens.
+   *
+   * 6.9vw tracks the container's own growth from 320px to 768px, where the
+   * padding is a near-constant 40–80px.
+   *
+   * If the name ever changes length, this is the one number to retune: divide
+   * the narrowest available width by the name's em-width. Overshooting wraps the
+   * line — it does not overflow the viewport, so the failure is ugly, not broken.
+   */
+  --text-display-name: clamp(1.35rem, 6.9vw, 2.875rem);
+  --text-display-name--line-height: 1.05;
+  --text-display-name--letter-spacing: -0.02em;
+  --text-display-name--font-weight: 600;
+
   --text-h1: 1.875rem;
   --text-h1--line-height: 1.1;
   --text-h1--letter-spacing: -0.02em;

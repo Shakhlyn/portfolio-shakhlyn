@@ -23,10 +23,7 @@ export const CURRENT_ROLE: CurrentRoleType = {
   client: 'Yaana Solutions',
   dateRange: 'Mar 2024 — Present',
   summary:
-  "Embedded with Yaana Solutions' telecom product team, collaborating with engineers, technical leads, BAs, product managers, UX designers, and QA across Asia, Europe, and North America. I built two large modules and still own both — shipping customer-requested features and improvements to them — while fixing bugs across modules I inherited from others.",
-
-      // 'Embedded with Yaana Solutions’ telecom product team, where I built two large modules and still own both ' +
-    // '— shipping customer-requested features and improvements to them — while fixing defects across modules I inherited from others.',
+    "Embedded with Yaana Solutions' telecom product team, collaborating with engineers, technical leads, BAs, product managers, UX designers, and QA across Asia, Europe, and North America. I built two large modules and still own both — shipping customer-requested features and improvements to them — while fixing bugs across modules I inherited from others.",
   stack: [
     'TypeScript',
     'React',
