@@ -25,15 +25,15 @@ export const PROFILE: ProfileType = {
   // TODO(content): INVENTED FIGURE — "40,000 deals", "three continents". The
   // distributed team and the end-to-end ownership are real; the scale is not.
   valueProposition:
-  "I'm a software engineer with 2.5 years of experience. For nearly 2 years, I've been working on an enterprise platform" +
-      " serving telecom operators, where I've built two large modules and worked deep in the ones I inherited " +
-      "— fixing defects and tracing issues through unfamiliar code. I own features end to end, from clarifying the requirement to supporting it in production.",
+    "I'm a software engineer with 2.5 years of experience. For nearly 2 years, I've been working on an enterprise platform" +
+    " serving telecom operators, where I've built two large modules and worked deep in the ones I inherited " +
+    '— fixing defects and tracing issues through unfamiliar code. I own features end to end, from clarifying the requirement to supporting it in production.',
   currentPositionRole: 'Software Engineer',
   currentPositionCompany: 'Penta Global Limited',
   // Label text from docs/3-style-preference.md §6.2 item 6.
   heroCtas: {
     resume: 'View Resume',
-    contact: 'Let\'s Talk',
+    contact: "Let's Talk",
   },
   layout: 'split',
   /**
