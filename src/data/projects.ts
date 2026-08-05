@@ -1,7 +1,5 @@
 import placeholderRecipeApi from '@/assets/projects/placeholder-recipe-api.webp';
 import placeholderRecipeApi640 from '@/assets/projects/placeholder-recipe-api-640.webp';
-import placeholderReportingDashboard from '@/assets/projects/placeholder-reporting-dashboard.webp';
-import placeholderReportingDashboard640 from '@/assets/projects/placeholder-reporting-dashboard-640.webp';
 import placeholderTaskRunner from '@/assets/projects/placeholder-task-runner.webp';
 import placeholderTaskRunner640 from '@/assets/projects/placeholder-task-runner-640.webp';
 import { assertValidProjectSlugs } from '@/lib/validateProjects';
@@ -103,52 +101,9 @@ export const PROJECTS: readonly ProjectType[] = [
     tags: ['Python', 'FastAPI', 'PostgreSQL', 'Keycloak'],
     caseStudySlug: 'bhoganti-web-app',
   },
-  // TODO(content): PLACEHOLDER PROJECT — not real work. Replace or delete
-  // before launch; gated in 5-epic-list.md E18.
-  {
-    id: 'placeholder-reporting-dashboard',
-    slug: 'placeholder-reporting-dashboard',
-    title: 'Placeholder — Reporting Dashboard',
-    summary:
-      'Placeholder entry used to exercise the carousel. Replace this with a real project before launch.',
-    category: 'professional',
-    problem:
-      'Placeholder copy. This entry exists so the professional carousel overflows a three-card track and its arrow states can be verified.',
-    role: 'Placeholder.',
-    approach:
-      'Placeholder copy. Nothing here describes real work, and no figure in this entry is a claim.',
-    stack: [
-      'TypeScript',
-      'React',
-      'Node.js',
-      'PostgreSQL',
-      'Docker',
-      'Redis',
-      'Playwright',
-    ],
-    outcome: 'Placeholder copy. No outcome is claimed.',
-    // Seven tags, deliberately: the card shows five plus a `+N` badge.
-    tags: [
-      'TypeScript',
-      'React',
-      'Node.js',
-      'PostgreSQL',
-      'Docker',
-      'Redis',
-      'Playwright',
-    ],
-    githubUrl: 'https://github.com/Shakhlyn',
-    liveUrl: 'https://example.com',
-    caseStudySlug: 'placeholder-reporting-dashboard',
-    // TODO(content): PLACEHOLDER SCREENSHOT — generated, not a product shot.
-    image: {
-      src: placeholderReportingDashboard,
-      srcSet: `${placeholderReportingDashboard640} 640w, ${placeholderReportingDashboard} 1280w`,
-      width: 1280,
-      height: 720,
-      alt: 'Placeholder screenshot for the reporting dashboard entry',
-    },
-  },
+
+  //   Personal projects
+
   {
     id: 'meal-management-system',
     slug: 'meal-management-system',
