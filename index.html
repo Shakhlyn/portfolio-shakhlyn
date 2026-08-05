@@ -4,7 +4,13 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portfolio</title>
+    <!--
+      Mirrors SITE_TITLE in src/constants/site.ts. It is the default only:
+      useDocumentMetadata overwrites it per route and restores it on unmount.
+      Every other head tag is injected from that same module by the
+      `portfolio-site-metadata` plugin in vite.config.ts.
+    -->
+    <title>Shaokh Al Mahmud Shakhlyn — Software Engineer</title>
     <!--
       Applies the theme class before first paint. Blocking and non-module by
       design: `defer` or `type="module"` would run this after paint, which is

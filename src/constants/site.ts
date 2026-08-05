@@ -1,9 +1,14 @@
 /**
- * Site-wide constants. SCREAMING_SNAKE_CASE per AGENTS.md §3. Consumed by E15.
+ * Site-wide constants. SCREAMING_SNAKE_CASE per AGENTS.md §3.
  *
- * TODO(content): SITE_URL is a placeholder domain. Absolute canonical and OG
- * image URLs are built from it, so a wrong value here means link previews
- * silently fetch nothing. Set it to the real Netlify or custom domain in E18.
+ * This module is imported by `vite.config.ts` as well as by the app, so it must
+ * stay free of asset imports, JSX, and browser globals — the config is bundled
+ * by esbuild, which has no loader for `.webp` and no DOM.
+ *
+ * TODO(content): SITE_URL is a placeholder domain.
+ * TODO(deploy): every absolute URL in `dist/` is derived from it, so link
+ * previews fetch nothing until it is the real domain. Set it in E18 — it is the
+ * only place the host appears.
  */
 export const SITE_URL = 'https://shakhlyn.dev';
 
@@ -12,11 +17,33 @@ export const SITE_TITLE = 'Shaokh Al Mahmud Shakhlyn — Software Engineer';
 export const SITE_DESCRIPTION =
   'Software engineer with 2+ years building enterprise web applications in TypeScript, React, Python, and FastAPI on distributed international teams.';
 
+/** The person, not the positioning. `SITE_TITLE` carries the keywords. */
+export const SITE_NAME = 'Shaokh Al Mahmud Shakhlyn';
+
+export const SITE_LOCALE = 'en_US';
+
+/** Mirrors PROFILE.socials.x — the card wants the handle, not the URL. */
+export const TWITTER_HANDLE = '@Shakhlyn';
+
 /**
  * Placeholder OG image, generated from the design tokens. Replace before launch
  * (1-prd.md §6 permits a placeholder during development only).
+ *
+ * TODO(content): still the generated placeholder.
  */
 export const OG_IMAGE_PATH = '/og/portfolio-og.png';
+
+/** Measured from the committed file. Declaring dimensions it does not have is
+ * worse than declaring none — unfurlers reserve the space before fetching. */
+export const OG_IMAGE_WIDTH = 1200;
+export const OG_IMAGE_HEIGHT = 630;
+export const OG_IMAGE_ALT = `${SITE_NAME} — software engineer portfolio`;
+
+/**
+ * Absolute URL from a site-root path. Every crawler-facing URL goes through
+ * here, so the domain is written once and changed once.
+ */
+export const absoluteUrl = (path: string): string => new URL(path, SITE_URL).toString();
 
 /**
  * Scroll-spy timings — docs/4-interaction-design.md §3. Defined here so E07
