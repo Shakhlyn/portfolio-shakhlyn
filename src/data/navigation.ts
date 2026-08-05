@@ -44,8 +44,8 @@ const withoutEmptyProjects = (items: readonly NavItemType[]): readonly NavItemTy
 export const NAV_ITEMS: readonly NavItemType[] = withoutEmptyProjects([
   { kind: 'anchor', label: 'Home', sectionId: 'home' },
   { kind: 'anchor', label: 'Projects', sectionId: PROJECTS_SECTION_ID },
-  { kind: 'anchor', label: 'About', sectionId: 'about' },
-  { kind: 'route', label: 'Blog', path: '/writing' },
+  // { kind: 'anchor', label: 'About', sectionId: 'about' },
+  // { kind: 'route', label: 'Blog', path: '/writing' },
   { kind: 'anchor', label: 'Contact', sectionId: CONTACT_SECTION_ID },
   { kind: 'route', label: 'Resume', path: RESUME_ROUTE, emphasised: true },
 ]);

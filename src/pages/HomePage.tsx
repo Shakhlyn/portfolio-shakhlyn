@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react';
 
-import { AboutSection } from '@/components/sections/AboutSection';
+// import { AboutSection } from '@/components/sections/AboutSection';
 import { ContactSection } from '@/components/sections/ContactSection';
 import { CurrentRoleSection } from '@/components/sections/CurrentRoleSection';
 import { HeroSection } from '@/components/sections/HeroSection';
@@ -27,7 +27,7 @@ export const HomePage = (): ReactElement => {
 
       <ProjectsSection />
 
-      <AboutSection />
+      {/*<AboutSection />*/}
 
       <SkillsSection />
 
