@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Seven URLs, listed by hand. A generator for seven URLs is more moving parts
+  than the thing it generates (1-prd.md §7 non-goals).
+
+  The three `placeholder-*` projects in src/data/projects.ts are development
+  fixtures and are deliberately absent — a sitemap is what you tell a crawler to
+  go and fetch.
+
+  TODO(E14): /writing and /writing/:slug belong here once real posts exist. They
+  are `noindex` until then (2-architecture.md §8), and advertising a page you
+  have asked not to be indexed is a contradiction a crawler reports.
+
+  TODO(deploy): every <loc> host is SITE_URL, which is still an unregistered
+  placeholder. Rewrite this file and src/constants/site.ts together in E18.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://shakhlyn.dev/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://shakhlyn.dev/resume</loc>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://shakhlyn.dev/projects/deal-summary-comparison</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://shakhlyn.dev/projects/data-slicing</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://shakhlyn.dev/projects/bhoganti-web-app</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://shakhlyn.dev/projects/meal-management-system</loc>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://shakhlyn.dev/projects/linux-setup-tooling</loc>
+    <priority>0.7</priority>
+  </url>
+</urlset>
