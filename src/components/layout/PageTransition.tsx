@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, m } from 'motion/react';
 import type { ReactElement, ReactNode } from 'react';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -47,7 +47,7 @@ export const PageTransition = ({ children }: PageTransitionProps): ReactElement 
 
   return (
     <AnimatePresence mode="wait">
-      <motion.div
+      <m.div
         key={pathname}
         variants={pageTransition}
         // `false` renders at the animate state: no page-level fade on arrival,
@@ -57,7 +57,7 @@ export const PageTransition = ({ children }: PageTransitionProps): ReactElement 
         exit="exit"
       >
         {children}
-      </motion.div>
+      </m.div>
     </AnimatePresence>
   );
 };

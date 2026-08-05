@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import type { ReactElement } from 'react';
 
 import { SkillGroup } from '@/components/sections/SkillGroup';
@@ -35,7 +35,7 @@ export const SkillsSection = (): ReactElement | null => {
 
   return (
     <Section id="skills" title="Skills">
-      <motion.div
+      <m.div
         variants={fadeUp}
         initial="hidden"
         whileInView="visible"
@@ -50,7 +50,7 @@ export const SkillsSection = (): ReactElement | null => {
             labelId={labelIdFor(group.id)}
           />
         ))}
-      </motion.div>
+      </m.div>
     </Section>
   );
 };

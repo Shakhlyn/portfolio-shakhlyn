@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import type { ReactElement } from 'react';
 import { useEffect, useId, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
@@ -107,7 +107,7 @@ export const MobileNavigation = (): ReactElement => {
       </button>
 
       {isOpen ? (
-        <motion.div
+        <m.div
           ref={sheetRef}
           id={sheetId}
           // Animation 6: opacity + y −8, 200ms ease-out. Height is not animated (§3, §8).
@@ -166,7 +166,7 @@ export const MobileNavigation = (): ReactElement => {
 
             <SocialLinks className="mt-4" />
           </nav>
-        </motion.div>
+        </m.div>
       ) : null}
     </div>
   );

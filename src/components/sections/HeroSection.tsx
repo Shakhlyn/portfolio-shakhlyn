@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import type { ReactElement } from 'react';
 
 import { SocialLinks } from '@/components/layout/SocialLinks';
@@ -89,7 +89,7 @@ export const HeroSection = (): ReactElement => {
   return (
     <section id="home" className="scroll-mt-20 pt-24 pb-16 md:pt-32 md:pb-24">
       <Container>
-        <motion.div variants={fadeUp} initial="hidden" animate="visible">
+        <m.div variants={fadeUp} initial="hidden" animate="visible">
           {PROFILE.layout === 'split' ? (
             <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
               {/* Slot first in DOM: it leads on mobile, and `lg:order-2` moves it
@@ -118,7 +118,7 @@ export const HeroSection = (): ReactElement => {
           ) : (
             <div className="max-w-content">{content}</div>
           )}
-        </motion.div>
+        </m.div>
       </Container>
     </section>
   );

@@ -512,7 +512,13 @@ The implementation will target:
 
 ### Animation Strategy
 
-- Use Motion from `motion/react`.
+- Use Motion from `motion/react`, but **never the `motion` component** — use `m` inside a
+  single `<LazyMotion features={domAnimation} strict>` in `App.tsx`. `motion` statically
+  pulls the whole animation engine (layout projection, drag, gestures) into the entry
+  chunk; this site animates `opacity` and `transform` only, which is exactly what
+  `domAnimation` carries. Measured: **13.8 KB gzip off the entry bundle.** `strict` makes
+  it enforceable — importing `motion` throws at render instead of quietly restoring the
+  weight.
 - Animate only `opacity` and `transform`.
 - Page transitions should stay under 300ms.
 - Scroll reveals use `whileInView` with `viewport={{ once: true }}`.

@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import type { ReactElement } from 'react';
 
 import { Section } from '@/components/ui/Section';
@@ -31,7 +31,7 @@ export const AboutSection = (): ReactElement => {
 
   return (
     <Section id="about" title="About">
-      <motion.div
+      <m.div
         variants={fadeUp}
         initial="hidden"
         whileInView="visible"
@@ -54,7 +54,7 @@ export const AboutSection = (): ReactElement => {
             {ABOUT.lookingFor}
           </p>
         ) : null}
-      </motion.div>
+      </m.div>
     </Section>
   );
 };

@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import type { ReactElement } from 'react';
 
 import { ProjectCard } from '@/components/sections/ProjectCard';
@@ -126,7 +126,7 @@ export const ProjectCarousel = ({
         ) : null}
       </div>
 
-      <motion.div
+      <m.div
         ref={trackRef}
         role="region"
         /* Two carousels on one page cannot share a label, and the count comes
@@ -150,15 +150,15 @@ export const ProjectCarousel = ({
         )}
       >
         {projects.map((project) => (
-          <motion.div
+          <m.div
             key={project.id}
             variants={fadeUp}
             className={cn('flex-none snap-start', CARD_WIDTH_CLASSES)}
           >
             <ProjectCard project={project} />
-          </motion.div>
+          </m.div>
         ))}
-      </motion.div>
+      </m.div>
     </div>
   );
 };

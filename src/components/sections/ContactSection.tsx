@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import type { ReactElement } from 'react';
 
 import { SocialLinks } from '@/components/layout/SocialLinks';
@@ -27,7 +27,7 @@ export const ContactSection = (): ReactElement => {
 
   return (
     <Section id="contact" title="Contact">
-      <motion.div
+      <m.div
         variants={fadeUp}
         initial="hidden"
         whileInView="visible"
@@ -58,7 +58,7 @@ export const ContactSection = (): ReactElement => {
 
           <SocialLinks className="mt-6" />
         </div>
-      </motion.div>
+      </m.div>
     </Section>
   );
 };

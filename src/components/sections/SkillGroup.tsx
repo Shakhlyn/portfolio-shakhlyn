@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import type { ReactElement } from 'react';
 
 import { Badge } from '@/components/ui/Badge';
@@ -58,18 +58,18 @@ export const SkillGroup = ({ label, skills, labelId }: SkillGroupProps): ReactEl
         {label}
       </p>
 
-      <motion.ul
+      <m.ul
         role="list"
         aria-labelledby={labelId}
         variants={staggerContainer(stagger)}
         className="mt-3 flex flex-wrap gap-2"
       >
         {skills.map((skill) => (
-          <motion.li key={skill} variants={badgeFadeUp}>
+          <m.li key={skill} variants={badgeFadeUp}>
             <Badge>{skill}</Badge>
-          </motion.li>
+          </m.li>
         ))}
-      </motion.ul>
+      </m.ul>
     </div>
   );
 };

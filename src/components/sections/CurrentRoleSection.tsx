@@ -1,4 +1,4 @@
-import { motion } from 'motion/react';
+import { m } from 'motion/react';
 import type { ReactElement } from 'react';
 
 import { Badge } from '@/components/ui/Badge';
@@ -30,7 +30,7 @@ export const CurrentRoleSection = (): ReactElement => {
 
   return (
     <Section id="current-role" title="Current Role">
-      <motion.div
+      <m.div
         variants={fadeUp}
         initial="hidden"
         whileInView="visible"
@@ -66,7 +66,7 @@ export const CurrentRoleSection = (): ReactElement => {
             </ul>
           ) : null}
         </Card>
-      </motion.div>
+      </m.div>
     </Section>
   );
 };
