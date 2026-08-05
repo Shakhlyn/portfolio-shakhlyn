@@ -4,7 +4,7 @@ Roll-up across all epics. Per-epic detail lives in `E0X-status.md` next to each
 ticket file. **Update the per-epic file when you finish a ticket; update this table
 when an epic's counts change.**
 
-Last updated: **2026-08-03**
+Last updated: **2026-08-05**
 
 ## Legend
 
@@ -129,6 +129,58 @@ exists.
 `scroll-padding-top` with `scroll-mt-20`, and route-change focus that had never
 worked because it raced `PageTransition`'s exit animation. The second one retires a
 pending E03-T06 check — and shows why the 🔍 items above are worth actually running.
+
+## Phase 4
+
+| Epic     | Done | Needs manual check | Blocked | Not started | Total  |
+| -------- | ---- | ------------------ | ------- | ----------- | ------ |
+| E14 Blog | 0    | 0                  | 0       | 0           | `TODO` |
+
+**E14 is `TODO` — not started, deliberately deferred by the author.** It is not blocked on
+code: the posts are unwritten. `/writing` and `/writing/:slug` are still the E03 stubs, and
+the ticket file has not been written. Ticket counts land here when it is picked up.
+
+**E15 shipped past it on purpose.** The graph edge from E14 to E15 existed so that writing
+pages would exist before being marked non-indexable, and a stub satisfies that condition
+already — `getPublishedPosts().length === 0` is true for an E03 stub and for a finished
+empty state alike. Everything E15 ships that will need revisiting when E14 lands is marked:
+
+```
+grep -rn "TODO(E14)" src/ docs/ public/
+```
+
+## Phase 5
+
+| Epic                                | Done | Needs manual check | Blocked | Not started | Total |
+| ----------------------------------- | ---- | ------------------ | ------- | ----------- | ----- |
+| [E15 SEO & Metadata](E15-status.md) | 11   | 0                  | 0       | 0           | 11    |
+| E16 Accessibility & Responsive      | —    | —                  | —       | —           | —     |
+| E17 Performance                     | —    | —                  | —       | —           | —     |
+| E18 Deployment                      | —    | —                  | —       | —           | —     |
+
+**E15: 11 of 11 done.** Lighthouse SEO **100** on `/` and on `/projects/data-slicing`.
+`/writing` scores 66 because it is `noindex` — that failing audit _is_ criterion 4 passing,
+and it lifts on its own in E14.
+
+**One acceptance criterion is deferred, not done.** Criterion 2 — the LinkedIn and Slack
+link preview — needs a public URL, and `SITE_URL` is still an unregistered guess. E15 proves
+the markup is present and absolute in `dist/index.html`; E18 pastes the live link. Same
+precedent as E08's rail criterion deferred to E09.
+
+The epic found **one code defect, in its own new pipeline**: `yarn images` was not
+idempotent, because re-encoding lossy WebP degrades it a little on every run and "write only
+if smaller" feeds that loop rather than stopping it. Fixed with a committed hash manifest.
+
+It also found **two heading decisions that never reached `2-architecture.md` §8** — E09's
+and E13's `h3`s, and the `h2: Download` E12 deliberately removed from `/resume`. All three
+were corrected **in §8**, not in the code: each was a well-reasoned section-epic decision
+recorded only in a component comment. Detail in [E15-status.md](E15-status.md) §3.
+
+**T07's specified build-time slug gate turned out to be impossible** and was withdrawn
+rather than replaced by inference: `vite.config.ts` is esbuild-bundled and cannot import
+`projects.ts`, whose `.webp` imports have no loader there. The dev-time assert stands alone.
+
+E16–E18 have no ticket files yet.
 
 ## Gate status
 
