@@ -61,13 +61,11 @@ export const HeroSection = (): ReactElement => {
         {PROFILE.roleFraming}
       </p>
 
+      {/* One sentence of positioning, and no current-position line beneath it:
+          the Currently panel renders that same role and employer as its h3, one
+          screen down and with dates attached (RV-T02). */}
       <p className="mt-4 max-w-content text-body-lg text-fg-muted md:text-body-lg-md">
         {PROFILE.valueProposition}
-      </p>
-
-      <p className="mt-4 text-body text-fg md:text-body-md">
-        {PROFILE.currentPositionRole} ·{' '}
-        <span className="font-medium">{PROFILE.currentPositionCompany}</span>
       </p>
 
       {/* Wraps rather than shrinking: both stay ≥44px tall at 320px (§11). */}

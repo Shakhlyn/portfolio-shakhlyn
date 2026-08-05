@@ -27,6 +27,4 @@ export const ABOUT: AboutType = {
     // pieces of work themselves are real.
     'The work I am proudest of is the kind that removes repeated effort rather than adding a screen: a configuration-driven table framework now behind a dozen screens, which made complex deal comparison possible without a third-party dependency; a validation engine that 20+ forms declare rules against instead of reimplementing them; and a Linux setup system that is safe to re-run because it was designed to be idempotent.',
   ],
-  lookingFor:
-    'I am looking for full-stack engineering roles where I can own features end to end and work close to the people deciding what gets built.',
 };

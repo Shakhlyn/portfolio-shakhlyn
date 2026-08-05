@@ -1,31 +1,32 @@
 import type { CurrentRoleType } from '@/types/current-role.types';
 
 /**
- * Employer, title, dates, and the substance of every bullet are from the CV and
- * are real.
+ * The page's one present-tense block (docs/3-style-preference.md §6.3). It
+ * answers where the author is now and whether they are available — not what
+ * they have built, which is what Projects is for.
  *
- * **Every number below is an invented development placeholder** and is marked
- * `TODO(content): INVENTED FIGURE`. Replace them with your real figures, or
- * delete the clause containing them — a bullet without a number is honest, a
- * bullet with a wrong one is not (`1-prd.md` §6, `AGENTS.md` §13).
+ * **Everything here is author-confirmed and carries no figures.** The four
+ * invented-figure placeholders that used to live in this file were deleted with
+ * the scope bullets that held them (RV-T01), and none was replaced: every claim
+ * they made is already made, with real detail, by `projects.ts`.
  *
- *     grep -rn "INVENTED FIGURE" src/
+ * The marker string itself is deliberately not written above — `grep -rn` for it
+ * across `src/` is the E18 deploy gate, and a mention in a comment would report
+ * this file as still carrying one.
+ *
+ * `company` is the employer and `client` is the placement. They are two facts —
+ * Penta employs the author, Yaana is the team the current work happens with.
  */
 export const CURRENT_ROLE: CurrentRoleType = {
   role: 'Software Engineer',
   company: 'Penta Global Limited',
+  client: 'Yaana Solutions',
   dateRange: 'Mar 2024 — Present',
-  scope: [
-    // TODO(content): INVENTED FIGURE — "18-engineer", "three timezones". The
-    // team, the roles, and the three countries are real.
-    'Embedded with Yaana Solutions’ telecom product team as a contracted engineer on an 18-engineer product org spanning three timezones, collaborating with engineers, QA, BAs, product managers, UX designers, and technical leads across Bangladesh, India, and the US.',
-    // TODO(content): INVENTED FIGURE — "~35 defects per release".
-    'Primary frontend contact for BA, product, UX, and QA on feature behaviour, technical decisions, and defect resolution, triaging roughly 35 reported defects a release cycle.',
-    // TODO(content): INVENTED FIGURE — "14 features across 9 releases".
-    'Own features end to end — requirements clarification, implementation, production debugging, and release. Shipped 14 features across 9 releases with no rollback.',
-    // TODO(content): INVENTED FIGURE — "30+ endpoints", "six internal services".
-    'Backend delivery in Python and FastAPI — 30+ REST endpoints and Keycloak-based authentication and role-based authorization covering six internal services.',
-  ],
+  summary:
+  "Embedded with Yaana Solutions' telecom product team, collaborating with engineers, technical leads, BAs, product managers, UX designers, and QA across Asia, Europe, and North America. I built two large modules and still own both — shipping customer-requested features and improvements to them — while fixing bugs across modules I inherited from others.",
+
+      // 'Embedded with Yaana Solutions’ telecom product team, where I built two large modules and still own both ' +
+    // '— shipping customer-requested features and improvements to them — while fixing defects across modules I inherited from others.',
   stack: [
     'TypeScript',
     'React',
@@ -36,4 +37,15 @@ export const CURRENT_ROLE: CurrentRoleType = {
     'Keycloak',
     'SCSS',
   ],
+  availability:
+    'I am looking for full-stack engineering roles where I can own features end to end and work close to the people deciding what gets built.',
+  /**
+   * The two modules built at the Yaana placement and still owned.
+   *
+   * `bhoganti-web-app` is deliberately absent. It is earlier Penta work,
+   * finished before the embedding began — naming it under "Currently" would
+   * present completed work as ongoing. It keeps its card in Projects, which is
+   * where finished work belongs. Do not "fix" this omission.
+   */
+  projectSlugs: ['deal-summary-comparison', 'data-slicing'],
 };

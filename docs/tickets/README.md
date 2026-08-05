@@ -120,6 +120,28 @@ it is fast to build and hard to build wrong.
 
 ---
 
+## Revamp — not a phase
+
+| Group     | Tickets                        | Status                       | #   | Depends on         |
+| --------- | ------------------------------ | ---------------------------- | --- | ------------------ |
+| RV Revamp | [RV-tickets.md](RV-tickets.md) | [RV-status.md](RV-status.md) | 1   | per-ticket, varies |
+
+Revisions to sections that already shipped, decided after seeing the built page. **Every
+revamp ticket lives in this one group**, whichever epic originally built the code it
+touches — `RV-T01`, `RV-T02`, … in the order they are written.
+
+It is not numbered as an epic on purpose. `E01`–`E18` are a build order with a dependency
+graph and a finish line; revamps have neither, and they arrive for the life of the
+project. Filing them as `E19`, `E20` would put open-ended work in the phase tables and
+make a finished site read as unfinished.
+
+Two obligations an epic ticket does not carry: a revamp must **name the decision it
+overturns** by document and row, and must **amend the source documents in the same
+commit** — the standing rule is that the document wins over the ticket, so code that lands
+ahead of its spec is wrong by definition the moment it merges.
+
+---
+
 ## Ticket conventions
 
 **Size.** One ticket is one Conventional Commit. If a ticket needs two commits to
@@ -185,6 +207,8 @@ conflict only in code leaves the next person to re-litigate it.
 | 18 | Canonical links, `robots.txt`, and `sitemap.xml` — none appears in any source document | **All three ship.** Lighthouse audits `robots.txt` validity directly, so criterion 1 is unreachable without it. The canonical is per-route and written by the metadata utility: an SPA answers every path with the same shell, so it is the only signal that `/projects/x` and `/projects/x?utm_source=…` are one page — a single static one would claim every route is the home page. The sitemap is a hand-maintained seven-URL file; a generator for seven URLs is infrastructure the PRD's non-goals rule out | `2-architecture.md` §8 · `1-prd.md` §5 SEO · `5-epic-list.md` E15 |
 | 19 | Twitter card type and handle — unspecified | **`summary_large_image`, with `twitter:site` and `twitter:creator` both `@Shakhlyn`** from `PROFILE.social.x`. `summary` crops a 1200×630 asset into a square thumbnail; the OG image is authored at that ratio, so the large card is the one that renders what exists | `2-architecture.md` §5, §8 · `5-epic-list.md` E15 |
 | 20 | E15 criterion 2 (LinkedIn/Slack preview) needs a public URL, and `SITE_URL` is an unregistered guess | **Deferred to E18 with a named hand-off, not marked passing in E15.** Every absolute URL in `dist/` derives from the single `SITE_URL` constant, so the deploy-time fix is one line. E15 proves the markup is present and absolute in `dist/index.html`; E18 pastes the live link. Precedent: E08's rail criterion deferred to E09. Marked `TODO(deploy)` | `5-epic-list.md` E15 criterion 2, E18 · `E15-status.md` §5 |
+| 21 | Whether Current Role earns a standalone slot after the hero, or belongs inside Projects | **Neither — it keeps the slot and changes its job (RV-T01).** All four of its scope bullets were duplicated elsewhere on the page, so there was no copy left to rewrite; and it could not fold into Projects either, since the projects it covers share one employment context that no card can hold without repeating it. Rebuilt as "Currently": a present-tense status panel carrying employer, placement, one sentence of scope, availability, and links into the projects. `about.lookingFor` moves here, superseding `4-interaction-design.md` §10 row 13 | `3-style-preference.md` §6.3, §6.5 · `2-architecture.md` §8 · `4-interaction-design.md` §5.2, §5.4, §10 rows 20–22 · `5-epic-list.md` E09, E11 · [RV-tickets.md](RV-tickets.md) |
+| 22 | RV-T01 made the hero redundant: it restated the role, employer, platform, and modules that the new panel carries one screen below | **The hero slims to positioning only (RV-T02).** The current position line goes, with both `ProfileType` fields behind it; the value proposition cuts to one sentence about _how_ rather than _where_. The employer name renders exactly once on the home page. The stale year counts are deleted rather than replaced — `AGENTS.md` §13 forbids guessing one, and the panel's date range is a real tenure signal until the author supplies a total | `3-style-preference.md` §6.2 · `4-interaction-design.md` §5.1, §10 row 23 · `5-epic-list.md` E09 · [RV-tickets.md](RV-tickets.md) |
 
 ---
 

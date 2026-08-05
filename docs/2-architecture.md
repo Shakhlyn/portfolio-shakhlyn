@@ -582,7 +582,7 @@ Home page:
 
 ```text
 h1: Candidate name
-h2: Current Role
+h2: Currently
   h3: Role title · Employer
 h2: Projects
   h3: Professional
@@ -601,6 +601,13 @@ audit**, which found them already rendering (`CurrentRoleSection.tsx`,
 each labels a real subsection — the role card's title, and the direct-links block beside
 the form — so removing them would strip two accessible names to satisfy an outline written
 before either section existed. Neither introduces a level skip.
+
+The first `h2` reads **"Currently"**, not "Current Role" — the section is a present-tense
+status panel rather than a résumé entry (`docs/tickets/RV-tickets.md` RV-T01). Its
+**anchor id is still `current-role`**: heading text and anchor id are two decisions, and
+the id is a public hash that `src/data/navigation.ts` names. The `h3` beneath it is
+unchanged. The project links the panel gained are `Button`s inside a labelled list, not
+headings, so the outline is unaffected — same reasoning as the skill group labels below.
 
 The home `h1` is the **candidate name only**. The role positioning sits immediately
 beneath it as body copy (`docs/4-interaction-design.md` §5.1 items 2–3), so the block

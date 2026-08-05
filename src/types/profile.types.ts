@@ -58,10 +58,16 @@ export interface ProfileType {
   roleFraming: string;
   /** Mono eyebrow above the h1 — availability or location. */
   eyebrow: string;
-  /** Value proposition. Two lines maximum. */
+  /**
+   * Value proposition — **one sentence**, and about how the author works rather
+   * than where.
+   *
+   * There is no `currentPositionRole` / `currentPositionCompany` pair here any
+   * more. The Currently panel one screen below renders the same two strings as
+   * its `h3`, with a placement and a date range attached, so the hero's copy was
+   * the same words with less information (RV-T02).
+   */
   valueProposition: string;
-  currentPositionRole: string;
-  currentPositionCompany: string;
   social: SocialLinksType;
   heroCtas: HeroCtaLabelsType;
   /** Selects the hero layout. Required, so a profile can never omit the choice. */

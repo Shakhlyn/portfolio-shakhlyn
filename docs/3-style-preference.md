@@ -461,11 +461,19 @@ Left-aligned, `max-w-content`. Stack:
 1. Mono eyebrow — availability/location line.
 2. `h1` at `display` scale: **the name, and nothing else.**
 3. Role framing — `body-lg`, `fg`, directly beneath the `h1`.
-4. `body-lg` in `fg-muted`, two lines maximum — the value proposition.
-5. Current position line — role + company, `fg`, company emphasised.
-6. Button row: `primary` "View Resume" (→ `/resume`) + `secondary` "Contact"
+4. `body-lg` in `fg-muted`, **one sentence** — the value proposition.
+5. Button row: `primary` "View Resume" (→ `/resume`) + `secondary` "Contact"
    (→ `#contact`).
-7. `SocialLinks` row — below `sm` only, where the floating rail is hidden.
+6. `SocialLinks` row — below `sm` only, where the floating rail is hidden.
+
+**No current position line, and the hero does not name the employer** (RV-T02). §6.3's
+panel one screen below renders the same role and company as its `h3`, with a placement
+and a date range attached — so the hero's version was the same two strings carrying less
+information, twice within one scroll.
+
+The value proposition is one sentence and is about **how** the author works, not where.
+Everything about the current platform, the modules, and the inherited-code work belongs
+to §6.3 and to the project cards, which can give it detail a hero line cannot.
 
 **This section describes what the hero block communicates; it does not assign
 elements.** The block reads as "name + full-stack / AI engineering positioning" because
@@ -503,16 +511,41 @@ Social links and the floating rail (§6.11) are mutually exclusive by breakpoint
 rail covers `sm` and up, the hero's `SocialLinks` row covers everything below. They are
 never both visible, which would duplicate the same four links on one screen.
 
-### 6.3 Current Role
+### 6.3 Currently
 
-Immediately after the hero, per architecture §8. A single level-1 card: role title
-and company as `h3`, date range in `fg-subtle` mono, two-to-four bullet lines of
-scope in `fg-muted`, and a `Badge` row of the stack in active use.
+Immediately after the hero, per architecture §8. Heading text is **"Currently"**; the
+anchor id stays `current-role`, which is a public hash.
 
-**No eyebrow.** `Section`'s eyebrow is optional, and an optional prop is an opt-in, not
-a default. Eyebrows are wayfinding for scannable, repeated sets — Projects has one
-because it is a set you scan. Current Role is a single narrative block sitting directly
-under the hero, where an eyebrow is decoration.
+**This is a status panel, not a résumé entry** (`docs/tickets/RV-tickets.md` RV-T01). It
+is the page's only present-tense block, and it exists to answer two questions nothing
+else answers where a scanner will find them: where the author is now, and whether they
+are available. It carries **no achievement claims** — Projects makes those, with more
+detail, and a claim repeated across three sections reads worse than one made once.
+
+A single level-1 card, in this order:
+
+1. Role title and employer as `h3` — employer in `fg-muted` after a `·`.
+2. Placement and date range on one `fg-subtle` mono line. The employer and the client
+   are two facts and are never collapsed into one.
+3. **One** present-tense sentence of current scope in `fg-muted`, at `max-w-content`.
+   Not a bullet list.
+4. A `Badge` row of the stack in active use.
+5. A `border-t border-border` divider with `pt-6`.
+6. The availability line: `fg`, `border-l-2 border-accent`, `pl-4`. This is the
+   treatment §6.5 used to specify for the About closing line, moved here with the
+   sentence.
+7. A mono `eyebrow` label and a `flex-wrap` row of `secondary` `sm` buttons linking to
+   the projects built at the current placement. Titles and paths come from `PROJECTS`;
+   an unresolvable slug renders nothing rather than a dead link.
+
+Rows 6 and 7 render only when their data is present — an accent rule beside nothing, or
+a label above an empty row, reads as a rendering bug.
+
+**No eyebrow on the section itself.** `Section`'s eyebrow is optional, and an optional
+prop is an opt-in, not a default. Eyebrows are wayfinding for scannable, repeated sets —
+Projects has one because it is a set you scan. This is a single block sitting directly
+under the hero, where a section eyebrow is decoration. The label in row 7 is a different
+thing: it names a list inside the card.
 
 ### 6.4 Projects
 
@@ -563,13 +596,14 @@ ships to production.
 withdrawn: the hero already carries the only photograph on the page (§6.2), and a second
 one 800px further down adds nothing the first has not already established.
 
-**The closing line.** `about.ts` carries an optional `lookingFor` — the one sentence
-naming the roles being targeted. It renders after the last paragraph as a visually
-distinct line, not a fourth paragraph: `fg` rather than the prose's `fg-muted`, set off
-by a `border-l-2 border-accent` rule with `pl-4`, `mt-6` above it, `body`/`body-md` type.
-It is the only sentence in the section a reader can act on, and prose colour would bury
-it. The field is optional, so **the line and its rule render only when it is present** —
-an accent rule left standing beside nothing is worse than no rule.
+**No closing line.** An availability sentence (`about.lookingFor`) used to end this
+section, set off by an accent rule because it was the one sentence here a reader could
+act on. **It moved to §6.3** as `CURRENT_ROLE.availability`, keeping its treatment
+(`docs/tickets/RV-tickets.md` RV-T01).
+
+The rule existed to rescue an actionable sentence from a weak position, and the bottom of
+About — below Projects and Skills, roughly four screens down — was the weak position. It
+is one sentence on the page, not two: About ends on its last paragraph.
 
 ### 6.6 Skills
 

@@ -364,9 +364,16 @@ wrong.
 - Content stack: eyebrow → `h1` name (**name only**) → role framing → value proposition
   → current position → `primary` "View Resume" + `secondary` "Contact" → `SocialLinks`
   (below `sm` only).
+  **Amended by RV-T02:** the current position line is removed, and the value proposition
+  is one sentence. Both were duplicating the Currently panel directly below. Current spec
+  in `3-style-preference.md` §6.2.
 - `CurrentRoleSection` — static card, role/company `h3`, date range, scope bullets,
   stack badges. **No eyebrow**; badges do not stagger
   (`4-interaction-design.md` §5.2, §8).
+  **Superseded by RV-T01**, which rebuilt this as the "Currently" status panel: one
+  present-tense sentence in place of the bullets, plus placement, availability, and links
+  to the projects built at the placement. The `h3`, the badges, the no-eyebrow rule, and
+  the anchor id all survive unchanged. Current spec in `3-style-preference.md` §6.3.
 
 **Deferred — blocked on the portrait asset, tracked here rather than silently missing**
 
@@ -446,8 +453,10 @@ unwieldy.
 **Deliverables**
 
 - `AboutSection` — `max-w-content` prose. No accordion, no "read more". No portrait.
-- The optional `lookingFor` sentence as a visually distinct closing line, rendered only
-  when the field is present (`3-style-preference.md` §6.5).
+- ~~The optional `lookingFor` sentence as a visually distinct closing line.~~
+  **Withdrawn by RV-T01** — the sentence and its accent-rule treatment moved to the
+  Currently panel (E09's section), where an actionable line sits four screens higher.
+  `AboutType.lookingFor` no longer exists; About ends on its last paragraph.
 - `SkillsSection` + `SkillGroup` — grouped by capability per `1-prd.md` §3 (Frontend,
   Backend, AI/LLM, Data, Infrastructure, Practices).
 

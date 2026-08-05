@@ -13,11 +13,11 @@ import { useMotionVariants } from '@/hooks/useMotionVariants';
  * Static prose and nothing else — no accordion, no "read more", no portrait.
  * Every sentence comes from `src/data/about.ts`; none is written here.
  *
- * The closing `lookingFor` line is set in `fg` against the prose's `fg-muted`
- * and carries an accent rule, because it is the one sentence in the section a
- * reader can act on. It is optional on the type, and when it is absent the rule
- * goes with it — an accent border standing beside nothing reads as a rendering
- * bug (§6.5).
+ * **No closing line.** `lookingFor` used to end this section with an accent
+ * rule, because it was the one sentence here a reader could act on. It moved to
+ * the Currently panel as `CURRENT_ROLE.availability` (RV-T01): the rule existed
+ * to rescue an actionable sentence from a weak position, and the bottom of the
+ * page — below Projects and Skills — was the weak position.
  *
  * Animation 2 and nothing more: one reveal for the whole block. The paragraphs
  * are not orchestrated — §8 is a closed list, and an element it does not name
@@ -48,12 +48,6 @@ export const AboutSection = (): ReactElement => {
             </p>
           ))}
         </div>
-
-        {ABOUT.lookingFor ? (
-          <p className="mt-6 border-l-2 border-accent pl-4 text-body text-fg md:text-body-md">
-            {ABOUT.lookingFor}
-          </p>
-        ) : null}
       </m.div>
     </Section>
   );

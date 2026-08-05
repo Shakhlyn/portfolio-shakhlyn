@@ -171,6 +171,36 @@ The epic found **one code defect, in its own new pipeline**: `yarn images` was n
 idempotent, because re-encoding lossy WebP degrades it a little on every run and "write only
 if smaller" feeds that loop rather than stopping it. Fixed with a committed hash manifest.
 
+## Revamp
+
+| Group                     | Done | Needs manual check | Blocked | Not started | Written |
+| ------------------------- | ---- | ------------------ | ------- | ----------- | ------- |
+| [RV Revamp](RV-status.md) | 0    | 2                  | 0       | 0           | 2       |
+
+Not a phase and not an epic — revisions to shipped sections, decided after seeing the
+built page. The group stays open for the life of the project, so the last column is
+"written so far", not a planned total. Conventions in
+[README.md](README.md) § "Revamp — not a phase".
+
+**RV-T02 slims the hero to positioning only.** RV-T01 gave the panel below the hero a
+role line, a placement, and dates, which made the hero's current-position line and two
+thirds of its value proposition duplicates. Both are gone; the employer name now renders
+exactly once on the home page. It also took `src/`'s invented-figure count from 13 to 10 —
+two of the three were a docstring that quoted the marker while explaining it, and so had
+been reporting its own file to the E18 gate since E04.
+
+**RV-T01 has landed; five acceptance criteria still need a browser.** No harness is
+installed in this repo, so responsive behaviour at 320–1920, both themes, focus order, and
+reduced motion are unconfirmed rather than passing — detail in
+[RV-status.md](RV-status.md) §3.
+
+**RV-T01 rebuilds Current Role as a present-tense status panel.** All four of its scope
+bullets turned out to be duplicated elsewhere on the home page, so the section is given a
+different job rather than different copy: where the author is now, whether they are
+available, and links into the three professional projects that came out of the role. It
+also moves `about.lookingFor` up into that panel and deletes four `INVENTED FIGURE`
+markers.
+
 It also found **two heading decisions that never reached `2-architecture.md` §8** — E09's
 and E13's `h3`s, and the `h2: Download` E12 deliberately removed from `/resume`. All three
 were corrected **in §8**, not in the code: each was a well-reasoned section-epic decision
