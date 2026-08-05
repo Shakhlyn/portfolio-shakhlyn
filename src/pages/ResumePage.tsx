@@ -2,6 +2,8 @@ import type { ReactElement } from 'react';
 
 import { ResumeViewer } from '@/components/sections/ResumeViewer';
 import { Container } from '@/components/ui/Container';
+import { RESUME_METADATA } from '@/data/metadata';
+import { useDocumentMetadata } from '@/hooks/useDocumentMetadata';
 
 /**
  * The resume route (docs/2-architecture.md §3, §8).
@@ -43,17 +45,21 @@ import { Container } from '@/components/ui/Container';
  * ~16px right of true viewport centre in that range. That asymmetry is accepted
  * site-wide by §7; opting this route out would let the rail overlap the column.
  */
-export const ResumePage = (): ReactElement => (
-  <Container as="section" className="py-16 md:py-20">
-    <div className="mx-auto w-full max-w-content space-y-12 lg:max-w-none">
-      <h1
-        tabIndex={-1}
-        className="text-h1 text-fg focus-visible:outline-none md:text-h1-md"
-      >
-        Resume
-      </h1>
+export const ResumePage = (): ReactElement => {
+  useDocumentMetadata(RESUME_METADATA);
 
-      <ResumeViewer />
-    </div>
-  </Container>
-);
+  return (
+    <Container as="section" className="py-16 md:py-20">
+      <div className="mx-auto w-full max-w-content space-y-12 lg:max-w-none">
+        <h1
+          tabIndex={-1}
+          className="text-h1 text-fg focus-visible:outline-none md:text-h1-md"
+        >
+          Resume
+        </h1>
+
+        <ResumeViewer />
+      </div>
+    </Container>
+  );
+};

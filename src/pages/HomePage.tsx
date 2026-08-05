@@ -6,6 +6,8 @@ import { CurrentRoleSection } from '@/components/sections/CurrentRoleSection';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { ProjectsSection } from '@/components/sections/ProjectsSection';
 import { SkillsSection } from '@/components/sections/SkillsSection';
+import { HOME_METADATA } from '@/data/metadata';
+import { useDocumentMetadata } from '@/hooks/useDocumentMetadata';
 
 /**
  * The home page. Every section is real: Hero and Current Role (E09), Projects
@@ -14,18 +16,22 @@ import { SkillsSection } from '@/components/sections/SkillsSection';
  * Order is fixed by docs/4-interaction-design.md §1 and must match the nav's,
  * or the scroll-spy indicator appears to jump backwards as the page scrolls.
  */
-export const HomePage = (): ReactElement => (
-  <>
-    <HeroSection />
+export const HomePage = (): ReactElement => {
+  useDocumentMetadata(HOME_METADATA);
 
-    <CurrentRoleSection />
+  return (
+    <>
+      <HeroSection />
 
-    <ProjectsSection />
+      <CurrentRoleSection />
 
-    <AboutSection />
+      <ProjectsSection />
 
-    <SkillsSection />
+      <AboutSection />
 
-    <ContactSection />
-  </>
-);
+      <SkillsSection />
+
+      <ContactSection />
+    </>
+  );
+};

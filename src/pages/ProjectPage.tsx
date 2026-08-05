@@ -5,7 +5,9 @@ import { ProjectCaseStudy } from '@/components/sections/ProjectCaseStudy';
 import { ProjectHero } from '@/components/sections/ProjectHero';
 import { ProjectLinks } from '@/components/sections/ProjectLinks';
 import { Container } from '@/components/ui/Container';
+import { buildProjectMetadata, NOT_FOUND_METADATA } from '@/data/metadata';
 import { getProjectBySlug } from '@/data/projects';
+import { useDocumentMetadata } from '@/hooks/useDocumentMetadata';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 
 /**
@@ -25,6 +27,10 @@ import { NotFoundPage } from '@/pages/NotFoundPage';
 export const ProjectPage = (): ReactElement => {
   const { slug } = useParams<{ slug: string }>();
   const project = slug ? getProjectBySlug(slug) : undefined;
+
+  // Above the early return — hooks cannot be conditional. The not-found branch
+  // renders NotFoundPage, which sets the same metadata itself, so the two agree.
+  useDocumentMetadata(project ? buildProjectMetadata(project) : NOT_FOUND_METADATA);
 
   if (!project) return <NotFoundPage />;
 
