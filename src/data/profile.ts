@@ -25,7 +25,9 @@ export const PROFILE: ProfileType = {
   // TODO(content): INVENTED FIGURE — "40,000 deals", "three continents". The
   // distributed team and the end-to-end ownership are real; the scale is not.
   valueProposition:
-    'Software engineer with 2+ years building enterprise web applications that move 40,000+ deals a month for telecom operators, on teams spanning three continents. I own features end to end — from clarifying the requirement to shipping the release and debugging it in production.',
+  "I'm a software engineer with 2.5 years of experience. For nearly 2 years, I've been working on an enterprise platform" +
+      " serving telecom operators, where I've built two large modules and worked deep in the ones I inherited " +
+      "— fixing defects and tracing issues through unfamiliar code. I own features end to end, from clarifying the requirement to supporting it in production.",
   currentPositionRole: 'Software Engineer',
   currentPositionCompany: 'Penta Global Limited',
   // Label text from docs/3-style-preference.md §6.2 item 6.
@@ -40,7 +42,10 @@ export const PROFILE: ProfileType = {
    * size is twice the largest rendered box (320×427 at `xl`), so it stays sharp
    * on a 2× display without shipping more pixels than that needs.
    *
-   * `src/assets/portfolio_img.jpg` is kept as the uncropped original.
+   * The uncropped 960×960 original is not committed — nothing imported it, so
+   * it was 102 KB of repository weight that never reached `dist/`. Recover it
+   * with `git show 528ecb3:src/assets/portfolio_img.jpg` if the crop ever needs
+   * redoing; the 3:4 ratio above is the part worth keeping written down.
    */
   portrait: {
     src: portraitSrc,
