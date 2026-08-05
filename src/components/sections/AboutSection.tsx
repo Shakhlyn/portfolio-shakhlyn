@@ -25,6 +25,11 @@ import { useMotionVariants } from '@/hooks/useMotionVariants';
  *
  * No eyebrow. `Section`'s eyebrow is an opt-in for repeated scannable sets, and
  * §6.5 does not ask for one.
+ *
+ * Full container width, not `max-w-content`. Every other prose block on the site
+ * caps its measure at 768px, but this section is the one place where the cap
+ * left an obviously empty right half with nothing to balance it — and there is
+ * no portrait or sidebar planned to fill it.
  */
 export const AboutSection = (): ReactElement => {
   const { fadeUp } = useMotionVariants();
@@ -36,7 +41,6 @@ export const AboutSection = (): ReactElement => {
         initial="hidden"
         whileInView="visible"
         viewport={VIEWPORT_ONCE}
-        className="max-w-content"
       >
         <div className="space-y-4 md:space-y-5">
           {ABOUT.paragraphs.map((paragraph, index) => (
