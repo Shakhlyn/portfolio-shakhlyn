@@ -135,26 +135,34 @@
   --text-display-md--font-weight: 600;
 
   /*
-   * The hero h1 only (RV-T03). Fluid rather than a two-step scale, because its
-   * job is a constraint, not a size: keep a 25-character name on one line from
-   * 320px to 1920px. `display` stays fixed for the 404 glyph, which has no such
-   * constraint.
+   * The hero h1 only (RV-T03, retuned by RV-T04). Fluid rather than a two-step
+   * scale, because its job is a constraint, not a size: keep a 25-character name
+   * on one line from 320px to 1920px. `display` stays fixed for the 404 glyph,
+   * which has no such constraint.
    *
-   * The name measures ~12.6em wide at weight 600 with -0.02em tracking. The
-   * narrowest box it must fit is **not** the smallest viewport — it is the
+   * The narrowest box it must fit is **not** the smallest viewport — it is the
    * `split` layout's text column at `lg`, where a 280px portrait and a 32px gap
-   * leave 624px of a 936px container (≈49px max). That dip is why the ceiling is
-   * 2.875rem and not `display-md`'s 3.5rem, and why the ceiling is reached well
-   * before the largest screens.
+   * leave 624px of a 936px container. That dip is why the ceiling is reached
+   * well before the largest screens, and why it sits below `display-md`.
    *
-   * 6.9vw tracks the container's own growth from 320px to 768px, where the
-   * padding is a near-constant 40–80px.
+   * **The name is ~15em wide**, not the ~12.6em first assumed. RV-T03 shipped
+   * the smaller figure and the name wrapped at `lg` on a real screen: a 46px cap
+   * inside 624px proves the width exceeds 13.6em. `--font-sans` resolves to a
+   * different face per platform, and the Linux end of that stack (DejaVu Sans,
+   * Cantarell) is materially wider than the macOS and Windows faces the first
+   * estimate was based on. **15em is deliberately tuned for the widest face** —
+   * on a narrower one the name simply sits smaller than it strictly needs to,
+   * which is the failure worth having.
    *
-   * If the name ever changes length, this is the one number to retune: divide
-   * the narrowest available width by the name's em-width. Overshooting wraps the
-   * line — it does not overflow the viewport, so the failure is ugly, not broken.
+   * 5.6vw tracks the container's growth from 320px to 768px, where the padding
+   * is a near-constant 40–80px. Every stop clears its box by 4–8%.
+   *
+   * If the name changes length, this is the one number to retune: divide the
+   * narrowest available width by the name's em-width. Overshooting wraps the
+   * line — it does not overflow the viewport, so the failure stays ugly rather
+   * than broken. There is no `white-space: nowrap` for exactly that reason.
    */
-  --text-display-name: clamp(1.35rem, 6.9vw, 2.875rem);
+  --text-display-name: clamp(1.125rem, 5.6vw, 2.4rem);
   --text-display-name--line-height: 1.05;
   --text-display-name--letter-spacing: -0.02em;
   --text-display-name--font-weight: 600;

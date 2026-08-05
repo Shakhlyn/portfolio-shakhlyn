@@ -457,3 +457,83 @@ device, retune the `6.9vw` term or the floor; the token comment says which numbe
 
 **Traceability:** `3-style-preference.md` §3.2, §6.2 · `4-interaction-design.md` §5.1 ·
 RV-T02
+
+---
+
+## RV-T04 — Retune the hero `h1` size against a measured wrap
+
+**Depends on:** RV-T03 (this corrects it)
+
+**Overturns:** RV-T03's `clamp(1.35rem, 6.9vw, 2.875rem)`
+
+**Files:** modified — `src/styles/index.css`, `docs/3-style-preference.md`
+
+**Commit:** `fix(hero): retune the h1 clamp against the name's real width`
+
+### What RV-T03 got wrong
+
+RV-T03 derived its bounds from an estimate that the name measures **~12.6em** at weight
+600, computed from typical system-ui metrics and explicitly flagged in that ticket as
+unmeasured. On a real screen the name **wrapped at 1024px**, which is the one width the
+ticket named as its binding case.
+
+That report is a measurement, not just a bug: the `lg` text column is 624px and the cap
+was 46px, so the name is **wider than 13.6em**. RV-T03's figure was low by at least 8%.
+
+The cause is the one RV-T03 listed under "Known risk" — `--font-sans` resolves to a
+different face per platform, and the Linux end of the stack (DejaVu Sans, Cantarell) is
+materially wider than the macOS and Windows faces the estimate was built from.
+
+### The decision
+
+**Retune to a 15em name width, chosen for the widest face in the stack**, not the
+average one. A visitor on a narrower face gets a name slightly smaller than it strictly
+needs to be; a visitor on a wider face gets a wrapped `h1`. Only one of those is a defect.
+
+```
+clamp(1.125rem, 5.6vw, 2.4rem)
+```
+
+| Width         | Available | Max at 15em | Renders | Margin |
+| ------------- | --------- | ----------- | ------- | ------ |
+| 320px         | 280px     | 18.7px      | 17.9px  | 4%     |
+| 375px         | 335px     | 22.3px      | 21.0px  | 6%     |
+| 640px (`sm`)  | 560px     | 37.3px      | 35.8px  | 4%     |
+| 768px (`md`)  | 688px     | 45.9px      | 43.0px  | 6%     |
+| 1024px (`lg`) | 624px     | 41.6px      | 38.4px  | 8%     |
+| 1280px (`xl`) | 704px     | 46.9px      | 38.4px  | 18%    |
+| 1920px        | 864px     | 57.6px      | 38.4px  | 33%    |
+
+RV-T03's bounds cleared their (wrong) boxes by 1–3%. These clear their (corrected) boxes
+by 4–8% at every tight stop, so a further few percent of face-width error does not wrap.
+
+### The cost, stated plainly
+
+The hero name now renders at **38.4px** on desktop, against 56px before RV-T03 and 46px
+after it. It is no longer the largest text on the page by much, and at 320px it is 18px —
+close to body copy.
+
+**This is what "one line at every width" costs for a 25-character name**, and the cost is
+mostly imposed by the `split` layout: the portrait takes 280px of a 936px container at
+`lg`, so the `h1` gets 624px at the exact width where a fixed scale would go largest.
+
+Three ways to buy the size back, none of them taken here because each changes a decision
+the author owns:
+
+1. **Let the name wrap below `sm`.** Two lines on a phone is normal and reads fine; it
+   would lift the floor and the slope, though not the `lg`-driven ceiling.
+2. **Narrow the portrait at `lg`** from 280px to 240px, worth ~2.7px of `h1`.
+3. **Accept two lines as the design.** A deliberate two-line name at a large size often
+   reads better than a small one-line name. This is the option worth considering first.
+
+**Acceptance**
+
+- [ ] The full name renders on one line at 320 / 375 / 640 / 768 / 1024 / 1280 / 1920 in
+      both layouts, **verified in a browser** — RV-T03's failure was shipping this
+      unverified.
+- [ ] No horizontal scroll at any of those widths.
+- [ ] `clamp(1.125rem,5.6vw,2.4rem)` is present in the built CSS.
+- [ ] `--text-display` and `--text-display-md` still byte-identical; 404 unchanged.
+- [ ] Four gates pass.
+
+**Traceability:** `3-style-preference.md` §3.2, §6.2 · RV-T03
