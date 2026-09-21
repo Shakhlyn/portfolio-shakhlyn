@@ -1,5 +1,7 @@
-import portraitSrc from '@/assets/portrait.webp';
-import portraitSrc400 from '@/assets/portrait-400.webp';
+// import portraitSrc from '@/assets/portrait.webp';
+import portraitSrc from '@/assets/portrait.jpg';
+import portraitSrc400 from '@/assets/portrait.jpg';
+// import portraitSrc400 from '@/assets/portrait-400.webp';
 import type { ProfileType } from '@/types/profile.types';
 
 /**
